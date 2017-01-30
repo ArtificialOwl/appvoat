@@ -19,6 +19,15 @@
         android:showDividers="middle"
         tools:context="net.pr0npaganda.appvoat.ActivityPostList">
 
+        <TextView
+        android:id="@+id/fatal_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:padding="20dp"
+        android:text="error"
+        />
+
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/post_refresher"
             android:layout_width="0dp"

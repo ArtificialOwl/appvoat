@@ -36,6 +36,10 @@ import net.pr0npaganda.appvoat.utils.AppUtils;
  */
 public class ApiError
 {
+	public final static int ERROR_NO_PUBLIC_API  = 10;
+	public final static int ERROR_NO_PRIVATE_API = 11;
+	public final static int ERROR_INVALID_API    = 19;
+
 	public final static int    ERROR_NO_NETWORK         = 100;
 	public final static int    ERROR_SUB_DOES_NOT_EXIST = 1001;
 	private             int    code                     = 0;
@@ -45,6 +49,13 @@ public class ApiError
 
 	public ApiError(ApiRequest request, VolleyError volleyError)
 	{
+
+		if (request == null && volleyError == null)
+		{
+			this.code = ERROR_NO_PUBLIC_API;
+			this.message = "API is not set.";
+			return;
+		}
 
 		if (volleyError.networkResponse == null)
 		{
@@ -62,6 +73,11 @@ public class ApiError
 						this.message = "The sub does not exists";
 						break;
 					}
+
+				case 403:
+					this.code = ERROR_INVALID_API;
+					this.message = "Invalid API";
+					break;
 
 				case 400:
 					if (volleyError.getMessage() != null)

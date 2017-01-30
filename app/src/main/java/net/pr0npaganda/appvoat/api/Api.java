@@ -211,11 +211,11 @@ public class Api
 	}
 
 
-	private void resultError(ApiRequest request, VolleyError error)
+	public void resultError(ApiRequest request, VolleyError error)
 	{
 		countRequest--;
-		if (countRequest == 0)
-			listener.onApiRequestError(new ApiError(request, error));
+		//if (countRequest == 0)
+		listener.onApiRequestError(new ApiError(request, error));
 	}
 
 
