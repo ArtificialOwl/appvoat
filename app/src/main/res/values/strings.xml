@@ -1,0 +1,49 @@
+<resources>
+    <string name="api_public_key"></string>
+    <string name="api_private_key"></string>
+    <string name="app_name">Appvoat</string>
+    <string name="title_post_detail">Appvoat</string>
+    <string name="title_auth_voat">Voat Authentication</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <plurals name="hours">
+        <item quantity="one">hour</item>
+        <item quantity="other">hours</item>
+    </plurals>
+    <plurals name="points">
+        <item quantity="zero">no point</item>
+        <item quantity="one">%d point</item>
+        <item quantity="other">%d points</item>
+    </plurals>
+    <plurals name="comments">
+        <item quantity="zero">no comment</item>
+        <item quantity="one">%d comment</item>
+        <item quantity="other">%d comments</item>
+    </plurals>
+    <plurals name="more_comments">W
+        <item quantity="one">Get %d more comment</item>
+        <item quantity="other">Get %d more comments</item>
+    </plurals>
+    <plurals name="show_comments">
+        <item quantity="one">%d hidden comment</item>
+        <item quantity="other">%d hidden comments</item>
+    </plurals>
+    <!-- Settings -->
+    <string name="pref_header_general">General Settings</string>
+    <string name="pref_general_theme">Theme</string>
+    <string-array name="pref_general_theme_list">
+        <item>Classic Voat</item>
+        <item>Dark Voat</item>
+    </string-array>
+    <string-array name="pref_general_theme_values">
+        <item>AppVoatLight</item>
+        <item>AppVoat</item>
+    </string-array>
+    <string name="pref_general_video_hd">Enable HD animated image</string>
+    <string name="pref_general_video_hd_desc">Disable this option if your device does not display high quality .gifv/.webm
+        correctly</string>
+    <string name="pref_general_tablet_2panel">2-panel mode</string>
+    <string name="pref_general_tablet_2panel_desc">Enable 2-panel display on tablet (portrait mode)</string>
+    <string name="pref_general_tablet_3panel">3-panel mode</string>
+    <string name="pref_general_tablet_3panel_desc">Enable 3-panel display on tablet (landscape mode)</string>
+</resources>

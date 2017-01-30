@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="post"
+            type="net.pr0npaganda.appvoat.model.Post"/>
+
+        <variable
+            name="comments"
+            type="net.pr0npaganda.appvoat.list.Comments"/>
+
+        <variable
+            name="fragment"
+            type="net.pr0npaganda.appvoat.FragmentPostDetail"/>
+    </data>
+    <!--
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/post_refresher"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    -->
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/detail_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/layout_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/detail_thumb"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:onClick="@{fragment.clickThumb}"
+                    android:tag="@{post}"
+                    android:visibility="@{post.getType() == net.pr0npaganda.appvoat.model.Post.TYPE_TEXT ? View.GONE : View.VISIBLE}"
+                    tools:context="net.pr0npaganda.appvoat.ActivityPostList">
+
+                    <ImageView
+                        android:id="@+id/thumb_link"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:alpha="0"
+                        android:src="@mipmap/link"
+                        app:showLinkIcon="@{post}"/>
+
+                    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_alignParentRight="true"
+                                                        android:layout_alignParentTop="true"
+                                                        android:layout_marginRight="10dp"
+                                                        android:layout_marginTop="10dp"
+                                                        android:alpha="0"
+                                                        android:visibility="@{post.getThumbUrl().length() > 0 ? View.VISIBLE : View.GONE}"
+                                                        card_view:cardCornerRadius="5dp"
+                                                        card_view:cardElevation="5dp">
+
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:id="@+id/thumb"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:scaleType="fitCenter"
+                            app:riv_border_color="@color/colorPrimaryDark"
+                            app:riv_border_width="2dip"
+                            app:riv_corner_radius="5dip"
+                            app:riv_mutate_background="true"
+                            app:showPostThumb="@{post}"
+                            app:showPostThumbColorNew="@{@color/colorPrimary}"
+                            app:showPostThumbColorOpened="@{@color/colorPrimaryDark}"/>
+                    </android.support.v7.widget.CardView>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="10dp"
+                    android:visibility="@{post.getType() == net.pr0npaganda.appvoat.model.Post.TYPE_TEXT ? View.VISIBLE : View.GONE}"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginRight="15dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/detail_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
+                        android:text="@{post.getTitle()}"
+                        android:textIsSelectable="true"
+                        android:textSize="15dp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/detail_author"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignWithParentIfMissing="true"
+                        android:layout_below="@+id/detail_title"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:text="@{post.getAuthorFormat(@color/colorPrimary)}"
+                        android:textSize="13sp"
+                        app:clickableSpan='@{"empty"}'/>
+
+                    <TextView
+                        android:id="@+id/detail_sub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignWithParentIfMissing="true"
+                        android:layout_below="@+id/detail_author"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:text="@{post.getSubFormat(@color/colorPrimaryDark)}"
+                        android:textSize="13sp"
+                        app:clickableSpan='@{"empty"}'/>
+
+                    <TextView
+                        android:id="@+id/number_comments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignWithParentIfMissing="true"
+                        android:layout_below="@+id/detail_sub"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:text="@{post.getCommentCountFormat(@plurals/comments(post.getCommentCount()))}"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:id="@+id/domain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignWithParentIfMissing="true"
+                        android:layout_below="@+id/detail_sub"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_toEndOf="@+id/number_comments"
+                        android:layout_toRightOf="@+id/number_comments"
+                        android:text="@{post.getDomainFormat()}"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:id="@+id/point"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignWithParentIfMissing="true"
+                        android:layout_below="@+id/number_comments"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:text="@{post.getPointFormat(@plurals/points(post.getPoint()))}"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:id="@+id/formatted_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignWithParentIfMissing="true"
+                        android:layout_below="@+id/domain"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_toEndOf="@+id/point"
+                        android:layout_toRightOf="@+id/point"
+                        android:text="@{post.getTimeFormat()}"
+                        android:textSize="12sp"/>
+
+                    <net.pr0npaganda.appvoat.item.InterceptClickTextView
+                        android:id="@+id/detail_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/point"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:onClick="clickPostContent"
+                        android:tag="@{post}"
+                        android:text="@{post.getFormattedContent()}"
+                        android:textIsSelectable="true"
+                        android:textSize="15dp"
+                        android:visibility="@{post.getContent().length() > 0 ? View.VISIBLE : View.GONE}"
+                        app:clickableSpan='@{"empty"}'/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal"></LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="1"
+                    android:alpha="0.5"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/detail_comments"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:itemView="@{comments.getView()}"
+                    app:items="@{comments.getItems()}"
+                    tools:context="net.pr0npaganda.appvoat.FragmentPostDetail"/>
+                <!--                app:onClick="@{fragment.clickComment()}"-->
+            </FrameLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+    <!--
+        </android.support.v4.widget.SwipeRefreshLayout>
+    -->
+</layout>

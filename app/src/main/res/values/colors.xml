@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4399cd</color>
+    <color name="colorPrimaryDark">#6f64ba</color>
+    <color name="colorAccent">#6f64ba</color>
+    <color name="colorTest">@android:color/black</color>
+    <color name="colorBackground">#f4f4f4</color>
+    <color name="colorBackgroundMore">#c4bfe2</color>
+    <color name="colorDivider">#f00</color>
+    <color name="secondary_text_material_dark">@android:color/background_dark</color>
+    <array name="colorMarge">
+        <item>#aa3ed17e</item>
+        <item>#aaaa84d8</item>
+        <item>#aa84b3d8</item>
+        <item>#aa9dd096</item>
+        <item>#aae7bc9a</item>
+        <item>#aacfd362</item>
+        <item>#aa7c7ac4</item>
+        <item>#aaf481ca</item>
+        <item>#aaf77272</item>
+    </array>
+</resources>

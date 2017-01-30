@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<group android:checkableBehavior="single">
+         <item android:id="@+id/nav_camera" android:title="Import"/>
+         <item android:id="@+id/nav_gallery" android:title="Gallery"/>
+         <item android:id="@+id/nav_slideshow"
+               android:title="Slideshow"/>
+         <item android:id="@+id/nav_manage" android:title="Tools"/>
+     </group> -->
+    <group
+        android:id="@+id/group_accounts"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_voat_anon"
+            android:icon="@mipmap/icon_voat_disable"
+            android:title="Browse Voat anonymously"/>
+        <item
+            android:id="@+id/nav_create_account"
+            android:icon="@drawable/icon_plus"
+            android:title="Add an account"/>
+        <item
+            android:id="@+id/nav_none"
+            android:title=""
+            android:visible="false"/>
+    </group>
+    <group android:id="@+id/group_options">
+        <item
+            android:id="@+id/nav_gotosubverse"
+            android:icon="@drawable/icon_gotosub"
+            android:title="go to subverse"/>
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/icon_settings"
+            android:title="Settings"/>
+        <!--    <menu>
+                <item android:id="@+id/nav_share" android:title="Share"/>
+                <item android:id="@+id/nav_send" android:title="Send"/>
+            </menu>
+        -->
+    </group>
+</menu>

@@ -1,0 +1,25 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:defaultValue="AppVoatLight"
+        android:entries="@array/pref_general_theme_list"
+        android:entryValues="@array/pref_general_theme_values"
+        android:key="theme"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_general_theme"/>
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="hdvideo"
+        android:summary="@string/pref_general_video_hd_desc"
+        android:title="@string/pref_general_video_hd"/>
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="2panel"
+        android:summary="@string/pref_general_tablet_2panel_desc"
+        android:title="@string/pref_general_tablet_2panel"/>
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="3panel"
+        android:summary="@string/pref_general_tablet_3panel_desc"
+        android:title="@string/pref_general_tablet_3panel"/>
+</PreferenceScreen>
