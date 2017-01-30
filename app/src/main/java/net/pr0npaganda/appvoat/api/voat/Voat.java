@@ -17,18 +17,18 @@ import java.util.Date;
 import java.util.TimeZone;
 
 
-/**
- * Created by Maxence on 02/01/2017.
- */
 public class Voat
 {
 	public static final String VOAT_SOURCE = "voat";
-	//	public  String    apiPublicKey;
+
 	private Context   context;
 	private Api       api;
 	private Auth      auth;
 	private Comments  comments;
 	private Subverses subverses;
+
+	private String apiPublicKey  = "";
+	private String apiPrivateKey = "";
 
 
 	public Voat(Api api, Context context)
@@ -61,29 +61,60 @@ public class Voat
 
 	public String getPublicApiKey()
 	{
-		return context.getString(R.string.api_public_key);
+		if (!this.apiPublicKey.equals(""))
+			return this.apiPublicKey;
+
+		String apiPub = context.getString(R.string.api_public_key);
+		if (apiPub.equals(""))
+		{
+		}
+
+		this.apiPublicKey = apiPub;
+		return this.apiPublicKey;
 	}
 
 
 	public String getPrivateApiKey()
 	{
-		return context.getString(R.string.api_private_key);
+		if (!this.apiPrivateKey.equals(""))
+			return this.apiPrivateKey;
+
+		String apiPriv = context.getString(R.string.api_private_key);
+		if (api.equals(""))
+		{
+		}
+
+		this.apiPrivateKey = apiPriv;
+		return this.apiPrivateKey;
 	}
 
 
-	public void request(ApiRequest request)
+	public boolean request(ApiRequest request)
 	{
+		if (getPublicApiKey().equals(""))
+		{
+			this.api.resultError(null, null);
+			return false;
+		}
+
 		String contentType = request.getContentType();
-		if (contentType.equals(""))
-			contentType = "application/json";
+		if (contentType != null)
+		{
+			if (contentType.equals(""))
+				contentType = "application/json";
+
+			// Note: Adding Content-Type header while retrieving token will return 400
+			request.addHeader("Content-Type", contentType);
+		}
 
 		request.setSource(ApiRequest.SOURCE_VOAT);
-		//request.addHeader("Content-Type", contentType);
 		request.addHeader("Voat-ApiKey", getPublicApiKey());
 		request.addHeader("User-Agent", "Appvoat");
 
 		//request.addHeader("Authorization", "Bearer 4a7ed35e9a8b4c148053a28d2e5c335971f8fb427c934152b4bac30a6c68d386");
 		this.api.request(request);
+
+		return true;
 	}
 
 	//	public void result(ApiRequest request, JSONArray result)
