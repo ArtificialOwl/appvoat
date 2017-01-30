@@ -1,6 +1,4 @@
 <resources>
-    <string name="api_public_key"></string>
-    <string name="api_private_key"></string>
     <string name="app_name">Appvoat</string>
     <string name="title_post_detail">Appvoat</string>
     <string name="title_auth_voat">Voat Authentication</string>
