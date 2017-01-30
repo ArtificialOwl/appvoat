@@ -55,7 +55,7 @@ public class Auth
 		AppUtils.Log("Code: " + code);
 		String url = "https://api.voat.co/oauth/token";
 		//		url = "https://www.pontapreta.net/index.php";
-		ApiRequest request = new ApiRequest(ApiRequest.REQUEST_TYPE_TOKEN, url).setContentType("application/x-www-form-urlencoded")
+		ApiRequest request = new ApiRequest(ApiRequest.REQUEST_TYPE_TOKEN, url).setContentType(null)
 				.setMethod(Request.Method.POST).setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT);
 
 		request.setParams("grant_type", "authorization_code");
