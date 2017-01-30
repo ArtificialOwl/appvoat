@@ -44,3 +44,4 @@ captures/
 .DS_Store
 .externalNativeBuild
 .idea/gradle.xml
+app/src/main/res/values/api\.xml
