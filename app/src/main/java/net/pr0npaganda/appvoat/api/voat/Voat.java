@@ -190,6 +190,10 @@ public class Voat
 
 		switch (request.getType())
 		{
+			case ApiRequest.REQUEST_TYPE_TOKEN:
+				auth().resultToken(request, json);
+				break;
+
 			case ApiRequest.REQUEST_TYPE_SUB_POSTS:
 				subverses().resultPosts(request, json);
 				break;
