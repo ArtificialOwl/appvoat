@@ -26,8 +26,10 @@
 
 package net.pr0npaganda.appvoat;
 
+import net.pr0npaganda.appvoat.list.Accounts;
 import net.pr0npaganda.appvoat.list.Posts;
 import net.pr0npaganda.appvoat.list.Subs;
+import net.pr0npaganda.appvoat.model.Account;
 import net.pr0npaganda.appvoat.model.OpenLink;
 import net.pr0npaganda.appvoat.model.Post;
 import net.pr0npaganda.appvoat.model.Sub;
@@ -40,19 +42,28 @@ public class Core implements Serializable, Cloneable
 	public static final int SOURCE_VOAT   = 1;
 	public static final int SOURCE_REDDIT = 2;
 
-	private Subs  subs  = new Subs();
-	private Posts posts = new Posts();
+	private Subs     subs     = new Subs();
+	private Posts    posts    = new Posts();
+	private Accounts accounts = new Accounts();
 
-	private Sub  currentSub  = null;
-	private Post currentPost = null;
+	private Sub      currentSub     = null;
+	private Post     currentPost    = null;
+	private Account  currentAccount = null;
+	private OpenLink openLink       = new OpenLink();
 
-	private OpenLink openLink = new OpenLink();
+	private boolean milked = true;
 
 
 	public Core()
 	{
 		//		this.listener = listener;
 		//		this.api = api;
+	}
+
+
+	public Accounts getAccounts()
+	{
+		return this.accounts;
 	}
 
 
@@ -98,6 +109,12 @@ public class Core implements Serializable, Cloneable
 	public OpenLink getOpenLink()
 	{
 		return this.openLink;
+	}
+
+
+	public boolean isMilked()
+	{
+		return this.milked;
 	}
 
 

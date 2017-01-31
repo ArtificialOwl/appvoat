@@ -32,8 +32,11 @@ import com.android.volley.Request;
 
 import net.pr0npaganda.appvoat.api.ApiRequest;
 import net.pr0npaganda.appvoat.api.voat.Voat;
+import net.pr0npaganda.appvoat.db.AccountsDatabase;
+import net.pr0npaganda.appvoat.model.Account;
 import net.pr0npaganda.appvoat.utils.AppUtils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -55,8 +58,8 @@ public class Auth
 		AppUtils.Log("Code: " + code);
 		String url = "https://api.voat.co/oauth/token";
 		//		url = "https://www.pontapreta.net/index.php";
-		ApiRequest request = new ApiRequest(ApiRequest.REQUEST_TYPE_TOKEN, url).setContentType(null)
-				.setMethod(Request.Method.POST).setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT);
+		ApiRequest request = new ApiRequest(ApiRequest.REQUEST_TYPE_TOKEN, url).setContentType(null).setMethod(Request.Method.POST)
+				.setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT);
 
 		request.setParams("grant_type", "authorization_code");
 		request.setParams("code", code);
@@ -69,6 +72,20 @@ public class Auth
 
 	public void resultToken(ApiRequest request, JSONObject result)
 	{
-		AppUtils.Log("result: " + result.toString());
+		try
+		{
+			Account account = AccountsDatabase.getAccount(request.getSource(), result.getString("userName"));
+			account.setToken(result.getString("access_token"));
+			account.setTokenRefresh(result.getString("refresh_token"));
+			account.setExpires((System.currentTimeMillis() / 1000L) + result.getInt("expires_in"));
+
+			account.update();
+			account.makeActive();
+		}
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+		}
+
 	}
 }
