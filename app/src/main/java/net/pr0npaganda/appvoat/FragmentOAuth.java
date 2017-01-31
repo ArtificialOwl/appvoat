@@ -139,8 +139,7 @@ public class FragmentOAuth extends Fragment implements ApiRequestListener
 
 		Snackbar.make(getActivity().findViewById(R.id.drawer_layout), "Redirecting you to Voat.co for authentication", Snackbar.LENGTH_LONG)
 				.setAction("Action", null).show();
-		binding.webviewOauth.loadUrl("https://api.voat.co/oauth/authorize?response_type=code&scope=account&grand_type=authorization_code" +
-				                             "&client_id=" + getContext().getString(R.string.api_public_key));
+		binding.webviewOauth.loadUrl(api.getAuthorizeUrl(Core.SOURCE_VOAT));
 
 		return rootView;
 	}

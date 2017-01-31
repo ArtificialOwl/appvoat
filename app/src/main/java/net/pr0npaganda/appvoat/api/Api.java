@@ -250,6 +250,18 @@ public class Api
 		listener.onApiRequestCompleted((countRequest == 0));
 	}
 
+
+	public String getAuthorizeUrl(int source)
+	{
+		switch (source)
+		{
+			case Core.SOURCE_VOAT:
+				return voat.getAuthorizeUrl();
+		}
+
+		return "";
+	}
+
 	//	private void result(ApiRequest request, JSONObject result)
 	//	{
 	//		switch (request.getSource())

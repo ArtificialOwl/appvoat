@@ -47,6 +47,17 @@ public class Voat
 {
 	public static final String VOAT_SOURCE = "voat";
 
+	static
+	{
+		try
+		{
+			System.loadLibrary("voatapi");
+		}
+		catch (UnsatisfiedLinkError e)
+		{
+		}
+	}
+
 	private Context   context;
 	private Api       api;
 	private Auth      auth;
@@ -90,12 +101,17 @@ public class Voat
 		if (!this.apiPublicKey.equals(""))
 			return this.apiPublicKey;
 
-		String apiPub = context.getString(R.string.api_public_key);
-		if (apiPub.equals(""))
+		this.apiPublicKey = context.getString(R.string.api_public_key);
+		if (this.apiPublicKey.equals(""))
 		{
+			try
+			{
+				this.apiPublicKey = getPublicKey().substring(0, 36);
+			}
+			catch (UnsatisfiedLinkError e)
+			{
+			}
 		}
-
-		this.apiPublicKey = apiPub;
 		return this.apiPublicKey;
 	}
 
@@ -105,14 +121,27 @@ public class Voat
 		if (!this.apiPrivateKey.equals(""))
 			return this.apiPrivateKey;
 
-		String apiPriv = context.getString(R.string.api_private_key);
-		if (api.equals(""))
+		this.apiPrivateKey = context.getString(R.string.api_private_key);
+		if (this.apiPrivateKey.equals(""))
 		{
+			try
+			{
+				this.apiPrivateKey = getPrivateKey().substring(0, 64);
+			}
+			catch (UnsatisfiedLinkError e)
+			{
+			}
 		}
 
-		this.apiPrivateKey = apiPriv;
 		return this.apiPrivateKey;
 	}
+
+	//	public void result(ApiRequest request, JSONArray result)
+	//	{
+	//		switch (request.getType())
+	//		{
+	//		}
+	//	}
 
 
 	public boolean request(ApiRequest request)
@@ -142,13 +171,6 @@ public class Voat
 
 		return true;
 	}
-
-	//	public void result(ApiRequest request, JSONArray result)
-	//	{
-	//		switch (request.getType())
-	//		{
-	//		}
-	//	}
 
 
 	public void result(ApiRequest request, String result)
@@ -207,4 +229,19 @@ public class Voat
 	{
 		return this.subverses;
 	}
+
+
+	public String getAuthorizeUrl()
+	{
+		return "https://api.voat" +
+				".co/oauth/authorize?response_type=code&scope=account&grand_type=authorization_code" +
+				"&client_id=" + getPublicApiKey();
+	}
+
+
+	public native String getPublicKey();
+
+
+	public native String getPrivateKey();
+
 }
