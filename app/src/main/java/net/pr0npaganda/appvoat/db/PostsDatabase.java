@@ -69,10 +69,9 @@ public class PostsDatabase
 			cursor.moveToFirst();
 			int id = cursor.getInt(cursor.getColumnIndex(AppvoatDatabase.POSTS_COLUMN_ID));
 			insert = String
-					.format("UPDATE %s SET %s='%d' WHERE %s=%d", AppvoatDatabase.TABLE_POSTS, row, 1, AppvoatDatabase.POSTS_COLUMN_ID, id);
+					.format("UPDATE %s SET %s=%d WHERE %s=%d", AppvoatDatabase.TABLE_POSTS, row, 1, AppvoatDatabase.POSTS_COLUMN_ID, id);
 		}
 		cursor.close();
-		//DatabaseManager.getInstance().closeDatabase();
 		database.execSQL(insert);
 	}
 
@@ -89,7 +88,6 @@ public class PostsDatabase
 			case Post.TYPE_LINK:
 				row = AppvoatDatabase.POSTS_COLUMN_LINK;
 				break;
-
 		}
 
 		if (row.equalsIgnoreCase(""))
