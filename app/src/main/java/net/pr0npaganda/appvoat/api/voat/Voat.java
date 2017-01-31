@@ -106,7 +106,8 @@ public class Voat
 		{
 			try
 			{
-				this.apiPublicKey = getPublicKey().substring(0, 36);
+				String apiPub = getPublicKey().substring(0, 36);
+				this.apiPublicKey = apiPub;
 			}
 			catch (UnsatisfiedLinkError e)
 			{
@@ -126,7 +127,8 @@ public class Voat
 		{
 			try
 			{
-				this.apiPrivateKey = getPrivateKey().substring(0, 64);
+				String apiPriv = getPrivateKey().substring(0, 64);
+				this.apiPrivateKey = apiPriv;
 			}
 			catch (UnsatisfiedLinkError e)
 			{
@@ -239,9 +241,11 @@ public class Voat
 	}
 
 
+	@SuppressWarnings ("JniMissingFunction")
 	public native String getPublicKey();
 
 
+	@SuppressWarnings ("JniMissingFunction")
 	public native String getPrivateKey();
 
 }
