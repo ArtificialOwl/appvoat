@@ -93,6 +93,8 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 
 		DatabaseManager.initializeInstance(AppvoatDatabase.getInstance(getApplicationContext()));
 		api = new Api(getBaseContext(), this);
+
+		AccountsDatabase.getAccounts(core.getAccounts());
 	}
 
 
@@ -268,20 +270,18 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 			case R.id.nav_create_account:
 				intent = new Intent(context, ActivityOAuth.class);
 				intent.putExtra("core", core);
-				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 				context.startActivity(intent);
 				if (navView != null)
 				{
 					Handler handler = new Handler();
 					handler.postDelayed(new Runnable()
 					{
-
 						@Override
 						public void run()
 						{
 							navView.setCheckedItem(R.id.nav_voat_anon);
 						}
-
 					}, 50);
 				}
 				break;
