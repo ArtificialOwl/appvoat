@@ -27,11 +27,12 @@
 package net.pr0npaganda.appvoat.interfaces;
 
 import net.pr0npaganda.appvoat.api.ApiError;
+import net.pr0npaganda.appvoat.api.ApiRequest;
 
 
 public interface ApiRequestListener
 {
-	public void onApiRequestCompleted(boolean isOver);
+	public void onApiRequestCompleted(ApiRequest request, boolean isOver);
 
 	public void onApiRequestEmpty(int type);
 

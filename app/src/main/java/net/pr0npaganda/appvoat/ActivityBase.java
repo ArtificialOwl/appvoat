@@ -44,6 +44,8 @@ import android.view.View;
 
 import net.pr0npaganda.appvoat.api.Api;
 import net.pr0npaganda.appvoat.api.ApiError;
+import net.pr0npaganda.appvoat.api.ApiRequest;
+import net.pr0npaganda.appvoat.db.AccountsDatabase;
 import net.pr0npaganda.appvoat.db.AppvoatDatabase;
 import net.pr0npaganda.appvoat.db.DatabaseManager;
 import net.pr0npaganda.appvoat.dialogs.SimpleEntryDialogFragment;
@@ -211,8 +213,9 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 				goToSub(new Sub(Core.SOURCE_VOAT, "appvoat"));
 				DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 				drawer.closeDrawer(GravityCompat.START);
-				Snackbar.make(view, "Welcome on v/appvoat. The place to report bugs, request features and share experience", Snackbar.LENGTH_LONG)
-						.setAction("Action", null).show();
+				Snackbar.make(view,
+				              "Welcome on v/appvoat. The place to report bugs, request features and share experience",
+				              Snackbar.LENGTH_LONG).setAction("Action", null).show();
 			}
 		});
 
@@ -224,7 +227,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 
 
 	@Override
-	public void onApiRequestCompleted(boolean isOver)
+	public void onApiRequestCompleted(ApiRequest request, boolean isOver)
 	{
 	}
 
@@ -318,8 +321,8 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	protected void showGoToSubDialogFragment()
 	{
 		FragmentManager fm = getSupportFragmentManager();
-		SimpleEntryDialogFragment goToSubDialogFragmentDialogFragment = SimpleEntryDialogFragment
-				.newInstance("GoToSubDialogFragment", "Go to a subverse");
+		SimpleEntryDialogFragment goToSubDialogFragmentDialogFragment = SimpleEntryDialogFragment.newInstance("GoToSubDialogFragment",
+		                                                                                                      "Go to a subverse");
 		goToSubDialogFragmentDialogFragment.show(fm, "GoToSubDialogFragment");
 	}
 

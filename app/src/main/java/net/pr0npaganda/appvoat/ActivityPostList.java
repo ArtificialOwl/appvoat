@@ -258,7 +258,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 
 
 	@Override
-	public void onApiRequestCompleted(boolean isOver)
+	public void onApiRequestCompleted(ApiRequest request, boolean isOver)
 	{
 		if (isOver)
 		{

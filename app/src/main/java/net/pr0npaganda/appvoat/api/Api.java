@@ -247,7 +247,7 @@ public class Api
 		}
 
 		countRequest--;
-		listener.onApiRequestCompleted((countRequest == 0));
+		listener.onApiRequestCompleted(request, (countRequest == 0));
 	}
 
 

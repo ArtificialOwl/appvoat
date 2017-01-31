@@ -42,6 +42,7 @@ import android.view.ViewGroup;
 
 import net.pr0npaganda.appvoat.api.Api;
 import net.pr0npaganda.appvoat.api.ApiError;
+import net.pr0npaganda.appvoat.api.ApiRequest;
 import net.pr0npaganda.appvoat.databinding.PostDetailBinding;
 import net.pr0npaganda.appvoat.db.PostsDatabase;
 import net.pr0npaganda.appvoat.interfaces.ApiRequestListener;
@@ -156,7 +157,7 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 
 
 	@Override
-	public void onApiRequestCompleted(boolean isOver)
+	public void onApiRequestCompleted(ApiRequest request, boolean isOver)
 	{
 		AnimUtils.displayView(binding.progressBar, false, 500);
 		populatingComments = false;
@@ -173,8 +174,9 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 	public void onApiRequestError(ApiError error)
 	{
 		AnimUtils.displayView(binding.progressBar, false, 500);
-		Snackbar.make(getActivity().findViewById(R.id.drawer_layout), "Error while querying Voat server", Snackbar.LENGTH_LONG)
-				.setAction("Action", null).show();
+		Snackbar.make(getActivity().findViewById(R.id.drawer_layout), "Error while querying Voat server", Snackbar.LENGTH_LONG).setAction(
+				"Action",
+				null).show();
 	}
 
 

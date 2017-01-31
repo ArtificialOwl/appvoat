@@ -45,6 +45,7 @@ import android.webkit.WebViewClient;
 
 import net.pr0npaganda.appvoat.api.Api;
 import net.pr0npaganda.appvoat.api.ApiError;
+import net.pr0npaganda.appvoat.api.ApiRequest;
 import net.pr0npaganda.appvoat.databinding.OauthBinding;
 import net.pr0npaganda.appvoat.interfaces.ApiRequestListener;
 import net.pr0npaganda.appvoat.utils.AppUtils;
@@ -147,8 +148,9 @@ public class FragmentOAuth extends Fragment implements ApiRequestListener
 
 	public void getToken(String code)
 	{
-		Snackbar.make(getActivity().findViewById(R.id.drawer_layout), "Retreiving Token from Voat.co", Snackbar.LENGTH_LONG)
-				.setAction("Action", null).show();
+		Snackbar.make(getActivity().findViewById(R.id.drawer_layout), "Retreiving Token from Voat.co", Snackbar.LENGTH_LONG).setAction(
+				"Action",
+				null).show();
 
 		api.requestToken(Core.SOURCE_VOAT, code);
 	}
@@ -165,8 +167,19 @@ public class FragmentOAuth extends Fragment implements ApiRequestListener
 
 
 	@Override
-	public void onApiRequestCompleted(boolean isOver)
+	public void onApiRequestCompleted(ApiRequest request, boolean isOver)
 	{
+		if (request.getType() == ApiRequest.REQUEST_TYPE_TOKEN)
+		{
+			Snackbar.make(getActivity().findViewById(R.id.drawer_layout), "Authentication completed", Snackbar.LENGTH_LONG).setAction(
+					"Action",
+					null).show();
+
+			Context context = getActivity().getBaseContext();
+			Intent intent = new Intent(context, ActivityPostList.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			context.startActivity(intent);
+		}
 		//		AnimUtils.displayView(binding.progressBar, false, 500);
 		//		populatingComments = false;
 	}
@@ -182,8 +195,9 @@ public class FragmentOAuth extends Fragment implements ApiRequestListener
 	public void onApiRequestError(ApiError error)
 	{
 		AppUtils.Log("auth error: " + error.getMessage());
-		Snackbar.make(getActivity().findViewById(R.id.drawer_layout), "Error while querying Voat server", Snackbar.LENGTH_LONG)
-				.setAction("Action", null).show();
+		Snackbar.make(getActivity().findViewById(R.id.drawer_layout), "Error while querying Voat server", Snackbar.LENGTH_LONG).setAction(
+				"Action",
+				null).show();
 	}
 
 }
