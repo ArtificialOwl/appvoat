@@ -66,6 +66,18 @@ public class Accounts extends BaseObservable implements Serializable
 	}
 
 
+	public Account getItem(int id)
+	{
+		for (Account account : this.getItems())
+		{
+			if (account.getId() == id)
+				return account;
+		}
+
+		return null;
+	}
+
+
 	public Account getItem(Account search)
 	{
 		for (Account account : this.getItems())

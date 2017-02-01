@@ -28,8 +28,6 @@ package net.pr0npaganda.appvoat.model;
 
 import net.pr0npaganda.appvoat.db.AccountsDatabase;
 
-import org.json.JSONObject;
-
 import java.io.Serializable;
 
 
@@ -53,29 +51,28 @@ public class Account implements Serializable
 	}
 
 
-	public static Account fromTokenAuth(int source, JSONObject json)
-	{
-		//AccountsDatabase.addToken()
-
-		return null;
-	}
-
-
 	public boolean isActive()
 	{
 		return this.active;
 	}
 
 
-	public Account makeActive()
-	{
-		AccountsDatabase.setAsActive(this);
-		return this;
-	}
-
 	public Account setActive(boolean active)
 	{
 		this.active = active;
+		return this;
+	}
+
+
+	public String getUserName()
+	{
+		return this.username;
+	}
+
+
+	public Account makeActive()
+	{
+		AccountsDatabase.setAsActive(this);
 		return this;
 	}
 
