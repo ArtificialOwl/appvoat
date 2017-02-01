@@ -32,7 +32,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import net.pr0npaganda.appvoat.list.Accounts;
 import net.pr0npaganda.appvoat.model.Account;
-import net.pr0npaganda.appvoat.utils.AppUtils;
 
 
 public class AccountsDatabase
@@ -46,25 +45,28 @@ public class AccountsDatabase
 
 	public static Accounts getAccounts(Accounts accounts)
 	{
-		SQLiteDatabase database = DatabaseManager.getInstance().openDatabase();
+		accounts.reset();
 
-		String select = String.format("SELECT a.%s, a.%s, a.%s, a.%s, at.%s, at.%s, at.%s FROM %s AS a, %s AS at WHERE a.%s=at.%s",
-		                              AppvoatDatabase.ACCOUNTS_COLUMN_ID,
-		                              AppvoatDatabase.ACCOUNTS_COLUMN_SOURCE,
-		                              AppvoatDatabase.ACCOUNTS_COLUMN_USERNAME,
-		                              AppvoatDatabase.ACCOUNTS_COLUMN_ACTIVE,
-		                              AppvoatDatabase.ACC_TOKENS_COLUMN_TOKEN,
-		                              AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESH,
-		                              AppvoatDatabase.ACC_TOKENS_COLUMN_EXPIRES,
-		                              AppvoatDatabase.TABLE_ACCOUNTS,
-		                              AppvoatDatabase.TABLE_ACC_TOKENS,
-		                              AppvoatDatabase.ACCOUNTS_COLUMN_ID,
-		                              AppvoatDatabase.ACC_TOKENS_COLUMN_USERID);
+		SQLiteDatabase database = DatabaseManager.getInstance().openDatabase();
+		String select = String
+				.format("SELECT a.%s, a.%s, a.%s, a.%s, at.%s, at.%s, at.%s FROM %s AS a, %s AS at WHERE a.%s=at.%s ORDER " + "BY a.%s, a.%s",
+				        AppvoatDatabase.ACCOUNTS_COLUMN_ID,
+				        AppvoatDatabase.ACCOUNTS_COLUMN_SOURCE,
+				        AppvoatDatabase.ACCOUNTS_COLUMN_USERNAME,
+				        AppvoatDatabase.ACCOUNTS_COLUMN_ACTIVE,
+				        AppvoatDatabase.ACC_TOKENS_COLUMN_TOKEN,
+				        AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESH,
+				        AppvoatDatabase.ACC_TOKENS_COLUMN_EXPIRES,
+				        AppvoatDatabase.TABLE_ACCOUNTS,
+				        AppvoatDatabase.TABLE_ACC_TOKENS,
+				        AppvoatDatabase.ACCOUNTS_COLUMN_ID,
+				        AppvoatDatabase.ACC_TOKENS_COLUMN_USERID,
+				        AppvoatDatabase.ACCOUNTS_COLUMN_SOURCE,
+				        AppvoatDatabase.ACCOUNTS_COLUMN_USERNAME);
 
 		Cursor cursor = database.rawQuery(select, null);
 		while (cursor.moveToNext())
 		{
-			AppUtils.Log("____");
 			Account account = new Account(cursor.getInt(cursor.getColumnIndex(AppvoatDatabase.ACCOUNTS_COLUMN_ID)),
 			                              cursor.getInt(cursor.getColumnIndex(AppvoatDatabase.ACCOUNTS_COLUMN_SOURCE)),
 			                              cursor.getString(cursor.getColumnIndex(AppvoatDatabase.ACCOUNTS_COLUMN_USERNAME)));
@@ -72,7 +74,6 @@ public class AccountsDatabase
 			account.setToken(cursor.getString(cursor.getColumnIndex(AppvoatDatabase.ACC_TOKENS_COLUMN_TOKEN)));
 			account.setTokenRefresh(cursor.getString(cursor.getColumnIndex(AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESH)));
 			account.setExpires(cursor.getLong(cursor.getColumnIndex(AppvoatDatabase.ACC_TOKENS_COLUMN_EXPIRES)));
-
 			accounts.add(account);
 		}
 
@@ -190,6 +191,11 @@ public class AccountsDatabase
 
 	public static void setAsActive(Account account)
 	{
+		setAsActive(account.getId());
+	}
+
+	public static void setAsActive(int id)
+	{
 		String update;
 		SQLiteDatabase database = DatabaseManager.getInstance().openDatabase();
 		update = String.format("UPDATE %s SET %s=0", AppvoatDatabase.TABLE_ACCOUNTS, AppvoatDatabase.ACCOUNTS_COLUMN_ACTIVE);
@@ -198,7 +204,7 @@ public class AccountsDatabase
 		                       AppvoatDatabase.TABLE_ACCOUNTS,
 		                       AppvoatDatabase.ACCOUNTS_COLUMN_ACTIVE,
 		                       AppvoatDatabase.ACCOUNTS_COLUMN_ID,
-		                       account.getId());
+		                       id);
 		database.execSQL(update);
 	}
 

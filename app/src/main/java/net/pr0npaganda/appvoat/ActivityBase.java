@@ -39,6 +39,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -51,6 +52,7 @@ import net.pr0npaganda.appvoat.db.DatabaseManager;
 import net.pr0npaganda.appvoat.dialogs.SimpleEntryDialogFragment;
 import net.pr0npaganda.appvoat.interfaces.ApiRequestListener;
 import net.pr0npaganda.appvoat.item.InterceptClickTextView;
+import net.pr0npaganda.appvoat.model.Account;
 import net.pr0npaganda.appvoat.model.Comment;
 import net.pr0npaganda.appvoat.model.OpenLink;
 import net.pr0npaganda.appvoat.model.Sub;
@@ -94,7 +96,34 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		DatabaseManager.initializeInstance(AppvoatDatabase.getInstance(getApplicationContext()));
 		api = new Api(getBaseContext(), this);
 
-		AccountsDatabase.getAccounts(core.getAccounts());
+		AppUtils.Log("__count accounts: " + core.getAccounts().getSize());
+		if (core.getAccounts().getSize() == 0)
+			AccountsDatabase.getAccounts(core.getAccounts());
+		AppUtils.Log("__count accounts: " + core.getAccounts().getSize());
+
+		manageAccounts();
+	}
+
+
+	private void manageAccounts()
+	{
+		if (navView == null)
+			return;
+
+		Menu menu = navView.getMenu();
+
+		for (int i = 1; i < 100; i++)
+			menu.removeItem(i);
+
+		for (Account account : core.getAccounts().getItems())
+		{
+			menu.add(R.id.group_accounts, account.getId(), 10, account.getUserName()).setIcon(R.mipmap.icon_voat).setCheckable(true);
+			if (account.isActive())
+			{
+				core.setCurrentAccount(account);
+				navView.setCheckedItem(account.getId());
+			}
+		}
 	}
 
 
@@ -154,7 +183,6 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 
 	public void clickComment(View v)
 	{
-
 		Comment comment = (Comment) v.getTag();
 		if (comment == null)
 			return;
@@ -205,7 +233,6 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	protected void setNavView(NavigationView view)
 	{
 		this.navView = view;
-
 		// binding nav so it join v/appvoat (not clean, mais pas d'autres solutions pour le moment
 		navView.getHeaderView(0).setOnClickListener(new View.OnClickListener()
 		{
@@ -255,7 +282,6 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	}
 
 
-	@SuppressWarnings ("StatementWithEmptyBody")
 	@Override
 	public boolean onNavigationItemSelected(MenuItem item)
 	{
@@ -264,12 +290,9 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		Intent intent;
 		switch (id)
 		{
-			case R.id.nav_voat_anon:
-				break;
-
 			case R.id.nav_create_account:
 				intent = new Intent(context, ActivityOAuth.class);
-				intent.putExtra("core", core);
+				intent.putExtra("core", (Core) core.clone());
 				intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 				context.startActivity(intent);
 				if (navView != null)
@@ -294,6 +317,17 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 
 			case R.id.nav_gotosubverse:
 				showGoToSubDialogFragment();
+				break;
+
+			default:
+				navView.setCheckedItem(item.getItemId());
+				AccountsDatabase.setAsActive(item.getItemId());
+				core.getAccounts().reset();
+
+				intent = new Intent(context, ActivityPostList.class);
+				intent.putExtra("core", (Core) core.clone());
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				context.startActivity(intent);
 				break;
 		}
 
