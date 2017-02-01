@@ -13,13 +13,16 @@
         <item
             android:id="@+id/nav_voat_anon"
             android:icon="@mipmap/icon_voat_disable"
+            android:orderInCategory="0"
             android:title="Browse Voat anonymously"/>
         <item
             android:id="@+id/nav_create_account"
             android:icon="@drawable/icon_plus"
+            android:orderInCategory="9970"
             android:title="Add an account"/>
         <item
             android:id="@+id/nav_none"
+            android:orderInCategory="9971"
             android:title=""
             android:visible="false"/>
     </group>
@@ -27,10 +30,12 @@
         <item
             android:id="@+id/nav_gotosubverse"
             android:icon="@drawable/icon_gotosub"
+            android:orderInCategory="9980"
             android:title="go to subverse"/>
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/icon_settings"
+            android:orderInCategory="9981"
             android:title="Settings"/>
         <!--    <menu>
                 <item android:id="@+id/nav_share" android:title="Share"/>
