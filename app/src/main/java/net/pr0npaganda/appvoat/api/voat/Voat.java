@@ -28,12 +28,14 @@ package net.pr0npaganda.appvoat.api.voat;
 
 import android.content.Context;
 
+import net.pr0npaganda.appvoat.Core;
 import net.pr0npaganda.appvoat.R;
 import net.pr0npaganda.appvoat.api.Api;
 import net.pr0npaganda.appvoat.api.ApiRequest;
 import net.pr0npaganda.appvoat.api.voat.v1.Auth;
 import net.pr0npaganda.appvoat.api.voat.v1.Comments;
 import net.pr0npaganda.appvoat.api.voat.v1.Subverses;
+import net.pr0npaganda.appvoat.utils.AppUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,6 +60,7 @@ public class Voat
 		}
 	}
 
+	private Core      core;
 	private Context   context;
 	private Api       api;
 	private Auth      auth;
@@ -68,9 +71,10 @@ public class Voat
 	private String apiPrivateKey = "";
 
 
-	public Voat(Api api, Context context)
+	public Voat(Api api, Core core, Context context)
 	{
 		this.api = api;
+		this.core = core;
 		this.context = context;
 
 		auth = new Auth(this, context);

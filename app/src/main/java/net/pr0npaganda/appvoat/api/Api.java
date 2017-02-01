@@ -52,7 +52,7 @@ import java.util.Map;
 
 public class Api
 {
-	//	private Core    core;
+	private Core               core;
 	private Context            context;
 	private ApiRequestListener listener;
 	private Voat               voat;
@@ -60,12 +60,13 @@ public class Api
 	private int countRequest = 0;
 
 
-	public Api(Context context, ApiRequestListener listener)
+	public Api(Context context, Core core, ApiRequestListener listener)
 	{
 		this.context = context;
+		this.core = core;
 		this.listener = listener;
 
-		voat = new Voat(this, context);
+		voat = new Voat(this, core, context);
 		reddit = new Reddit();
 	}
 

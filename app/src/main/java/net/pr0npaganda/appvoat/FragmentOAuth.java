@@ -84,7 +84,7 @@ public class FragmentOAuth extends Fragment implements ApiRequestListener
 		}
 
 		core = (Core) getArguments().getSerializable("core");
-		api = new Api(getContext(), this);
+		api = new Api(getContext(), core, this);
 
 		Activity activity = this.getActivity();
 		Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);

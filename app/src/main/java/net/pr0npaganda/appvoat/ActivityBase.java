@@ -94,12 +94,9 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 			recreate();
 
 		DatabaseManager.initializeInstance(AppvoatDatabase.getInstance(getApplicationContext()));
-		api = new Api(getBaseContext(), this);
-
-		AppUtils.Log("__count accounts: " + core.getAccounts().getSize());
+		api = new Api(getBaseContext(), core, this);
 		if (core.getAccounts().getSize() == 0)
 			AccountsDatabase.getAccounts(core.getAccounts());
-		AppUtils.Log("__count accounts: " + core.getAccounts().getSize());
 
 		manageAccounts();
 	}
@@ -115,6 +112,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		for (int i = 1; i < 100; i++)
 			menu.removeItem(i);
 
+		core.setCurrentAccount(null);
 		for (Account account : core.getAccounts().getItems())
 		{
 			menu.add(R.id.group_accounts, account.getId(), 10, account.getUserName()).setIcon(R.mipmap.icon_voat).setCheckable(true);
