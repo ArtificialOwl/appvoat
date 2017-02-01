@@ -172,7 +172,11 @@ public class Voat
 		request.addHeader("Voat-ApiKey", getPublicApiKey());
 		request.addHeader("User-Agent", "Appvoat");
 
-		//request.addHeader("Authorization", "Bearer 4a7ed35e9a8b4c148053a28d2e5c335971f8fb427c934152b4bac30a6c68d386");
+		if (core.getCurrentAccount() != null)
+		{
+			AppUtils.Log("--- Bearer " + core.getCurrentAccount().getToken());
+			request.addHeader("Authorization", "Bearer " + core.getCurrentAccount().getToken());
+		}
 		this.api.request(request);
 
 		return true;
