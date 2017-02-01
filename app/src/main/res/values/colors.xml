@@ -9,14 +9,14 @@
     <color name="colorDivider">#f00</color>
     <color name="secondary_text_material_dark">@android:color/background_dark</color>
     <array name="colorMarge">
-        <item>#aa3ed17e</item>
-        <item>#aaaa84d8</item>
-        <item>#aa84b3d8</item>
-        <item>#aa9dd096</item>
-        <item>#aae7bc9a</item>
-        <item>#aacfd362</item>
-        <item>#aa7c7ac4</item>
-        <item>#aaf481ca</item>
-        <item>#aaf77272</item>
+        <item>#883ed17e</item>
+        <item>#88aa84d8</item>
+        <item>#8884b3d8</item>
+        <item>#889dd096</item>
+        <item>#88e7bc9a</item>
+        <item>#88cfd362</item>
+        <item>#887c7ac4</item>
+        <item>#88f481ca</item>
+        <item>#88f77272</item>
     </array>
 </resources>
