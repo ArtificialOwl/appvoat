@@ -94,6 +94,24 @@ public class Core implements Serializable, Cloneable
 	}
 
 
+	public Account getCurrentAccount()
+	{
+		return this.currentAccount;
+	}
+
+
+	public void setCurrentAccount(final Account account)
+	{
+		this.currentAccount = account;
+	}
+
+
+	public void setCurrentAccount(int id)
+	{
+		this.currentAccount = this.getAccounts().getItem(id);
+	}
+
+
 	public Post getCurrentPost()
 	{
 		return this.currentPost;
