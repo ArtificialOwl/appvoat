@@ -215,6 +215,18 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	}
 
 
+	public void clickCommentCopy(View v)
+	{
+		AppUtils.Log(". clickCommentCopy");
+	}
+
+
+	public void clickCommentShare(View v)
+	{
+		AppUtils.Log(". clickCommentShare");
+	}
+
+
 	public void clickComment(View v)
 	{
 		Comment comment = (Comment) v.getTag();
