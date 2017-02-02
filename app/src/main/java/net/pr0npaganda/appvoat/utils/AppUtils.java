@@ -26,6 +26,7 @@
 
 package net.pr0npaganda.appvoat.utils;
 
+import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -60,6 +61,18 @@ public class AppUtils
 		String hours = String.format("%.1f", (diff / 3600));
 
 		return hours + " hours ago";
+	}
+
+
+	public static boolean isServiceRunning(Context context, Class<?> serviceClass)
+	{
+		ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+		for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE))
+		{
+			if (serviceClass.getName().equals(service.service.getClassName()))
+				return true;
+		}
+		return false;
 	}
 
 
