@@ -29,12 +29,13 @@ package net.pr0npaganda.appvoat.db;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import net.pr0npaganda.appvoat.model.Account;
 import net.pr0npaganda.appvoat.model.Post;
 
 
 public class PostsDatabase
 {
-	public static void setPostAsRead(Post post, int type)
+	public static void setPostAsRead(Post post, Account account, int type)
 	{
 		String row = "";
 		switch (type)
@@ -52,31 +53,55 @@ public class PostsDatabase
 		if (row.equalsIgnoreCase(""))
 			return;
 
+		int userid = 0;
+		if (account != null)
+			userid = account.getId();
+
 		SQLiteDatabase database = DatabaseManager.getInstance().openDatabase();
 
-		String select = String
-				.format("SELECT %s, %s FROM %s WHERE %s=%d AND %s=%d LIMIT 0, 1", AppvoatDatabase.POSTS_COLUMN_ID, row, AppvoatDatabase.TABLE_POSTS, AppvoatDatabase.POSTS_COLUMN_SOURCE, post
-						.getSub().source(), AppvoatDatabase.POSTS_COLUMN_POSTID, post.getId());
+		String select = String.format("SELECT %s, %s FROM %s WHERE %s=%d AND %s=%d AND %s=%d LIMIT 0, 1",
+		                              AppvoatDatabase.POSTS_COLUMN_ID,
+		                              row,
+		                              AppvoatDatabase.TABLE_POSTS,
+		                              AppvoatDatabase.POSTS_COLUMN_SOURCE,
+		                              post.getSub().source(),
+		                              AppvoatDatabase.POSTS_COLUMN_POSTID,
+		                              post.getId(),
+		                              AppvoatDatabase.POSTS_COLUMN_USERID,
+		                              userid);
 
 		String insert;
 		Cursor cursor = database.rawQuery(select, null);
 		if (cursor.getCount() == 0)
-			insert = String
-					.format("INSERT INTO %s (%s, %s, %s) VALUES (%d, %d, %d)", AppvoatDatabase.TABLE_POSTS, AppvoatDatabase.POSTS_COLUMN_SOURCE, AppvoatDatabase.POSTS_COLUMN_POSTID, row, post
-							.getSub().source(), post.getId(), 1);
+			insert = String.format("INSERT INTO %s (%s, %s, %s, %s) VALUES (%d, %d, %d, %d)",
+			                       AppvoatDatabase.TABLE_POSTS,
+			                       AppvoatDatabase.POSTS_COLUMN_SOURCE,
+			                       AppvoatDatabase.POSTS_COLUMN_POSTID,
+			                       AppvoatDatabase.POSTS_COLUMN_USERID,
+			                       row,
+			                       post.getSub().source(),
+			                       post.getId(),
+			                       userid,
+			                       1);
 		else
 		{
 			cursor.moveToFirst();
 			int id = cursor.getInt(cursor.getColumnIndex(AppvoatDatabase.POSTS_COLUMN_ID));
-			insert = String
-					.format("UPDATE %s SET %s=%d WHERE %s=%d", AppvoatDatabase.TABLE_POSTS, row, 1, AppvoatDatabase.POSTS_COLUMN_ID, id);
+			insert = String.format("UPDATE %s SET %s=%d WHERE %s=%d AND %s=%d",
+			                       AppvoatDatabase.TABLE_POSTS,
+			                       row,
+			                       1,
+			                       AppvoatDatabase.POSTS_COLUMN_ID,
+			                       id,
+			                       AppvoatDatabase.POSTS_COLUMN_USERID,
+			                       userid);
 		}
 		cursor.close();
 		database.execSQL(insert);
 	}
 
 
-	public static boolean isPostRead(Post post, int type)
+	public static boolean isPostRead(Post post, Account account, int type)
 	{
 		String row = "";
 		switch (type)
@@ -93,11 +118,24 @@ public class PostsDatabase
 		if (row.equalsIgnoreCase(""))
 			return false;
 
+		int userid = 0;
+		if (account != null)
+			userid = account.getId();
+
 		SQLiteDatabase database = DatabaseManager.getInstance().openDatabase();
 
-		String select = String
-				.format("SELECT %s, %s FROM %s WHERE %s=%d AND %s=%d AND %s=%d LIMIT 0, 1", AppvoatDatabase.POSTS_COLUMN_ID, row, AppvoatDatabase.TABLE_POSTS, AppvoatDatabase.POSTS_COLUMN_SOURCE, post
-						.getSub().source(), AppvoatDatabase.POSTS_COLUMN_POSTID, post.getId(), row, 1);
+		String select = String.format("SELECT %s, %s FROM %s WHERE %s=%d AND %s=%d AND %s=%d AND %s=%d LIMIT 0, 1",
+		                              AppvoatDatabase.POSTS_COLUMN_ID,
+		                              row,
+		                              AppvoatDatabase.TABLE_POSTS,
+		                              AppvoatDatabase.POSTS_COLUMN_SOURCE,
+		                              post.getSub().source(),
+		                              AppvoatDatabase.POSTS_COLUMN_POSTID,
+		                              post.getId(),
+		                              AppvoatDatabase.POSTS_COLUMN_USERID,
+		                              userid,
+		                              row,
+		                              1);
 
 		Cursor cursor = database.rawQuery(select, null);
 		if (cursor.getCount() == 1)
