@@ -76,8 +76,9 @@ public class Auth
 			account.setToken(result.getString("access_token"));
 			account.setTokenRefresh(result.getString("refresh_token"));
 			account.setExpires((System.currentTimeMillis() / 1000L) + result.getInt("expires_in"));
+			account.setRefreshTime(System.currentTimeMillis() / 1000L);
 
-			account.update();
+			account.save();
 			account.makeActive();
 		}
 		catch (JSONException e)
@@ -102,12 +103,24 @@ public class Auth
 	}
 
 
-
 	public void resultRefreshToken(ApiRequest request, JSONObject result)
 	{
 
 		AppUtils.Log("refresh token: " + result.toString());
+		try
+		{
+			Account account = AccountsDatabase.getAccount(request.getSource(), result.getString("userName"));
+			account.setToken(result.getString("access_token"));
+			account.setTokenRefresh(result.getString("refresh_token"));
+			account.setExpires((System.currentTimeMillis() / 1000L) + result.getInt("expires_in"));
+			account.setRefreshTime(System.currentTimeMillis() / 1000L);
 
+			account.save();
+		}
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+		}
 
 	}
 
