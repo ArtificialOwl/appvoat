@@ -37,11 +37,25 @@ import android.view.ViewGroup;
 
 public class AnimUtils
 {
-	public static void displayView(final View view, boolean display, int duration)
+	public static void displayView(final View view, final boolean display, int duration)
 	{
+		displayView(view, display, duration, false);
+	}
+
+
+	public static void displayView(final View view, final boolean display, int duration, final boolean removeOnEnd)
+	{
+		if (view == null)
+			return;
+
 		float alphaEnd = 1f;
 		if (!display)
 			alphaEnd = 0f;
+		else
+			view.setVisibility(View.VISIBLE);
+
+		if (view.getAlpha() == alphaEnd)
+			return;
 
 		if (display)
 		{
@@ -59,6 +73,35 @@ public class AnimUtils
 				float alpha = (float) animation.getAnimatedValue();
 				view.setAlpha(alpha);
 			}
+		});
+
+		animator.addListener(new Animator.AnimatorListener()
+		{
+			@Override
+			public void onAnimationStart(Animator animator)
+			{
+			}
+
+
+			@Override
+			public void onAnimationEnd(Animator animation)
+			{
+				if (!display && removeOnEnd)
+					view.setVisibility(View.GONE);
+			}
+
+
+			@Override
+			public void onAnimationCancel(Animator animator)
+			{
+			}
+
+
+			@Override
+			public void onAnimationRepeat(Animator animator)
+			{
+			}
+
 		});
 
 		animator.start();
@@ -86,7 +129,9 @@ public class AnimUtils
 	}
 
 
-	public static void animateDrawerToggleIcon(boolean display, final DrawerLayout drawer, final ActionBarDrawerToggle toggle,
+	public static void animateDrawerToggleIcon(boolean display,
+	                                           final DrawerLayout drawer,
+	                                           final ActionBarDrawerToggle toggle,
 	                                           final ActionBar actionBar)
 	{
 
