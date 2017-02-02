@@ -34,27 +34,71 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.pr0npaganda.appvoat.R;
 import net.pr0npaganda.appvoat.model.Comment;
 import net.pr0npaganda.appvoat.utils.AppUtils;
 
+import static net.pr0npaganda.appvoat.utils.AnimUtils.displayView;
+
 
 public class CommentBindingAdapter
 {
 	@BindingAdapter ({"bind:displayCommentMore"})
-	public static void displayLoading(final LinearLayout view, final Comment comment)
+	public static void displayLoading(final FrameLayout view, final Comment comment)
 	{
-		RelativeLayout layout_more = (RelativeLayout) view.findViewById(R.id.comment_more);
-		LinearLayout layout_comment = (LinearLayout) view.findViewById(R.id.layout_comment);
+		LinearLayout layout_more = (LinearLayout) view.findViewById(R.id.comment_more);
+		final LinearLayout layout_comment = (LinearLayout) view.findViewById(R.id.layout_comment);
+		final LinearLayout comment_options = (LinearLayout) view.findViewById(R.id.comment_options);
 
 		if (comment.getType() != Comment.COMMENT_LOAD_MORE_COMMENTS)
 		{
+			if (comment.getType() != Comment.COMMENT_LOAD_MORE_SUBCOMMENTS)
+			{
+
+				//
+				// long Click
+				View.OnLongClickListener longClick = new View.OnLongClickListener()
+				{
+					//	private FrameLayout parent = view;
+
+
+					@Override
+					public boolean onLongClick(View arg0)
+					{
+						resetAllCommentsOptions(view);
+
+						if (comment_options.getAlpha() == 0f)
+						{
+							displayView(layout_comment, false, 300);
+							displayView(comment_options, true, 300);
+						}
+						else
+						{
+							displayView(layout_comment, true, 300);
+							displayView(comment_options, false, 300, true);
+						}
+						return true;
+					}
+				};
+
+				view.findViewById(R.id.comment_content).setOnLongClickListener(longClick);
+				//view.findViewById(R.id.comment_options).setOnLongClickListener(longClick);
+				layout_comment.setOnLongClickListener(longClick);
+
+				LinearLayout listing = (LinearLayout) view.findViewById(R.id.comment_options);
+				for (int i = 0; i < listing.getChildCount(); i++)
+				{
+					listing.getChildAt(i).setOnLongClickListener(longClick);
+				}
+			}
+
 			layout_more.setVisibility(View.GONE);
 			layout_comment.setVisibility(View.VISIBLE);
 			return;
@@ -62,6 +106,7 @@ public class CommentBindingAdapter
 
 		layout_more.setVisibility(View.VISIBLE);
 		layout_comment.setVisibility(View.GONE);
+		view.findViewById(R.id.comment_infos).setVisibility(View.GONE);
 	}
 
 
@@ -112,7 +157,8 @@ public class CommentBindingAdapter
 		//		}
 
 		// on rajoute la marge
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+		                                                               FrameLayout.LayoutParams.MATCH_PARENT);
 		params.setMargins(Math.round(marge), 0, 0, 0);
 		view.setLayoutParams(params);
 
@@ -148,4 +194,19 @@ public class CommentBindingAdapter
 		}
 	}
 
+
+	public static void resetAllCommentsOptions(final FrameLayout parent)
+	{
+		RecyclerView listing = (RecyclerView) parent.getParent();
+		for (int i = 0; i < listing.getChildCount(); i++)
+		{
+			LinearLayout layout_comment = (LinearLayout) listing.getChildAt(i).findViewById(R.id.layout_comment);
+			if (((Comment) layout_comment.getTag()).getType() != Comment.COMMENT_LOAD_MORE_COMMENTS)
+			{
+				displayView(listing.getChildAt(i).findViewById(R.id.layout_comment), true, 400);
+				displayView(listing.getChildAt(i).findViewById(R.id.comment_options), false, 400, true);
+			}
+		}
+
+	}
 }
