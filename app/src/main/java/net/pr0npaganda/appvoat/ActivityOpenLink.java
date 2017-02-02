@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,8 @@ public class ActivityOpenLink extends ActivityBase implements NavigationView.OnN
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		toolbar.setTitle(core.getCurrentPost().getDomain());
+
+		drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 		this.setNavView(binding.includeNavView.navView);
 

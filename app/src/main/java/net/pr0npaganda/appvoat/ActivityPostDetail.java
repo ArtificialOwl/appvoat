@@ -33,12 +33,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 
 import net.pr0npaganda.appvoat.databinding.ActivityPostDetailBinding;
-import net.pr0npaganda.appvoat.utils.AppUtils;
 
 
 public class ActivityPostDetail extends ActivityBase implements NavigationView.OnNavigationItemSelectedListener
@@ -67,6 +67,8 @@ public class ActivityPostDetail extends ActivityBase implements NavigationView.O
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		toolbar.setTitle(core.getCurrentPost().getDomain());
+
+		drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 		this.setNavView(binding.includeNavView.navView);
 
