@@ -40,6 +40,7 @@ public class Account implements Serializable
 
 	private String token;
 	private long   expires;
+	private long   refreshTime;
 	private String refresh;
 
 
@@ -128,9 +129,51 @@ public class Account implements Serializable
 	}
 
 
-	public void update()
+	public boolean isAuthed()
+	{
+		return (this.expires > (System.currentTimeMillis() / 1000));
+	}
+
+
+	public boolean isRefresheable()
+	{
+		return (this.expires > (System.currentTimeMillis() / 1000));
+	}
+
+
+	public boolean needRefresh()
+	{
+		return (this.refreshTime < ((System.currentTimeMillis() / 1000) - 300));
+	}
+
+
+	public long getRefreshTime()
+	{
+		return this.refreshTime;
+	}
+
+
+	public Account setRefreshTime(long time)
+	{
+		this.refreshTime = time;
+		return this;
+	}
+
+
+	public void save()
 	{
 		AccountsDatabase.save(this);
+	}
+
+
+	public void update()
+	{
+		Account account = AccountsDatabase.getToken(this.getId());
+
+		this.setToken(account.getToken());
+		this.setExpires(account.getExpires());
+		this.setTokenRefresh(account.getTokenRefresh());
+		this.setRefreshTime(account.getRefreshTime());
 	}
 
 

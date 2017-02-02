@@ -48,21 +48,23 @@ public class AccountsDatabase
 		accounts.reset();
 
 		SQLiteDatabase database = DatabaseManager.getInstance().openDatabase();
-		String select = String
-				.format("SELECT a.%s, a.%s, a.%s, a.%s, at.%s, at.%s, at.%s FROM %s AS a, %s AS at WHERE a.%s=at.%s ORDER " + "BY a.%s, a.%s",
-				        AppvoatDatabase.ACCOUNTS_COLUMN_ID,
-				        AppvoatDatabase.ACCOUNTS_COLUMN_SOURCE,
-				        AppvoatDatabase.ACCOUNTS_COLUMN_USERNAME,
-				        AppvoatDatabase.ACCOUNTS_COLUMN_ACTIVE,
-				        AppvoatDatabase.ACC_TOKENS_COLUMN_TOKEN,
-				        AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESH,
-				        AppvoatDatabase.ACC_TOKENS_COLUMN_EXPIRES,
-				        AppvoatDatabase.TABLE_ACCOUNTS,
-				        AppvoatDatabase.TABLE_ACC_TOKENS,
-				        AppvoatDatabase.ACCOUNTS_COLUMN_ID,
-				        AppvoatDatabase.ACC_TOKENS_COLUMN_USERID,
-				        AppvoatDatabase.ACCOUNTS_COLUMN_SOURCE,
-				        AppvoatDatabase.ACCOUNTS_COLUMN_USERNAME);
+		String select = String.format(
+				"SELECT a.%s, a.%s, a.%s, a.%s, at.%s, at.%s, at.%s, at.%s FROM %s AS a, %s AS at WHERE a.%s=at.%s ORDER " + "BY " +
+						"a.%s, a.%s",
+				AppvoatDatabase.ACCOUNTS_COLUMN_ID,
+				AppvoatDatabase.ACCOUNTS_COLUMN_SOURCE,
+				AppvoatDatabase.ACCOUNTS_COLUMN_USERNAME,
+				AppvoatDatabase.ACCOUNTS_COLUMN_ACTIVE,
+				AppvoatDatabase.ACC_TOKENS_COLUMN_TOKEN,
+				AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESH,
+				AppvoatDatabase.ACC_TOKENS_COLUMN_EXPIRES,
+				AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESHTIME,
+				AppvoatDatabase.TABLE_ACCOUNTS,
+				AppvoatDatabase.TABLE_ACC_TOKENS,
+				AppvoatDatabase.ACCOUNTS_COLUMN_ID,
+				AppvoatDatabase.ACC_TOKENS_COLUMN_USERID,
+				AppvoatDatabase.ACCOUNTS_COLUMN_SOURCE,
+				AppvoatDatabase.ACCOUNTS_COLUMN_USERNAME);
 
 		Cursor cursor = database.rawQuery(select, null);
 		while (cursor.moveToNext())
@@ -74,6 +76,8 @@ public class AccountsDatabase
 			account.setToken(cursor.getString(cursor.getColumnIndex(AppvoatDatabase.ACC_TOKENS_COLUMN_TOKEN)));
 			account.setTokenRefresh(cursor.getString(cursor.getColumnIndex(AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESH)));
 			account.setExpires(cursor.getLong(cursor.getColumnIndex(AppvoatDatabase.ACC_TOKENS_COLUMN_EXPIRES)));
+			account.setRefreshTime(cursor.getLong(cursor.getColumnIndex(AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESHTIME)));
+
 			accounts.add(account);
 		}
 
@@ -161,18 +165,20 @@ public class AccountsDatabase
 		String insert;
 
 		if (cursor.getCount() == 0)
-			insert = String.format("INSERT INTO %s (%s, %s, %s, %s) VALUES (%d, %s, %s, %d)",
+			insert = String.format("INSERT INTO %s (%s, %s, %s, %s) VALUES (%d, %s, %s, %d, $d)",
 			                       AppvoatDatabase.TABLE_ACC_TOKENS,
 			                       AppvoatDatabase.ACC_TOKENS_COLUMN_USERID,
 			                       AppvoatDatabase.ACC_TOKENS_COLUMN_TOKEN,
 			                       AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESH,
 			                       AppvoatDatabase.ACC_TOKENS_COLUMN_EXPIRES,
+			                       AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESHTIME,
 			                       account.getId(),
 			                       DatabaseUtils.sqlEscapeString(account.getToken()),
 			                       DatabaseUtils.sqlEscapeString(account.getTokenRefresh()),
-			                       account.getExpires());
+			                       account.getExpires(),
+			                       account.getTokenRefresh());
 		else
-			insert = String.format("UPDATE %s SET %s=%s,  %s=%s, %s=%d WHERE %s=%d",
+			insert = String.format("UPDATE %s SET %s=%s,  %s=%s, %s=%d, %s=%d WHERE %s=%d",
 			                       AppvoatDatabase.TABLE_ACC_TOKENS,
 			                       AppvoatDatabase.ACC_TOKENS_COLUMN_TOKEN,
 			                       DatabaseUtils.sqlEscapeString(account.getToken()),
@@ -180,6 +186,8 @@ public class AccountsDatabase
 			                       DatabaseUtils.sqlEscapeString(account.getTokenRefresh()),
 			                       AppvoatDatabase.ACC_TOKENS_COLUMN_EXPIRES,
 			                       account.getExpires(),
+			                       AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESHTIME,
+			                       account.getRefreshTime(),
 			                       AppvoatDatabase.ACC_TOKENS_COLUMN_USERID,
 			                       account.getId());
 
@@ -193,6 +201,7 @@ public class AccountsDatabase
 	{
 		setAsActive(account.getId());
 	}
+
 
 	public static void setAsActive(int id)
 	{

@@ -50,10 +50,11 @@ public class AppvoatDatabase extends SQLiteOpenHelper
 	public static final String ACCOUNTS_COLUMN_USERNAME = "username";
 	public static final String ACCOUNTS_COLUMN_ACTIVE   = "active";
 
-	public static final String ACC_TOKENS_COLUMN_USERID  = "userid";
-	public static final String ACC_TOKENS_COLUMN_TOKEN   = "token";
-	public static final String ACC_TOKENS_COLUMN_REFRESH = "refresh";
-	public static final String ACC_TOKENS_COLUMN_EXPIRES = "expires";
+	public static final String ACC_TOKENS_COLUMN_USERID      = "userid";
+	public static final String ACC_TOKENS_COLUMN_TOKEN       = "token";
+	public static final String ACC_TOKENS_COLUMN_REFRESH     = "refresh";
+	public static final String ACC_TOKENS_COLUMN_EXPIRES     = "expires";
+	public static final String ACC_TOKENS_COLUMN_REFRESHTIME = "refreshtime";
 
 	private static final String DATABASE_NAME    = "appvoat.db";
 	private static final int    DATABASE_VERSION = 3;
@@ -97,19 +98,20 @@ public class AppvoatDatabase extends SQLiteOpenHelper
 		                               ACCOUNTS_COLUMN_SOURCE,
 		                               ACCOUNTS_COLUMN_USERNAME,
 		                               ACCOUNTS_COLUMN_ACTIVE));
-		database.execSQL(String.format("CREATE TABLE %s (%s integer, %s text, %s integer, %s text);",
+		database.execSQL(String.format("CREATE TABLE %s (%s integer, %s text, %s integer, %s text, %s integer);",
 		                               TABLE_ACC_TOKENS,
 		                               ACC_TOKENS_COLUMN_USERID,
 		                               ACC_TOKENS_COLUMN_TOKEN,
 		                               ACC_TOKENS_COLUMN_REFRESH,
-		                               ACC_TOKENS_COLUMN_EXPIRES));
+		                               ACC_TOKENS_COLUMN_EXPIRES,
+		                               ACC_TOKENS_COLUMN_REFRESHTIME));
 	}
 
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 	{
-		//		AppUtils.Log("--- update database");
+		//		AppUtils.Log("--- save database");
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_POSTS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACCOUNTS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACC_TOKENS);
