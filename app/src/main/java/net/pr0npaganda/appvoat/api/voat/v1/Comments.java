@@ -280,7 +280,6 @@ public class Comments
 		Post post = comment.getPost();
 		String url = String.format("https://api.voat.co/api/v1/v/%s/%d/comments/%d/%d", "appvoat", post.getId(), comment
 				.getParentId(), comment.getNextIndex());
-		AppUtils.Log("more url: " + url);
 
 		voat.request(new ApiRequest(ApiRequest.REQUEST_TYPE_COMMENTS, url).setMethod(Request.Method.GET)
 				             .setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT).setPost(post).setExtra("parentId", comment.getParentId())

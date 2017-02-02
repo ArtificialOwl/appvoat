@@ -39,7 +39,6 @@ import net.pr0npaganda.appvoat.list.Subs;
 import net.pr0npaganda.appvoat.model.Author;
 import net.pr0npaganda.appvoat.model.Post;
 import net.pr0npaganda.appvoat.model.Sub;
-import net.pr0npaganda.appvoat.utils.AppUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,8 +68,6 @@ public class Subverses
 
 	public void resultList(ApiRequest request, JSONObject result)
 	{
-
-		AppUtils.Log("list: " + result.toString());
 		try
 		{
 			JSONArray data = result.getJSONArray("data");

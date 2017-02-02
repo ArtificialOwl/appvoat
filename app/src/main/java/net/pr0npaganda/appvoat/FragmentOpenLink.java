@@ -168,7 +168,7 @@ public class FragmentOpenLink extends Fragment
 		else
 			openLink = core.getCurrentPost().getOpenLink();
 
-		AppUtils.Log("??? link : " + openLink.getUrl());
+		AppUtils.Log("Link : " + openLink.getUrl());
 
 		String type = "";
 		String mimetype = AppUtils.getMimeType(openLink.getUrl());
@@ -178,8 +178,6 @@ public class FragmentOpenLink extends Fragment
 			if (types.length > 0)
 				type = types[0];
 		}
-
-		//		AppUtils.Log("mimetype: " + mimetype + " setType: " + type);
 
 		if (mimetype == null)
 			displayUnknown(openLink);
@@ -480,7 +478,7 @@ public class FragmentOpenLink extends Fragment
 					if (openLink.getModifiedUrl().size() > 0)
 					{
 						urlString = openLink.getModifiedUrlNext();
-						AppUtils.Log("modifiedUrl: " + urlString);
+						AppUtils.Log("Modified Url: " + urlString);
 						if (urlString == null)
 							break;
 					}
@@ -503,7 +501,7 @@ public class FragmentOpenLink extends Fragment
 					input = connection.getInputStream();
 
 					new File(openLink.getCacheDir(context)).mkdirs();
-					AppUtils.Log("__temp: " + openLink.getCacheFilename(context));
+					AppUtils.Log("Temp File: " + openLink.getCacheFilename(context));
 
 					File temp = new File(openLink.getCacheFilename(context));
 					output = new FileOutputStream(temp);

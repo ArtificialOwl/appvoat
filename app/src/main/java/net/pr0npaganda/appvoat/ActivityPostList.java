@@ -202,7 +202,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		//		});
 
 		AppUtils.Log("- device is a tablet: " + AppUtils.isTablet(getBaseContext()));
-		AppUtils.Log("- device is landscape mode: " + AppUtils.isLandscape(getBaseContext()));
+		AppUtils.Log("- device is in landscape mode: " + AppUtils.isLandscape(getBaseContext()));
 
 		//		if (findViewById(R.id.center_panel_container) != null)
 		//			mTwoPane = true;
@@ -272,7 +272,6 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 	@Override
 	public void onApiRequestEmpty(int type)
 	{
-		//		AppUtils.Log("_empty__" + type);
 		if (type == ApiRequest.REQUEST_TYPE_SUB_POSTS)
 			noMorePosts = true;
 	}
@@ -307,7 +306,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 
 	public void clickMorePost(final View v)
 	{
-		AppUtils.Log("clickMorePost !!");
+		AppUtils.Log(". clickMorePost");
 	}
 
 
@@ -383,19 +382,6 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		}
 	}
 
-
-	public void clickPostUpvote(View v)
-	{
-		Post post = (Post) v.getTag();
-		AppUtils.Log("clickUpvote " + post.getId());
-	}
-
-
-	public void clickPostDownvote(View v)
-	{
-		Post post = (Post) v.getTag();
-		AppUtils.Log("clickDownvote " + post.getId());
-	}
 
 
 	public void clickThumb(View v)

@@ -46,8 +46,6 @@ import net.pr0npaganda.appvoat.model.Singleton;
 import net.pr0npaganda.appvoat.model.Sub;
 import net.pr0npaganda.appvoat.utils.AppUtils;
 
-import org.json.JSONObject;
-
 import java.util.Map;
 
 
@@ -144,9 +142,6 @@ public class Api
 	public void request(final ApiRequest request)
 	{
 		countRequest++;
-
-		AppUtils.Log("request url: " + request.getUrl());
-		AppUtils.Log("params: " + new JSONObject(request.getParams()));
 
 		StringRequest strRequest = new StringRequest(request.getMethod(), request.getUrl(), new Response.Listener<String>()
 		{

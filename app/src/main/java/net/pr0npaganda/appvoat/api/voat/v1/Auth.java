@@ -106,7 +106,7 @@ public class Auth
 	public void resultRefreshToken(ApiRequest request, JSONObject result)
 	{
 
-		AppUtils.Log("____ " + result.toString());
+		AppUtils.Log("refresh token: " + result.toString());
 
 
 	}

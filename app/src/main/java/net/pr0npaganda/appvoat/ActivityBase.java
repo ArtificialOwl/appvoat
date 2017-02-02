@@ -241,11 +241,6 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	}
 
 
-	public void longClickComment(View v)
-	{
-		AppUtils.Log("___ LONG CLICK !2");
-	}
-
 
 	public int multiPanel()
 	{

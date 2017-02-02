@@ -282,7 +282,7 @@ public class Post extends Conversation implements Serializable
 			@Override
 			public void onClick(View view)
 			{
-				AppUtils.Log("clickAuthor " + line.substring(pos1a, pos1b));
+				AppUtils.Log("click Author " + line.substring(pos1a, pos1b));
 			}
 
 
@@ -315,7 +315,7 @@ public class Post extends Conversation implements Serializable
 			@Override
 			public void onClick(View view)
 			{
-				AppUtils.Log("clickSub " + line.substring(pos1a, pos1b));
+				AppUtils.Log("click Subverse " + line.substring(pos1a, pos1b));
 			}
 
 
@@ -354,7 +354,7 @@ public class Post extends Conversation implements Serializable
 			@Override
 			public void onClick(View view)
 			{
-				AppUtils.Log("clickSub " + line.substring(pos2a, pos2b));
+				AppUtils.Log("click Subbverse " + line.substring(pos2a, pos2b));
 			}
 
 

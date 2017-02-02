@@ -31,8 +31,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
-import net.pr0npaganda.appvoat.utils.AppUtils;
-
 
 public class InterceptClickTextView extends TextView implements View.OnClickListener
 {
@@ -73,6 +71,5 @@ public class InterceptClickTextView extends TextView implements View.OnClickList
 	public void onClick(View view)
 	{
 
-		AppUtils.Log(">>> ON CLICK");
 	}
 }

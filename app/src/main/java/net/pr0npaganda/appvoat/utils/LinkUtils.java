@@ -84,7 +84,7 @@ public class LinkUtils
 
 		public ClickSpan(String url)
 		{
-			AppUtils.Log("link loaded " + url);
+			AppUtils.Log("link loaded: " + url);
 			this.url = url;
 		}
 
