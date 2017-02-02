@@ -212,18 +212,24 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	public void clickCommentReply(View v)
 	{
 		AppUtils.Log(". clickCommentReply");
+		notAvailableRightNow();
+		clickOptionsNull((ViewGroup) v.getParent());
 	}
 
 
 	public void clickCommentCopy(View v)
 	{
 		AppUtils.Log(". clickCommentCopy");
+		notAvailableRightNow();
+		clickOptionsNull((ViewGroup) v.getParent());
 	}
 
 
 	public void clickCommentShare(View v)
 	{
 		AppUtils.Log(". clickCommentShare");
+		notAvailableRightNow();
+		clickOptionsNull((ViewGroup) v.getParent());
 	}
 
 
@@ -413,5 +419,14 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	private void onGoToSubDialogValue(String sub)
 	{
 		goToSub(new Sub(Core.SOURCE_VOAT, sub));
+	}
+
+
+	private void notAvailableRightNow()
+	{
+		if (drawer == null)
+			return;
+
+		Snackbar.make(drawer, "Not Available Yet", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 	}
 }
