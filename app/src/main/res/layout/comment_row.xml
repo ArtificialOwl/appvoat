@@ -3,24 +3,24 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-\
+
         <variable
             name="comment"
             type="net.pr0npaganda.appvoat.model.Comment"/>
     </data>
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/comment_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         app:displayCommentMore="@{comment}">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/comment_more"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:gravity="center"
-            android:layout_centerVertical="true">
+            android:layout_centerVertical="true"
+            android:gravity="center">
 
             <ProgressBar
                 android:id="@+id/comment_more_loading"
@@ -28,8 +28,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:alpha="0.6"/>
-        </RelativeLayout>
+                android:alpha="0.7"/>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layout_comment"
@@ -124,5 +124,51 @@
                 app:clickableSpan='@{"empty"}'/>
             />
         </LinearLayout>
-    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/comment_options"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:alpha="0"
+            android:gravity="center"
+            android:onClick="clickOptionsNull"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/comment_upvoat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:alpha="0.8"
+                android:gravity="center"
+                android:onClick="clickCommentUpvoat"
+                android:tag="@{comment}">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:srcCompat="@mipmap/upvoat"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/comment_downvoat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:alpha="0.8"
+                android:gravity="center"
+                android:onClick="clickCommentDownvoat"
+                android:tag="@{comment}">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:srcCompat="@mipmap/downvoat"/>
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 </layout>

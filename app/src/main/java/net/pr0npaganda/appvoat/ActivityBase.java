@@ -42,7 +42,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
+import net.pr0npaganda.appvoat.adapters.CommentBindingAdapter;
 import net.pr0npaganda.appvoat.api.Api;
 import net.pr0npaganda.appvoat.api.ApiError;
 import net.pr0npaganda.appvoat.api.ApiRequest;
@@ -95,6 +98,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 
 		DatabaseManager.initializeInstance(AppvoatDatabase.getInstance(getApplicationContext()));
 		api = new Api(getBaseContext(), core, this);
+
 		if (core.getAccounts().getSize() == 0)
 			AccountsDatabase.getAccounts(core.getAccounts());
 
@@ -122,6 +126,12 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 				navView.setCheckedItem(account.getId());
 			}
 		}
+
+		if (core.getCurrentAccount() != null)
+			AppUtils.Log("__token expires: " + core.getCurrentAccount().getExpires() + "    " + (System.currentTimeMillis() / 1000L));
+
+		//	api.refreshToken(core.getCurrentAccount());
+
 	}
 
 
@@ -179,10 +189,33 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	}
 
 
+	public void clickOptionsNull(View v)
+	{
+		CommentBindingAdapter.resetAllCommentsOptions((FrameLayout) v.getParent());
+	}
+
+
+	public void clickCommentUpvoat(View v)
+	{
+		AppUtils.Log(". clickCommentUpvoat");
+		clickOptionsNull((ViewGroup) v.getParent());
+	}
+
+
+	public void clickCommentDownvoat(View v)
+	{
+		AppUtils.Log(". clickCommentDownvoat");
+		clickOptionsNull((ViewGroup) v.getParent());
+	}
+
+
 	public void clickComment(View v)
 	{
 		Comment comment = (Comment) v.getTag();
 		if (comment == null)
+			return;
+
+		if (v.getAlpha() != 1f)
 			return;
 
 		if (comment.getType() == Comment.COMMENT_LOAD_MORE_SUBCOMMENTS)
@@ -205,6 +238,12 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		{
 			api.displaySubComments(comment, !(comment.isSubCommentsDisplayed()));
 		}
+	}
+
+
+	public void longClickComment(View v)
+	{
+		AppUtils.Log("___ LONG CLICK !2");
 	}
 
 
@@ -291,7 +330,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 			case R.id.nav_create_account:
 				intent = new Intent(context, ActivityOAuth.class);
 				intent.putExtra("core", (Core) core.clone());
-				intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(intent);
 				if (navView != null)
 				{
