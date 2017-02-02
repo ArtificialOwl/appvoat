@@ -134,6 +134,7 @@
             android:gravity="center"
             android:onClick="clickOptionsNull"
             android:orientation="horizontal"
+            android:background="@drawable/comments_options_background"
             android:visibility="gone">
 
             <LinearLayout
