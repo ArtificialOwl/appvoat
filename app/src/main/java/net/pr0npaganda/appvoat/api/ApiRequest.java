@@ -41,8 +41,11 @@ public class ApiRequest
 	public static final int SOURCE_VOAT   = 1;
 	public static final int SOURCE_REDDIT = 2;
 
-	public static final int REQUEST_TYPE_TEST      = -1;
-	public static final int REQUEST_TYPE_TOKEN     = 1001;
+	public static final int REQUEST_TYPE_TEST = -1;
+
+	public static final int REQUEST_TYPE_TOKEN         = 1001;
+	public static final int REQUEST_TYPE_REFRESH_TOKEN = 1002;
+
 	public static final int REQUEST_TYPE_FRONTPAGE = 10;
 	public static final int REQUEST_TYPE_SUB_POSTS = 11;
 	public static final int REQUEST_TYPE_SUB_LIST  = 15;

@@ -55,9 +55,7 @@ public class Auth
 
 	public void requestToken(String code)
 	{
-		AppUtils.Log("Code: " + code);
 		String url = "https://api.voat.co/oauth/token";
-		//		url = "https://www.pontapreta.net/index.php";
 		ApiRequest request = new ApiRequest(ApiRequest.REQUEST_TYPE_TOKEN, url).setContentType(null).setMethod(Request.Method.POST)
 				.setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT);
 
@@ -86,6 +84,31 @@ public class Auth
 		{
 			e.printStackTrace();
 		}
+	}
+
+
+	public void requestRefreshToken(Account account)
+	{
+		String url = "https://api.voat.co/oauth/token";
+		ApiRequest request = new ApiRequest(ApiRequest.REQUEST_TYPE_REFRESH_TOKEN, url).setContentType(null).setMethod(Request.Method.POST)
+				.setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT);
+
+		request.setParams("grant_type", "refresh_token");
+		request.setParams("refresh_token", account.getTokenRefresh());
+		request.setParams("client_id", voat.getPublicApiKey());
+		request.setParams("client_secret", voat.getPrivateApiKey());
+
+		voat.request(request);
+	}
+
+
+
+	public void resultRefreshToken(ApiRequest request, JSONObject result)
+	{
+
+		AppUtils.Log("____ " + result.toString());
+
 
 	}
+
 }

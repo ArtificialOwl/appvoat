@@ -39,6 +39,7 @@ import net.pr0npaganda.appvoat.api.voat.Voat;
 import net.pr0npaganda.appvoat.interfaces.ApiRequestListener;
 import net.pr0npaganda.appvoat.list.Posts;
 import net.pr0npaganda.appvoat.list.Subs;
+import net.pr0npaganda.appvoat.model.Account;
 import net.pr0npaganda.appvoat.model.Comment;
 import net.pr0npaganda.appvoat.model.Post;
 import net.pr0npaganda.appvoat.model.Singleton;
@@ -89,6 +90,12 @@ public class Api
 			voat().auth().requestToken(code);
 	}
 
+
+	public void refreshToken(Account account)
+	{
+		if (account.getSource() == Core.SOURCE_VOAT)
+			voat().auth().requestRefreshToken(account);
+	}
 
 	public void requestSubList(int source, Subs subs)
 	{
