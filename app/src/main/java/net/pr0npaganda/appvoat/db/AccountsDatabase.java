@@ -119,6 +119,47 @@ public class AccountsDatabase
 	}
 
 
+	public static Account getToken(int userid)
+	{
+		Account account = null;
+		SQLiteDatabase database = DatabaseManager.getInstance().openDatabase();
+
+		String select = String.format(
+				"SELECT a.%s, a.%s, a.%s, a.%s, at.%s, at.%s, at.%s, at.%s FROM %s AS a, %s AS at WHERE a.%s=at.%s AND a.%s=%d",
+				AppvoatDatabase.ACCOUNTS_COLUMN_ID,
+				AppvoatDatabase.ACCOUNTS_COLUMN_SOURCE,
+				AppvoatDatabase.ACCOUNTS_COLUMN_USERNAME,
+				AppvoatDatabase.ACCOUNTS_COLUMN_ACTIVE,
+				AppvoatDatabase.ACC_TOKENS_COLUMN_TOKEN,
+				AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESH,
+				AppvoatDatabase.ACC_TOKENS_COLUMN_EXPIRES,
+				AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESHTIME,
+				AppvoatDatabase.TABLE_ACCOUNTS,
+				AppvoatDatabase.TABLE_ACC_TOKENS,
+				AppvoatDatabase.ACCOUNTS_COLUMN_ID,
+				AppvoatDatabase.ACC_TOKENS_COLUMN_USERID,
+				AppvoatDatabase.ACCOUNTS_COLUMN_ID,
+				userid);
+
+		Cursor cursor = database.rawQuery(select, null);
+		if (cursor.getCount() == 1)
+		{
+			cursor.moveToFirst();
+			account = new Account(cursor.getInt(cursor.getColumnIndex(AppvoatDatabase.ACCOUNTS_COLUMN_ID)),
+			                      cursor.getInt(cursor.getColumnIndex(AppvoatDatabase.ACCOUNTS_COLUMN_SOURCE)),
+			                      cursor.getString(cursor.getColumnIndex(AppvoatDatabase.ACCOUNTS_COLUMN_USERNAME)));
+			account.setActive(cursor.getInt(cursor.getColumnIndex(AppvoatDatabase.ACCOUNTS_COLUMN_ACTIVE)) == 1);
+			account.setToken(cursor.getString(cursor.getColumnIndex(AppvoatDatabase.ACC_TOKENS_COLUMN_TOKEN)));
+			account.setTokenRefresh(cursor.getString(cursor.getColumnIndex(AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESH)));
+			account.setExpires(cursor.getLong(cursor.getColumnIndex(AppvoatDatabase.ACC_TOKENS_COLUMN_EXPIRES)));
+			account.setRefreshTime(cursor.getLong(cursor.getColumnIndex(AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESHTIME)));
+		}
+
+		cursor.close();
+		return account;
+	}
+
+
 	private static void createAccount(int source, String username)
 	{
 		SQLiteDatabase database = DatabaseManager.getInstance().openDatabase();
