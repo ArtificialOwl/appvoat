@@ -59,6 +59,7 @@ import net.pr0npaganda.appvoat.databinding.ActivityPostListBinding;
 import net.pr0npaganda.appvoat.interfaces.ApiRequestListener;
 import net.pr0npaganda.appvoat.model.Post;
 import net.pr0npaganda.appvoat.model.Sub;
+import net.pr0npaganda.appvoat.services.RefreshTokensService;
 import net.pr0npaganda.appvoat.utils.AnimUtils;
 import net.pr0npaganda.appvoat.utils.AppUtils;
 
@@ -240,6 +241,10 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 			                                                                                TableRow.LayoutParams.MATCH_PARENT,
 			                                                                                1f));
 		}
+
+		RefreshTokensService.start(getBaseContext());
+
+
 		// rajouter des actions dans le back stack !? (genre le changement de sub)
 		//		FragmentManager fm = this.getSupportFragmentManager();
 		//		FragmentManager.
