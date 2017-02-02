@@ -35,7 +35,6 @@ import net.pr0npaganda.appvoat.api.ApiRequest;
 import net.pr0npaganda.appvoat.api.voat.v1.Auth;
 import net.pr0npaganda.appvoat.api.voat.v1.Comments;
 import net.pr0npaganda.appvoat.api.voat.v1.Subverses;
-import net.pr0npaganda.appvoat.utils.AppUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -173,10 +172,8 @@ public class Voat
 		request.addHeader("User-Agent", "Appvoat");
 
 		if (core.getCurrentAccount() != null)
-		{
-			AppUtils.Log("--- Bearer " + core.getCurrentAccount().getToken());
 			request.addHeader("Authorization", "Bearer " + core.getCurrentAccount().getToken());
-		}
+
 		this.api.request(request);
 
 		return true;
@@ -200,6 +197,10 @@ public class Voat
 		{
 			case ApiRequest.REQUEST_TYPE_TOKEN:
 				auth().resultToken(request, json);
+				break;
+
+			case ApiRequest.REQUEST_TYPE_REFRESH_TOKEN:
+				auth().resultRefreshToken(request, json);
 				break;
 
 			case ApiRequest.REQUEST_TYPE_SUB_POSTS:
