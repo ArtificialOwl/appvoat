@@ -236,8 +236,9 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		}
 		else
 		{
-			binding.includePostList.postRefresher
-					.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1f));
+			binding.includePostList.postRefresher.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+			                                                                                TableRow.LayoutParams.MATCH_PARENT,
+			                                                                                1f));
 		}
 		// rajouter des actions dans le back stack !? (genre le changement de sub)
 		//		FragmentManager fm = this.getSupportFragmentManager();
@@ -347,7 +348,12 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 
 	public void clickDetails(View v)
 	{
-		((TextView) v.findViewById(R.id.title)).setTypeface(null, Typeface.NORMAL);
+		TextView title = (TextView) v.findViewById(R.id.title);
+		if (title == null)
+			title = (TextView) ((ViewGroup) v.getParent()).findViewById(R.id.title);
+
+		if (title != null)
+			title.setTypeface(null, Typeface.NORMAL);
 
 		Post post = (Post) v.getTag();
 		core.setCurrentPost(post);
