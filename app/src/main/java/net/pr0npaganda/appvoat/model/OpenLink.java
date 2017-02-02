@@ -151,7 +151,7 @@ public class OpenLink implements Serializable
 		String extension = MimeTypeMap.getFileExtensionFromUrl(this.getUrl()).toLowerCase();
 		String mimetype = AppUtils.getMimeType(this.getUrl());
 
-		AppUtils.Log("displayUnknown " + domain + " " + extension + " " + mimetype);
+		AppUtils.Log("parseUrl " + domain + " " + extension + " " + mimetype);
 
 		if ("i.imgur.com" .equalsIgnoreCase(domain) && "gifv" .equalsIgnoreCase(extension))
 		{

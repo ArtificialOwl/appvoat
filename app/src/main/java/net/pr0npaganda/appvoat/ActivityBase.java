@@ -209,6 +209,12 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	}
 
 
+	public void clickCommentReply(View v)
+	{
+		AppUtils.Log(". clickCommentReply");
+	}
+
+
 	public void clickComment(View v)
 	{
 		Comment comment = (Comment) v.getTag();
@@ -239,7 +245,6 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 			api.displaySubComments(comment, !(comment.isSubCommentsDisplayed()));
 		}
 	}
-
 
 
 	public int multiPanel()

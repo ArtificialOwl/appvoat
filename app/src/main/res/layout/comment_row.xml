@@ -169,6 +169,23 @@
                     android:layout_height="30dp"
                     app:srcCompat="@mipmap/downvoat"/>
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/comment_reply"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:alpha="0.8"
+                android:gravity="center"
+                android:onClick="clickCommentReply"
+                android:tag="@{comment}">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/icon_reply"/>
+            </LinearLayout>
         </LinearLayout>
     </FrameLayout>
 </layout>
