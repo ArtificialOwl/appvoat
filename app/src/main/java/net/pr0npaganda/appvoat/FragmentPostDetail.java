@@ -152,7 +152,7 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 		super.onActivityCreated(savedInstanceState);
 
 		api.requestComments(core.getCurrentPost());
-		PostsDatabase.setPostAsRead(core.getCurrentPost(), Post.TYPE_TEXT);
+		PostsDatabase.setPostAsRead(core.getCurrentPost(), core.getCurrentAccount(), Post.TYPE_TEXT);
 	}
 
 

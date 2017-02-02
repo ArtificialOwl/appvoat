@@ -78,7 +78,7 @@ public class Voat
 
 		auth = new Auth(this, context);
 		comments = new Comments(this, context);
-		subverses = new Subverses(this, context);
+		subverses = new Subverses(this, core, context);
 	}
 
 

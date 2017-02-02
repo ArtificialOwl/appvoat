@@ -48,12 +48,14 @@ import org.json.JSONObject;
 public class Subverses
 {
 	private Voat    voat;
+	private Core    core;
 	private Context context;
 
 
-	public Subverses(Voat voat, Context context)
+	public Subverses(Voat voat, Core core, Context context)
 	{
 		this.voat = voat;
+		this.core = core;
 		this.context = context;
 	}
 
@@ -140,8 +142,8 @@ public class Subverses
 				post.setPoint(item.getInt("upCount"), item.getInt("downCount"));
 				post.setCommentCount(item.getInt("commentCount"));
 				post.setTime(Voat.parseDate(item.getString("creationDate")));
-				post.read(PostsDatabase.isPostRead(post, Post.TYPE_TEXT));
-				post.linkOpened(PostsDatabase.isPostRead(post, Post.TYPE_LINK));
+				post.read(PostsDatabase.isPostRead(post, core.getCurrentAccount(), Post.TYPE_TEXT));
+				post.linkOpened(PostsDatabase.isPostRead(post, core.getCurrentAccount(), Post.TYPE_LINK));
 
 				if (post.getType() == Post.TYPE_TEXT)
 				{

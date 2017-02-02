@@ -189,7 +189,7 @@ public class FragmentOpenLink extends Fragment
 			displayUnknown(openLink);
 
 		//openLink.resetUrl();
-		PostsDatabase.setPostAsRead(core.getCurrentPost(), Post.TYPE_LINK);
+		PostsDatabase.setPostAsRead(core.getCurrentPost(), core.getCurrentAccount(), Post.TYPE_LINK);
 	}
 
 
