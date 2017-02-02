@@ -186,6 +186,40 @@
                     android:layout_height="30dp"
                     android:src="@drawable/icon_reply"/>
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/comment_copy"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:alpha="0.8"
+                android:gravity="center"
+                android:onClick="clickCommentCopy"
+                android:tag="@{comment}">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/icon_copy"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/comment_share"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:alpha="0.8"
+                android:gravity="center"
+                android:onClick="clickCommentShare"
+                android:tag="@{comment}">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/icon_share"/>
+            </LinearLayout>
         </LinearLayout>
     </FrameLayout>
 </layout>
