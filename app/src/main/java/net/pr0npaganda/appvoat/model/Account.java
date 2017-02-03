@@ -131,7 +131,7 @@ public class Account implements Serializable
 
 	public boolean isAuthed()
 	{
-		return (this.expires > (System.currentTimeMillis() / 1000));
+		return (this.expires > ((System.currentTimeMillis() / 1000) + 180));
 	}
 
 
@@ -143,6 +143,8 @@ public class Account implements Serializable
 
 	public boolean needRefresh()
 	{
+		if (this.getTokenRefresh().equals(""))
+			return false;
 		return (this.refreshTime < ((System.currentTimeMillis() / 1000) - 300));
 	}
 
