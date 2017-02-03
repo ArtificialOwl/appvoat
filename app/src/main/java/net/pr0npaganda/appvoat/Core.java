@@ -26,6 +26,7 @@
 
 package net.pr0npaganda.appvoat;
 
+import net.pr0npaganda.appvoat.db.AccountsDatabase;
 import net.pr0npaganda.appvoat.list.Accounts;
 import net.pr0npaganda.appvoat.list.Posts;
 import net.pr0npaganda.appvoat.list.Subs;
@@ -46,10 +47,11 @@ public class Core implements Serializable, Cloneable
 	private Posts    posts    = new Posts();
 	private Accounts accounts = new Accounts();
 
-	private Sub      currentSub     = null;
-	private Post     currentPost    = null;
-	private Account  currentAccount = null;
-	private OpenLink openLink       = new OpenLink();
+	private Sub      currentSub        = null;
+	private Post     currentPost       = null;
+	private Account  currentAccount    = null;
+	private long     lastAccountUpdate = 0;
+	private OpenLink openLink          = new OpenLink();
 
 	private boolean milked = true;
 
@@ -59,7 +61,6 @@ public class Core implements Serializable, Cloneable
 		//		this.listener = listener;
 		//		this.api = api;
 	}
-
 
 	public Accounts getAccounts()
 	{
@@ -96,6 +97,22 @@ public class Core implements Serializable, Cloneable
 
 	public Account getCurrentAccount()
 	{
+		long curr = System.currentTimeMillis() / 1000L;
+		if (this.currentAccount != null)
+		{
+			if (this.lastAccountUpdate < (curr - 60))
+			{
+				this.currentAccount.update();
+				this.lastAccountUpdate = curr;
+			}
+
+			if (!this.currentAccount.isAuthed())
+			{
+				AccountsDatabase.setAsActive(0);
+				this.currentAccount = null;
+			}
+		}
+
 		return this.currentAccount;
 	}
 
