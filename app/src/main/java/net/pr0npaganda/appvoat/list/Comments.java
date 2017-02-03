@@ -143,7 +143,7 @@ public class Comments extends BaseObservable implements Serializable
 	public ItemView getView()
 	{
 		if (this.itemView == null)
-			this.itemView = ItemView.of(BR.comment, R.layout.comment_row);
+			this.itemView = ItemView.of(BR.comment, R.layout.row_comment);
 
 		return this.itemView;
 	}

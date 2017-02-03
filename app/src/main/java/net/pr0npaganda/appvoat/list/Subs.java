@@ -41,7 +41,7 @@ import me.tatarka.bindingcollectionadapter.ItemView;
 
 public class Subs extends BaseObservable implements Serializable
 {
-	private transient ItemView itemView = ItemView.of(BR.sub, R.layout.sub_spinner_row);
+	private transient ItemView itemView = ItemView.of(BR.sub, R.layout.row_sub_spinner);
 
 	@Bindable
 	private ObservableArrayList<Sub> subs;
@@ -92,7 +92,7 @@ public class Subs extends BaseObservable implements Serializable
 	public ItemView getView()
 	{
 		if (this.itemView == null)
-			this.itemView = ItemView.of(BR.sub, R.layout.sub_spinner_row);
+			this.itemView = ItemView.of(BR.sub, R.layout.row_sub_spinner);
 
 		return this.itemView;
 	}

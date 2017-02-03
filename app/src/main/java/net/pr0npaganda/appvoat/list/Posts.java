@@ -42,7 +42,7 @@ import me.tatarka.bindingcollectionadapter.ItemView;
 
 public class Posts extends BaseObservable implements Serializable
 {
-	private transient ItemView itemView = ItemView.of(BR.post, R.layout.post_row);
+	private transient ItemView itemView = ItemView.of(BR.post, R.layout.row_post);
 
 	@Bindable
 	private ObservableArrayList<Post> posts;
@@ -113,7 +113,7 @@ public class Posts extends BaseObservable implements Serializable
 	public ItemView getView()
 	{
 		if (this.itemView == null)
-			this.itemView = ItemView.of(BR.post, R.layout.post_row);
+			this.itemView = ItemView.of(BR.post, R.layout.row_post);
 
 		return this.itemView;
 	}
