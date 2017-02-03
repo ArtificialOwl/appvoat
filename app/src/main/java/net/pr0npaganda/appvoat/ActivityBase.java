@@ -119,8 +119,9 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		core.setCurrentAccount(null);
 		for (Account account : core.getAccounts().getItems())
 		{
-			menu.add(R.id.group_accounts, account.getId(), 10, account.getUserName()).setIcon(R.mipmap.icon_voat).setCheckable(true);
-			if (account.isActive())
+			menu.add(R.id.group_accounts, account.getId(), 10, account.getUserName() + ((!account.isAuthed()) ? " (disconnected)" : ""))
+					.setIcon(R.mipmap.icon_voat).setCheckable(true);
+			if (account.isActive() && account.isAuthed())
 			{
 				core.setCurrentAccount(account);
 				navView.setCheckedItem(account.getId());
@@ -128,7 +129,8 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		}
 
 		if (core.getCurrentAccount() != null)
-			AppUtils.Log("__token expires: " + core.getCurrentAccount().getExpires() + "    " + (System.currentTimeMillis() / 1000L));
+			AppUtils.Log("token expires: " + core.getCurrentAccount().getExpires() + "   (current: " + (System
+					.currentTimeMillis() / 1000L) + ")");
 
 		//	api.refreshToken(core.getCurrentAccount());
 
@@ -341,27 +343,12 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	public boolean onNavigationItemSelected(MenuItem item)
 	{
 		int id = item.getItemId();
-		Context context = getBaseContext();
-		Intent intent;
+		final Context context = getBaseContext();
+		final Intent intent;
 		switch (id)
 		{
 			case R.id.nav_create_account:
-				intent = new Intent(context, ActivityOAuth.class);
-				intent.putExtra("core", (Core) core.clone());
-				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				context.startActivity(intent);
-				if (navView != null)
-				{
-					Handler handler = new Handler();
-					handler.postDelayed(new Runnable()
-					{
-						@Override
-						public void run()
-						{
-							navView.setCheckedItem(R.id.nav_voat_anon);
-						}
-					}, 50);
-				}
+				goToAccountCreation();
 				break;
 
 			case R.id.nav_settings:
@@ -377,6 +364,14 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 			default:
 				navView.setCheckedItem(item.getItemId());
 				AccountsDatabase.setAsActive(item.getItemId());
+
+				Account selAccount = core.getAccounts().getItem(id);
+				if (selAccount != null && !core.getAccounts().getItem(id).isAuthed())
+				{
+					goToAccountCreation();
+					break;
+				}
+
 				core.getAccounts().reset();
 
 				intent = new Intent(context, ActivityPostList.class);
@@ -413,6 +408,54 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		SimpleEntryDialogFragment goToSubDialogFragmentDialogFragment = SimpleEntryDialogFragment.newInstance("GoToSubDialogFragment",
 		                                                                                                      "Go to a subverse");
 		goToSubDialogFragmentDialogFragment.show(fm, "GoToSubDialogFragment");
+	}
+
+
+	private void goToAccountCreation()
+	{
+
+		//		if (multiPanel() > 0)
+		//		{
+		//			Bundle arguments = new Bundle();
+		//			arguments.putSerializable("core", (Core) core.clone());
+		//			FragmentOAuth fragment = new FragmentOAuth();
+		//			fragment.setArguments(arguments);
+		//
+		//			int container = R.id.center_panel_container;
+		//			if (multiPanel() == 3)
+		//				container = R.id.right_panel_container;
+		//
+		//			getSupportFragmentManager().beginTransaction().replace(container, fragment).commit();
+		//
+		//			if (navView != null)
+		//			{
+		//				Handler handler = new Handler();
+		//				handler.postDelayed(new Runnable()
+		//				{
+		//					@Override
+		//					public void run()
+		//					{
+		//						navView.setCheckedItem(R.id.nav_voat_anon);
+		//					}
+		//				}, 50);
+		//			}
+		//		}
+		//		else
+		//		{
+		final Intent intent = new Intent(getBaseContext(), ActivityOAuth.class);
+		intent.putExtra("core", (Core) core.clone());
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				getBaseContext().startActivity(intent);
+			}
+		}, 50);
+		//		}
 	}
 
 
