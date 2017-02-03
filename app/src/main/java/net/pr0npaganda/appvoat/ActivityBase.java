@@ -199,14 +199,16 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 
 	public void clickCommentUpvoat(View v)
 	{
-		AppUtils.Log(". clickCommentUpvoat");
+		Comment comment = (Comment) v.getTag();
+		api.votingComment(comment, 1);
 		clickOptionsNull((ViewGroup) v.getParent());
 	}
 
 
 	public void clickCommentDownvoat(View v)
 	{
-		AppUtils.Log(". clickCommentDownvoat");
+		Comment comment = (Comment) v.getTag();
+		api.votingComment(comment, -1);
 		clickOptionsNull((ViewGroup) v.getParent());
 	}
 
