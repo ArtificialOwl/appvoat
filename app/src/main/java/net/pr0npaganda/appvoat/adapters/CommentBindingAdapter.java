@@ -38,6 +38,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -62,13 +63,21 @@ public class CommentBindingAdapter
 		{
 			if (comment.getType() != Comment.COMMENT_LOAD_MORE_SUBCOMMENTS)
 			{
-
 				View.OnLongClickListener longClick = new View.OnLongClickListener()
 				{
 					@Override
 					public boolean onLongClick(View arg0)
 					{
 						resetAllCommentsOptions(view);
+
+						ImageView image_upvoat = (ImageView) view.findViewById(R.id.image_upvoat);
+						ImageView image_downvoat = (ImageView) view.findViewById(R.id.image_downvoat);
+						image_upvoat.setImageResource(R.mipmap.upvoat);
+						image_downvoat.setImageResource(R.mipmap.downvoat);
+						if (comment.getVote() == 1)
+							image_upvoat.setImageResource(R.mipmap.upvoat_sel);
+						if (comment.getVote() == -1)
+							image_downvoat.setImageResource(R.mipmap.downvoat_sel);
 
 						if (comment_options.getAlpha() == 0f)
 						{

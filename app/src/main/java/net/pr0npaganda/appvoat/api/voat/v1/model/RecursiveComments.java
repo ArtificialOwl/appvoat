@@ -48,9 +48,9 @@ public class RecursiveComments implements Serializable
 	public int     submissionID;
 	public String  subverse;
 	public String  userName;
-	public int     vote;
-	public int     sum;
-	public int     upCount;
-	public int     downCount;
+	public int vote = 0;
+	public int sum;
+	public int upCount;
+	public int downCount;
 	public RecursiveChildren children = new RecursiveChildren();
 }

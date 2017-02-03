@@ -35,6 +35,8 @@ import net.pr0npaganda.appvoat.api.ApiRequest;
 import net.pr0npaganda.appvoat.api.voat.v1.Auth;
 import net.pr0npaganda.appvoat.api.voat.v1.Comments;
 import net.pr0npaganda.appvoat.api.voat.v1.Subverses;
+import net.pr0npaganda.appvoat.api.voat.v1.Votes;
+import net.pr0npaganda.appvoat.utils.AppUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,6 +67,7 @@ public class Voat
 	private Auth      auth;
 	private Comments  comments;
 	private Subverses subverses;
+	private Votes     votes;
 
 	private String apiPublicKey  = "";
 	private String apiPrivateKey = "";
@@ -79,6 +82,7 @@ public class Voat
 		auth = new Auth(this, context);
 		comments = new Comments(this, context);
 		subverses = new Subverses(this, core, context);
+		votes = new Votes(this, core, context);
 	}
 
 
@@ -157,13 +161,13 @@ public class Voat
 			return false;
 		}
 
+		// Note: Adding Content-Type header while retrieving token will return 400
 		String contentType = request.getContentType();
 		if (contentType != null)
 		{
 			if (contentType.equals(""))
 				contentType = "application/json";
 
-			// Note: Adding Content-Type header while retrieving token will return 400
 			request.addHeader("Content-Type", contentType);
 		}
 
@@ -172,8 +176,10 @@ public class Voat
 		request.addHeader("User-Agent", "Appvoat");
 
 		if (core.getCurrentAccount() != null)
+		{
 			request.addHeader("Authorization", "Bearer " + core.getCurrentAccount().getToken());
-
+			AppUtils.Log("_current token: " + core.getCurrentAccount().getToken());
+		}
 		this.api.request(request);
 
 		return true;
@@ -215,6 +221,10 @@ public class Voat
 				comments().result(request, json);
 				break;
 
+			case ApiRequest.REQUEST_TYPE_VOTES:
+				votes().result(request, json);
+				break;
+
 			case ApiRequest.REQUEST_TYPE_TEST:
 				//	subverses().result(request, result);
 				break;
@@ -243,6 +253,12 @@ public class Voat
 	public Subverses subverses()
 	{
 		return this.subverses;
+	}
+
+
+	public Votes votes()
+	{
+		return this.votes;
 	}
 
 

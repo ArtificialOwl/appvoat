@@ -27,11 +27,13 @@
 package net.pr0npaganda.appvoat.model;
 
 import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.URLSpan;
 
+import net.pr0npaganda.appvoat.BR;
 import net.pr0npaganda.appvoat.utils.AppUtils;
 import net.pr0npaganda.appvoat.utils.LinkUtils;
 
@@ -41,10 +43,12 @@ import java.io.Serializable;
 public class Conversation extends BaseObservable implements Serializable
 {
 
-	private int    id               = 0;
-	private Author author           = null;
-	private Long   time             = 0L;
-	private int    point            = 0;
+	private int    id     = 0;
+	private Author author = null;
+	private Long   time   = 0L;
+	private int    vote   = 0;
+	private int    point  = 0;
+
 	private int    upCount          = 0;
 	private int    downCount        = 0;
 	private int    commentCount     = 0;
@@ -127,6 +131,18 @@ public class Conversation extends BaseObservable implements Serializable
 	}
 
 
+	public int getVote()
+	{
+		return this.vote;
+	}
+
+
+	public void setVote(int vote)
+	{
+		this.vote = vote;
+	}
+
+
 	public String getTimeFormat()
 	{
 		return AppUtils.diffTimeFormat(getTime());
@@ -135,12 +151,13 @@ public class Conversation extends BaseObservable implements Serializable
 
 	public void setPoint(int up, int down)
 	{
-		this.point = (up - down);
 		this.upCount = up;
 		this.downCount = down;
+		this.setPoint((up - down));
 	}
 
 
+	@Bindable
 	public int getPoint()
 	{
 		return this.point;
@@ -150,6 +167,7 @@ public class Conversation extends BaseObservable implements Serializable
 	public void setPoint(int point)
 	{
 		this.point = point;
+		notifyPropertyChanged(BR._all);
 	}
 
 

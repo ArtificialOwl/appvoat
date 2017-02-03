@@ -142,6 +142,9 @@ public class Subverses
 				post.setPoint(item.getInt("upCount"), item.getInt("downCount"));
 				post.setCommentCount(item.getInt("commentCount"));
 				post.setTime(Voat.parseDate(item.getString("creationDate")));
+				if (!item.isNull("vote"))
+					post.setVote(item.getInt("vote"));
+
 				post.read(PostsDatabase.isPostRead(post, core.getCurrentAccount(), Post.TYPE_TEXT));
 				post.linkOpened(PostsDatabase.isPostRead(post, core.getCurrentAccount(), Post.TYPE_LINK));
 

@@ -88,7 +88,6 @@ public class Api
 			voat().auth().requestToken(code);
 	}
 
-
 	public void refreshToken(Account account)
 	{
 		if (account.getSource() == Core.SOURCE_VOAT)
@@ -138,6 +137,13 @@ public class Api
 			voat().comments().displaySubComments(comment, display);
 	}
 
+
+	public void votingComment(Comment comment, int vote)
+	{
+		if (comment.getPost().getSub().source() == Core.SOURCE_VOAT)
+			voat().votes().requestVotingComment(comment, vote);
+
+	}
 
 	public void request(final ApiRequest request)
 	{

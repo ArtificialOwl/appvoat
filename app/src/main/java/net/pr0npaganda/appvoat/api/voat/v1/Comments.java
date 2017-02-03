@@ -37,7 +37,6 @@ import net.pr0npaganda.appvoat.api.voat.v1.model.RecursiveComments;
 import net.pr0npaganda.appvoat.model.Author;
 import net.pr0npaganda.appvoat.model.Comment;
 import net.pr0npaganda.appvoat.model.Post;
-import net.pr0npaganda.appvoat.utils.AppUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -114,6 +113,7 @@ public class Comments
 			comment.setAuthor(new Author(co.userName));
 			comment.setPoint(co.upCount, co.downCount);
 			comment.setCommentCount(co.childCount);
+			comment.setVote(co.vote);
 			comment.setTime(Voat.parseDate(co.creationDate));
 			comment.setLevel(level);
 
