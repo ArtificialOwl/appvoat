@@ -16,6 +16,10 @@
             type="net.pr0npaganda.appvoat.list.Comments"/>
 
         <variable
+            name="account"
+            type="net.pr0npaganda.appvoat.model.Account"/>
+
+        <variable
             name="fragment"
             type="net.pr0npaganda.appvoat.FragmentPostDetail"/>
     </data>
@@ -232,6 +236,7 @@
                     android:id="@+id/detail_comments"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:tag="@{account}"
                     app:itemView="@{comments.getView()}"
                     app:items="@{comments.getItems()}"
                     tools:context="net.pr0npaganda.appvoat.FragmentPostDetail"/>

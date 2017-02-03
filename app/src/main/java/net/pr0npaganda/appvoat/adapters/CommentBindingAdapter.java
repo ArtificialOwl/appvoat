@@ -42,6 +42,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.pr0npaganda.appvoat.R;
+import net.pr0npaganda.appvoat.model.Account;
 import net.pr0npaganda.appvoat.model.Comment;
 import net.pr0npaganda.appvoat.utils.AppUtils;
 
@@ -62,13 +63,8 @@ public class CommentBindingAdapter
 			if (comment.getType() != Comment.COMMENT_LOAD_MORE_SUBCOMMENTS)
 			{
 
-				//
-				// long Click
 				View.OnLongClickListener longClick = new View.OnLongClickListener()
 				{
-					//	private FrameLayout parent = view;
-
-
 					@Override
 					public boolean onLongClick(View arg0)
 					{
@@ -76,13 +72,13 @@ public class CommentBindingAdapter
 
 						if (comment_options.getAlpha() == 0f)
 						{
-							displayView(layout_comment, false, 300);
-							displayView(comment_options, true, 300);
+							displayView(layout_comment, false, 200);
+							displayView(comment_options, true, 200);
 						}
 						else
 						{
-							displayView(layout_comment, true, 300);
-							displayView(comment_options, false, 300, true);
+							displayView(layout_comment, true, 200);
+							displayView(comment_options, false, 200, true);
 						}
 						return true;
 					}
@@ -198,13 +194,28 @@ public class CommentBindingAdapter
 	public static void resetAllCommentsOptions(final FrameLayout parent)
 	{
 		RecyclerView listing = (RecyclerView) parent.getParent();
+
+		Account currAccount = (Account) listing.getTag();
+		if (currAccount != null && currAccount.isAuthed())
+		{
+			parent.findViewById(R.id.comment_upvoat).setVisibility(View.VISIBLE);
+			parent.findViewById(R.id.comment_downvoat).setVisibility(View.VISIBLE);
+			parent.findViewById(R.id.comment_reply).setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			parent.findViewById(R.id.comment_upvoat).setVisibility(View.GONE);
+			parent.findViewById(R.id.comment_downvoat).setVisibility(View.GONE);
+			parent.findViewById(R.id.comment_reply).setVisibility(View.GONE);
+		}
+
 		for (int i = 0; i < listing.getChildCount(); i++)
 		{
 			LinearLayout layout_comment = (LinearLayout) listing.getChildAt(i).findViewById(R.id.layout_comment);
 			if (((Comment) layout_comment.getTag()).getType() != Comment.COMMENT_LOAD_MORE_COMMENTS)
 			{
-				displayView(listing.getChildAt(i).findViewById(R.id.layout_comment), true, 400);
-				displayView(listing.getChildAt(i).findViewById(R.id.comment_options), false, 400, true);
+				displayView(listing.getChildAt(i).findViewById(R.id.layout_comment), true, 200);
+				displayView(listing.getChildAt(i).findViewById(R.id.comment_options), false, 200, true);
 			}
 		}
 
