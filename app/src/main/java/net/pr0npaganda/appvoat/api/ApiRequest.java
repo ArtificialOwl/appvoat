@@ -28,6 +28,7 @@ package net.pr0npaganda.appvoat.api;
 
 import net.pr0npaganda.appvoat.list.Posts;
 import net.pr0npaganda.appvoat.list.Subs;
+import net.pr0npaganda.appvoat.model.Comment;
 import net.pr0npaganda.appvoat.model.Post;
 import net.pr0npaganda.appvoat.model.Sub;
 
@@ -43,6 +44,9 @@ public class ApiRequest
 
 	public static final int REQUEST_TYPE_TEST = -1;
 
+	public static final int REQUEST_JSONTYPE_ARRAY  = 1;
+	public static final int REQUEST_JSONTYPE_OBJECT = 2;
+
 	public static final int REQUEST_TYPE_TOKEN         = 1001;
 	public static final int REQUEST_TYPE_REFRESH_TOKEN = 1002;
 
@@ -51,8 +55,7 @@ public class ApiRequest
 	public static final int REQUEST_TYPE_SUB_LIST  = 15;
 	public static final int REQUEST_TYPE_COMMENTS  = 50;
 
-	public static final int REQUEST_JSONTYPE_ARRAY  = 1;
-	public static final int REQUEST_JSONTYPE_OBJECT = 2;
+	public static final int REQUEST_TYPE_VOTES = 51;
 
 	private int    source      = 0;
 	private int    type        = 1;
@@ -65,6 +68,7 @@ public class ApiRequest
 	private Post                post    = null;
 	private Posts               posts   = null;
 	private Subs                subs    = null;
+	private Comment             comment = null;
 	private Map<String, String> headers = new HashMap<>();
 	private Map<String, String> params  = new HashMap<>();
 
@@ -142,6 +146,19 @@ public class ApiRequest
 	public ApiRequest setPost(Post post)
 	{
 		this.post = post;
+		return this;
+	}
+
+
+	public Comment getComment()
+	{
+		return this.comment;
+	}
+
+
+	public ApiRequest setComment(Comment comment)
+	{
+		this.comment = comment;
 		return this;
 	}
 
@@ -230,6 +247,15 @@ public class ApiRequest
 			return def;
 
 		return this.extraInt.get(k);
+	}
+
+
+	public String getExtraString(String k)
+	{
+		if (!this.extraString.containsKey(k))
+			return "";
+
+		return this.extraString.get(k);
 	}
 
 
