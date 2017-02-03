@@ -149,6 +149,7 @@
                 android:tag="@{comment}">
 
                 <ImageView
+                    android:id="@+id/image_upvoat"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     app:srcCompat="@mipmap/upvoat"/>
@@ -166,6 +167,7 @@
                 android:tag="@{comment}">
 
                 <ImageView
+                    android:id="@+id/image_downvoat"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     app:srcCompat="@mipmap/downvoat"/>
