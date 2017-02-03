@@ -56,6 +56,7 @@ public class AppvoatDatabase extends SQLiteOpenHelper
 	public static final String ACC_TOKENS_COLUMN_EXPIRES     = "expires";
 	public static final String ACC_TOKENS_COLUMN_REFRESHTIME = "refreshtime";
 
+
 	private static final String DATABASE_NAME    = "appvoat.db";
 	private static final int    DATABASE_VERSION = 3;
 

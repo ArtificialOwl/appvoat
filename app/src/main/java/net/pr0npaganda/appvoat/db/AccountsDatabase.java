@@ -206,7 +206,7 @@ public class AccountsDatabase
 		String insert;
 
 		if (cursor.getCount() == 0)
-			insert = String.format("INSERT INTO %s (%s, %s, %s, %s) VALUES (%d, %s, %s, %d, $d)",
+			insert = String.format("INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (%d, %s, %s, %d, %d)",
 			                       AppvoatDatabase.TABLE_ACC_TOKENS,
 			                       AppvoatDatabase.ACC_TOKENS_COLUMN_USERID,
 			                       AppvoatDatabase.ACC_TOKENS_COLUMN_TOKEN,
@@ -217,9 +217,9 @@ public class AccountsDatabase
 			                       DatabaseUtils.sqlEscapeString(account.getToken()),
 			                       DatabaseUtils.sqlEscapeString(account.getTokenRefresh()),
 			                       account.getExpires(),
-			                       account.getTokenRefresh());
+			                       account.getRefreshTime());
 		else
-			insert = String.format("UPDATE %s SET %s=%s,  %s=%s, %s=%d, %s=%d WHERE %s=%d",
+			insert = String.format("UPDATE %s SET %s=%s, %s=%s, %s=%d, %s=%d WHERE %s=%d",
 			                       AppvoatDatabase.TABLE_ACC_TOKENS,
 			                       AppvoatDatabase.ACC_TOKENS_COLUMN_TOKEN,
 			                       DatabaseUtils.sqlEscapeString(account.getToken()),
@@ -241,6 +241,19 @@ public class AccountsDatabase
 	public static void setAsActive(Account account)
 	{
 		setAsActive(account.getId());
+	}
+
+
+	public static void resetToken(int userid)
+	{
+		SQLiteDatabase database = DatabaseManager.getInstance().openDatabase();
+		String update = String.format("UPDATE %s SET %s=0, %s='' WHERE %s=%d",
+		                              AppvoatDatabase.TABLE_ACC_TOKENS,
+		                              AppvoatDatabase.ACC_TOKENS_COLUMN_EXPIRES,
+		                              AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESH,
+		                              AppvoatDatabase.ACC_TOKENS_COLUMN_USERID,
+		                              userid);
+		database.execSQL(update);
 	}
 
 

@@ -38,6 +38,8 @@ import net.pr0npaganda.appvoat.api.Api;
 import net.pr0npaganda.appvoat.api.ApiError;
 import net.pr0npaganda.appvoat.api.ApiRequest;
 import net.pr0npaganda.appvoat.db.AccountsDatabase;
+import net.pr0npaganda.appvoat.db.AppvoatDatabase;
+import net.pr0npaganda.appvoat.db.DatabaseManager;
 import net.pr0npaganda.appvoat.interfaces.ApiRequestListener;
 import net.pr0npaganda.appvoat.model.Account;
 import net.pr0npaganda.appvoat.utils.AppUtils;
@@ -83,6 +85,8 @@ public class RefreshTokensService extends Service implements ApiRequestListener
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
+		DatabaseManager.initializeInstance(AppvoatDatabase.getInstance(getApplicationContext()));
+
 		Core core = new Core();
 		Api api = new Api(getBaseContext(), core, this);
 		AccountsDatabase.getAccounts(core.getAccounts());
@@ -112,7 +116,10 @@ public class RefreshTokensService extends Service implements ApiRequestListener
 	@Override
 	public void onApiRequestError(ApiError apiError)
 	{
-
+		if (apiError.getCode() == ApiError.ERROR_INVALID_TOKEN)
+			AccountsDatabase.resetToken(apiError.getRequest().getExtraInt("userid", 0));
 	}
 
 }
+
+

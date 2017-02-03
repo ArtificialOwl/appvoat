@@ -40,15 +40,20 @@ public class ApiError
 	public final static int ERROR_NO_PRIVATE_API = 11;
 	public final static int ERROR_INVALID_API    = 19;
 
-	public final static int    ERROR_NO_NETWORK         = 100;
-	public final static int    ERROR_SUB_DOES_NOT_EXIST = 1001;
-	private             int    code                     = 0;
-	private             String message                  = "";
+	public final static int ERROR_INVALID_TOKEN = 21;
+
+	public final static int ERROR_NO_NETWORK         = 100;
+	public final static int ERROR_SUB_DOES_NOT_EXIST = 1001;
+
+	private ApiRequest request;
+	private int    code    = 0;
+	private String message = "";
 	private String type;
 
 
 	public ApiError(ApiRequest request, VolleyError volleyError)
 	{
+		this.request = request;
 
 		if (request == null && volleyError == null)
 		{
@@ -80,6 +85,7 @@ public class ApiError
 					break;
 
 				case 400:
+					this.code = ERROR_INVALID_TOKEN;
 					if (volleyError.getMessage() != null)
 						this.message = volleyError.getMessage();
 			}
@@ -103,4 +109,9 @@ public class ApiError
 		return this.code;
 	}
 
+
+	public ApiRequest getRequest()
+	{
+		return this.request;
+	}
 }

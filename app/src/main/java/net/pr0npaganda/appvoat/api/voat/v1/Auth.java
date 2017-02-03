@@ -92,7 +92,7 @@ public class Auth
 	{
 		String url = "https://api.voat.co/oauth/token";
 		ApiRequest request = new ApiRequest(ApiRequest.REQUEST_TYPE_REFRESH_TOKEN, url).setContentType(null).setMethod(Request.Method.POST)
-				.setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT);
+				.setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT).setExtra("userid", account.getId());
 
 		request.setParams("grant_type", "refresh_token");
 		request.setParams("refresh_token", account.getTokenRefresh());
