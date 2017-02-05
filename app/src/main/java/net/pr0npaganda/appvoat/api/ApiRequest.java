@@ -53,24 +53,27 @@ public class ApiRequest
 	public static final int REQUEST_TYPE_FRONTPAGE = 10;
 	public static final int REQUEST_TYPE_SUB_POSTS = 11;
 	public static final int REQUEST_TYPE_SUB_LIST  = 15;
+	public static final int REQUEST_TYPE_POSTING   = 40;
 	public static final int REQUEST_TYPE_COMMENTS  = 50;
+	public static final int REQUEST_TYPE_VOTES     = 51;
 
-	public static final int REQUEST_TYPE_VOTES = 51;
+	private int source   = 0;
+	private int type     = 1;
+	private int jsontype = 0;
 
-	private int    source      = 0;
-	private int    type        = 1;
-	private int    jsontype    = 0;
 	private String url         = "";
 	private String contentType = "";
+	private String message     = "";
 
-	private int                 method  = 0;
-	private Sub                 sub     = null;
-	private Post                post    = null;
-	private Posts               posts   = null;
-	private Subs                subs    = null;
-	private Comment             comment = null;
-	private Map<String, String> headers = new HashMap<>();
-	private Map<String, String> params  = new HashMap<>();
+	private int                 method     = 0;
+	private Sub                 sub        = null;
+	private Post                post       = null;
+	private Posts               posts      = null;
+	private Subs                subs       = null;
+	private Comment             comment    = null;
+	private Map<String, String> headers    = new HashMap<>();
+	private Map<String, String> params     = new HashMap<>();
+	private Map<String, String> bodyparams = new HashMap<>();
 
 	private Map<String, Integer> extraInt    = new HashMap<>();
 	private Map<String, String>  extraString = new HashMap<>();
@@ -107,6 +110,18 @@ public class ApiRequest
 	public ApiRequest setMethod(int method)
 	{
 		this.method = method;
+		return this;
+	}
+
+	public String getMessage()
+	{
+		return this.message;
+	}
+
+
+	public ApiRequest setMessage(String message)
+	{
+		this.message = message;
 		return this;
 	}
 

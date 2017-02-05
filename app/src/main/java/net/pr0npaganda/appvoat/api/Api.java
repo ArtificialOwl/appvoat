@@ -255,6 +255,9 @@ public class Api
 				voat().result(request, result);
 		}
 
+		if (!request.getMessage().equals(""))
+			listener.onApiMessage(request);
+
 		countRequest--;
 		listener.onApiRequestCompleted(request, (countRequest == 0));
 	}
