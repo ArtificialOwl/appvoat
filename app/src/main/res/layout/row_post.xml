@@ -15,7 +15,8 @@
         android:onClick="clickMorePost"
         android:orientation="horizontal"
         app:displayPostDivider="@{post}"
-        app:displayPostMore="@{post}">
+        app:displayPostMore="@{post}"
+        app:displayVoting="@{post}">
 
         <LinearLayout
             android:id="@+id/post_more"
@@ -48,8 +49,8 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:onClick="clickPoint"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
                 android:tag="@{post}"
                 android:text="@{post.getPointFormat()}"
                 android:textSize="13sp"
@@ -66,36 +67,46 @@
                 android:text="@{post.getVotesFormat(@color/colorPrimary, @color/colorPrimaryDark)}"
                 android:textSize="11sp"
                 android:textStyle="bold"/>
-            <!--  <TextView
-                  android:id="@+id/upvote"
-                  android:layout_width="fill_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_above="@+id/point"
-                  android:layout_alignWithParentIfMissing="true"
-                  android:gravity="center"
-                  android:maxLines="1"
-                  android:onClick="clickUpvote"
-                  android:paddingBottom="4dp"
-                  android:tag="@{post}"
-                  android:text="@{post.getLikesFormat()}"
-                  android:textColor="@color/colorPrimary"
-                  android:textSize="11sp"/>
 
-              <TextView
-                  android:id="@+id/downvote"
-                  android:layout_width="fill_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_alignWithParentIfMissing="true"
-                  android:layout_below="@+id/point"
-                  android:gravity="center"
-                  android:maxLines="1"
-                  android:onClick="clickDownvote"
-                  android:paddingTop="4dp"
-                  android:tag="@{post}"
-                  android:text="@{post.getDislikesFormat()}"
-                  android:textColor="@color/colorPrimaryDark"
-                  android:textSize="11sp"/>
-                  -->
+            <LinearLayout
+                android:id="@+id/post_upvote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/point"
+                android:layout_alignWithParentIfMissing="true"
+                android:gravity="center"
+                android:onClick="clickPostUpvoat"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:tag="@{post}">
+
+                <ImageView
+                    android:id="@+id/image_upvote"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:alpha="0.8"
+                    android:src="@mipmap/upvoat"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/post_downvote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_below="@+id/point"
+                android:gravity="center"
+                android:onClick="clickPostDownvoat"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:tag="@{post}">
+
+                <ImageView
+                    android:id="@+id/image_downvote"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:alpha="0.8"
+                    android:src="@mipmap/downvoat"/>
+            </LinearLayout>
         </RelativeLayout>
 
         <RelativeLayout

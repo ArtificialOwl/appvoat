@@ -62,6 +62,7 @@ import net.pr0npaganda.appvoat.item.InterceptClickTextView;
 import net.pr0npaganda.appvoat.model.Account;
 import net.pr0npaganda.appvoat.model.Comment;
 import net.pr0npaganda.appvoat.model.OpenLink;
+import net.pr0npaganda.appvoat.model.Post;
 import net.pr0npaganda.appvoat.model.Sub;
 import net.pr0npaganda.appvoat.utils.AnimUtils;
 import net.pr0npaganda.appvoat.utils.AppUtils;
@@ -194,6 +195,21 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
 		}
+	}
+
+
+	public void clickPostUpvoat(View v)
+	{
+		Post post = (Post) v.getTag();
+		api.votingPost(post, 1);
+	}
+
+
+
+	public void clickPostDownvoat(View v)
+	{
+		Post post = (Post) v.getTag();
+		api.votingPost(post, -1);
 	}
 
 

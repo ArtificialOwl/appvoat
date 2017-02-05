@@ -34,6 +34,7 @@ import net.pr0npaganda.appvoat.Core;
 import net.pr0npaganda.appvoat.api.ApiRequest;
 import net.pr0npaganda.appvoat.api.voat.Voat;
 import net.pr0npaganda.appvoat.model.Comment;
+import net.pr0npaganda.appvoat.model.Post;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,10 +73,27 @@ public class Votes
 	}
 
 
+	public void requestVotingPost(Post post, int vote)
+	{
+		String itemtype = "submission";
+		String url = String.format("https://api.voat.co/api/v1/vote/%s/%d/%d?revokeOnRevote=true",
+		                           itemtype,
+		                           post.getId(),
+		                           vote);
+
+		ApiRequest request = new ApiRequest(ApiRequest.REQUEST_TYPE_VOTES, url).setMethod(Request.Method.POST)
+				.setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT).setExtra("itemtype", itemtype).setPost(post);
+
+		voat.request(request);
+	}
+
+
 	public void result(ApiRequest request, JSONObject result)
 	{
 		if (request.getExtraString("itemtype").equals("comment"))
-			resultVotingComment(request, result);
+		resultVotingComment(request, result);
+		if (request.getExtraString("itemtype").equals("submission"))
+			resultVotingPost(request, result);
 	}
 
 
@@ -94,6 +112,33 @@ public class Votes
 				Comment comment = request.getComment();
 				comment.setPoint(points.getInt("upCount"), points.getInt("downCount"));
 				comment.setVote(data.getInt("recordedValue"));
+			}
+
+			if (!data.isNull("message"))
+				request.setMessage(data.getString("message"));
+		}
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+
+	private void resultVotingPost(ApiRequest request, JSONObject result)
+	{
+		try
+		{
+			if (result.getBoolean("success") != true)
+				return;
+
+			JSONObject data = result.getJSONObject("data");
+			if (!data.isNull("response"))
+			{
+				JSONObject points = data.getJSONObject("response");
+
+				Post post = request.getPost();
+				post.setPoint(points.getInt("upCount"), points.getInt("downCount"));
+				post.setVote(data.getInt("recordedValue"));
 			}
 
 			if (!data.isNull("message"))

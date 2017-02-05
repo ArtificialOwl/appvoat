@@ -39,6 +39,7 @@ import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -77,6 +78,29 @@ public class PostBindingAdapter
 		layout_point.setVisibility(View.GONE);
 		layout_infos.setVisibility(View.GONE);
 		layout_right.setVisibility(View.GONE);
+	}
+
+
+	@BindingAdapter ({"bind:displayVoting"})
+	public static void displayPostVoting(final LinearLayout view, final Post post)
+	{
+		Context context = view.getContext();
+
+		if (post.getVote() == 1)
+		{
+			((ImageView) view.findViewById(R.id.image_upvote)).setImageResource(R.mipmap.upvoat_sel);
+			((ImageView) view.findViewById(R.id.image_downvote)).setImageResource(R.mipmap.downvoat);
+		}
+		else if (post.getVote() == -1)
+		{
+			((ImageView) view.findViewById(R.id.image_upvote)).setImageResource(R.mipmap.upvoat);
+			((ImageView) view.findViewById(R.id.image_downvote)).setImageResource(R.mipmap.downvoat_sel);
+		}
+		else
+		{
+			((ImageView) view.findViewById(R.id.image_upvote)).setImageResource(R.mipmap.upvoat);
+			((ImageView) view.findViewById(R.id.image_downvote)).setImageResource(R.mipmap.downvoat);
+		}
 	}
 
 

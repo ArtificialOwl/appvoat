@@ -144,11 +144,17 @@ public class Api
 	}
 
 
+	public void votingPost(Post post, int vote)
+	{
+		if (post.getSub().source() == Core.SOURCE_VOAT)
+			voat().votes().requestVotingPost(post, vote);
+	}
+
+
 	public void votingComment(Comment comment, int vote)
 	{
 		if (comment.getPost().getSub().source() == Core.SOURCE_VOAT)
 			voat().votes().requestVotingComment(comment, vote);
-
 	}
 
 
