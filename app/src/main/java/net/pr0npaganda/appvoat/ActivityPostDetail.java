@@ -71,6 +71,7 @@ public class ActivityPostDetail extends ActivityBase implements NavigationView.O
 		drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 		this.setNavView(binding.includeNavView.navView);
+		this.setPostingPanel(binding.includePost1panel.post1);
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		fab.setVisibility(View.GONE);

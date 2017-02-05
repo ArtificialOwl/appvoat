@@ -59,6 +59,7 @@ import net.pr0npaganda.appvoat.model.Account;
 import net.pr0npaganda.appvoat.model.Comment;
 import net.pr0npaganda.appvoat.model.OpenLink;
 import net.pr0npaganda.appvoat.model.Sub;
+import net.pr0npaganda.appvoat.utils.AnimUtils;
 import net.pr0npaganda.appvoat.utils.AppUtils;
 
 
@@ -71,7 +72,8 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	protected DrawerLayout          drawer = null;
 	protected ActionBarDrawerToggle toggle = null;
 
-	private NavigationView navView = null;
+	private NavigationView navView       = null;
+	private LinearLayout   postingPanel1 = null;
 	private String currentTheme;
 
 
@@ -311,6 +313,12 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		navView.setItemIconTintList(null);
 		navView.setCheckedItem(R.id.nav_voat_anon);
 		navView.getMenu().getItem(1).setChecked(false);
+	}
+
+
+	protected void setPostingPanel(LinearLayout view)
+	{
+		this.postingPanel1 = view;
 	}
 
 

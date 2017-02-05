@@ -105,7 +105,6 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 			core.setCurrentSub(new Sub(Core.SOURCE_VOAT, "Frontpage").setKeyname("_front"));
 
 			getSupportActionBar().setDisplayShowHomeEnabled(true);
-
 		}
 		else
 		{
@@ -117,6 +116,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		}
 
 		this.setNavView(binding.includeNavView.navView);
+		this.setPostingPanel(binding.includePost1panel.post1);
 
 		// binding list posts
 		binding.includePostList.setPosts(core.getPosts());
@@ -243,7 +243,6 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		}
 
 		RefreshTokensService.start(getBaseContext());
-
 
 		// rajouter des actions dans le back stack !? (genre le changement de sub)
 		//		FragmentManager fm = this.getSupportFragmentManager();
@@ -386,7 +385,6 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 			context.startActivity(intent);
 		}
 	}
-
 
 
 	public void clickThumb(View v)
