@@ -161,8 +161,17 @@ public class PostBindingAdapter
 	@BindingAdapter ({"bind:displayPostOptions", "bind:displayPostOptionsCore"})
 	public static void displayPostOptions(final LinearLayout view, Post post, Core core)
 	{
-		if (core.getCurrentAccount() != null)
+		if (core.getCurrentAccount() == null)
 		{
+			view.findViewById(R.id.post_upvoat).setVisibility(View.GONE);
+			view.findViewById(R.id.post_downvoat).setVisibility(View.GONE);
+			view.findViewById(R.id.post_comment).setVisibility(View.GONE);
+		}
+		else
+		{
+			view.findViewById(R.id.post_upvoat).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.post_downvoat).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.post_comment).setVisibility(View.VISIBLE);
 		}
 
 		ImageView image_upvoat = (ImageView) view.findViewById(R.id.post_upvoat_image);
