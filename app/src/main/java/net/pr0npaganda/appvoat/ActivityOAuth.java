@@ -45,14 +45,14 @@ public class ActivityOAuth extends ActivityBase implements NavigationView.OnNavi
 {
 	protected ActivityOauthBinding binding = null;
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
 
-		core = (Core) getIntent().getSerializableExtra("core");
-		if (core == null)
+		if (getIntent().getSerializableExtra("core") == null)
 		{
 			Context context = getBaseContext();
 			Intent intent = new Intent(context, ActivityPostList.class);
@@ -87,7 +87,7 @@ public class ActivityOAuth extends ActivityBase implements NavigationView.OnNavi
 		if (((ViewGroup) findViewById(R.id.oauth_container)).getChildCount() == 0)
 		{
 			Bundle arguments = new Bundle();
-			arguments.putSerializable("core", (Core) core.clone());
+			arguments.putSerializable("core", (Core) Core.get().clone());
 			FragmentOAuth fragment = new FragmentOAuth();
 			fragment.setArguments(arguments);
 

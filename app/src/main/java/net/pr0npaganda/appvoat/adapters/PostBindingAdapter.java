@@ -85,22 +85,40 @@ public class PostBindingAdapter
 	@BindingAdapter ({"bind:displayVoting"})
 	public static void displayPostVoting(final LinearLayout view, final Post post)
 	{
-		Context context = view.getContext();
+		if (Core.get().getCurrentAccount() == null)
+		{
+			view.findViewById(R.id.post_upvote).setVisibility(View.GONE);
+			view.findViewById(R.id.post_downvote).setVisibility(View.GONE);
+			return;
+		}
 
+		view.findViewById(R.id.post_upvote).setVisibility(View.VISIBLE);
+		view.findViewById(R.id.post_downvote).setVisibility(View.VISIBLE);
+
+		//Context context = view.getContext();
+
+		ImageView image_upvote = (ImageView) view.findViewById(R.id.image_upvote);
+		ImageView image_downvote = (ImageView) view.findViewById(R.id.image_downvote);
 		if (post.getVote() == 1)
 		{
-			((ImageView) view.findViewById(R.id.image_upvote)).setImageResource(R.mipmap.upvoat_sel);
-			((ImageView) view.findViewById(R.id.image_downvote)).setImageResource(R.mipmap.downvoat);
+			image_upvote.setImageResource(R.mipmap.upvoat_sel);
+			image_upvote.setAlpha(0.8f);
+			image_downvote.setImageResource(R.mipmap.downvoat);
+			image_downvote.setAlpha(0.3f);
 		}
 		else if (post.getVote() == -1)
 		{
-			((ImageView) view.findViewById(R.id.image_upvote)).setImageResource(R.mipmap.upvoat);
-			((ImageView) view.findViewById(R.id.image_downvote)).setImageResource(R.mipmap.downvoat_sel);
+			image_upvote.setImageResource(R.mipmap.upvoat);
+			image_upvote.setAlpha(0.3f);
+			image_downvote.setImageResource(R.mipmap.downvoat_sel);
+			image_downvote.setAlpha(0.8f);
 		}
 		else
 		{
-			((ImageView) view.findViewById(R.id.image_upvote)).setImageResource(R.mipmap.upvoat);
-			((ImageView) view.findViewById(R.id.image_downvote)).setImageResource(R.mipmap.downvoat);
+			image_upvote.setImageResource(R.mipmap.upvoat);
+			image_upvote.setAlpha(0.3f);
+			image_downvote.setImageResource(R.mipmap.downvoat);
+			image_downvote.setAlpha(0.3f);
 		}
 	}
 

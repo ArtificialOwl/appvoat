@@ -52,8 +52,7 @@ public class ActivityPostDetail extends ActivityBase implements NavigationView.O
 		super.onCreate(savedInstanceState);
 		PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
 
-		core = (Core) getIntent().getSerializableExtra("core");
-		if (core == null)
+		if (getIntent().getSerializableExtra("core") == null)
 		{
 			Context context = getBaseContext();
 			Intent intent = new Intent(context, ActivityPostList.class);
@@ -66,7 +65,7 @@ public class ActivityPostDetail extends ActivityBase implements NavigationView.O
 		// tools
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
-		toolbar.setTitle(core.getCurrentPost().getDomain());
+		toolbar.setTitle(Core.get().getCurrentPost().getDomain());
 
 		drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -90,7 +89,7 @@ public class ActivityPostDetail extends ActivityBase implements NavigationView.O
 		if (((ViewGroup) findViewById(R.id.post_detail_container)).getChildCount() == 0)
 		{
 			Bundle arguments = new Bundle();
-			arguments.putSerializable("core", (Core) core.clone());
+			arguments.putSerializable("core", (Core) Core.get().clone());
 			FragmentPostDetail fragment = new FragmentPostDetail();
 			fragment.setArguments(arguments);
 

@@ -92,38 +92,29 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		toggle = new ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
 		// init Core
-		core = (Core) getIntent().getSerializableExtra("core");
-		if (core == null)
-		{
-			// Chargement 'First Activity'
-			core = new Core();
+		//			Core core = (Core) getIntent().getSerializableExtra("core");
 
-			drawer.setDrawerListener(toggle);
-			toggle.setDrawerIndicatorEnabled(true);
-			toggle.syncState();
+		drawer.setDrawerListener(toggle);
+		toggle.setDrawerIndicatorEnabled(true);
+		toggle.syncState();
 
-			core.setCurrentSub(new Sub(Core.SOURCE_VOAT, "Frontpage").setKeyname("_front"));
+		Core.get().setCurrentSub(new Sub(Core.SOURCE_VOAT, "Frontpage").setKeyname("_front"));
 
-			getSupportActionBar().setDisplayShowHomeEnabled(true);
-		}
-		else
-		{
-			Sub gotosub = core.getCurrentSub();
-			core.getPosts().reset();
-			core.getSubs().reset();
-			//			core.setCurrentSub(null);
-			//			goToSub(gotosub);
-		}
+		getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+		Sub gotosub = Core.get().getCurrentSub();
+		Core.get().getPosts().reset();
+		Core.get().getSubs().reset();
 
 		this.setNavView(binding.includeNavView.navView);
 		this.setPostingPanel(binding.includePost1panel.post1);
 
 		// binding list posts
-		binding.includePostList.setPosts(core.getPosts());
+		binding.includePostList.setPosts(Core.get().getPosts());
 		binding.includePostList.postRecycler.setLayoutManager(new LinearLayoutManager(this));
 
 		// binding spinner subs
-		binding.setSubs(core.getSubs());
+		binding.setSubs(Core.get().getSubs());
 		binding.topSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
 		{
 			protected Adapter init = null;
@@ -156,7 +147,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 			@Override
 			public void onRefresh()
 			{
-				api.requestSubPosts(core.getCurrentSub(), core.getPosts());
+				api.requestSubPosts(Core.get().getCurrentSub(), Core.get().getPosts());
 			}
 		});
 		binding.includePostList.postRefresher.setColorSchemeResources(R.color.colorPrimary, R.color.colorPrimaryDark);
@@ -183,7 +174,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 						if ((visibleItemCount + pastVisiblesItems) >= (totalItemCount - 3))
 						{
 							populatingPosts = true;
-							api.requestMoreSubPosts(core.getCurrentSub(), core.getPosts());
+							api.requestMoreSubPosts(Core.get().getCurrentSub(), Core.get().getPosts());
 						}
 					}
 				}
@@ -213,13 +204,13 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		//		core.setCurrentSub(new Sub(Core.SOURCE_VOAT, "Appvoat").setKeyname("appvoat"));
-		core.getSubs().add(new Sub(Core.SOURCE_VOAT, "Frontpage").setKeyname("_front"));
-		core.getSubs().add(new Sub(Core.SOURCE_VOAT, "All").setKeyname("_all"));
-		core.getSubs().add(new Sub(Core.SOURCE_VOAT, "Any").setKeyname("_any"));
+		Core.get().getSubs().add(new Sub(Core.SOURCE_VOAT, "Frontpage").setKeyname("_front"));
+		Core.get().getSubs().add(new Sub(Core.SOURCE_VOAT, "All").setKeyname("_all"));
+		Core.get().getSubs().add(new Sub(Core.SOURCE_VOAT, "Any").setKeyname("_any"));
 		//		core.getSubs().add(new Sub(Core.SOURCE_VOAT, "Random"));
 		//		core.getSubs().add(new Sub(Core.SOURCE_VOAT, "New").setKeyname("_new"));
 		//		core.getSubs().add(new Sub(Core.SOURCE_VOAT, "Top").setKeyname("_top"));
-		core.getSubs().addDivider();
+		Core.get().getSubs().addDivider();
 
 		//		api.requestTest();
 		if (multiPanel() > 0)
@@ -255,10 +246,10 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 	{
 		super.onResume();
 
-		if (core.getPosts().getSize() == 0)
-			api.requestSubPosts(core.getCurrentSub(), core.getPosts());
-		if (core.getSubs().getSize() < 10)
-			api.requestSubList(Core.SOURCE_VOAT, core.getSubs());
+		if (Core.get().getPosts().getSize() == 0)
+			api.requestSubPosts(Core.get().getCurrentSub(), Core.get().getPosts());
+		if (Core.get().getSubs().getSize() < 10)
+			api.requestSubList(Core.SOURCE_VOAT, Core.get().getSubs());
 	}
 
 
@@ -298,13 +289,13 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 	@Override
 	protected void goToSub(Sub sub)
 	{
-		if (core.getCurrentSub() != null && core.getCurrentSub().getKeyname().equalsIgnoreCase(sub.getKeyname()))
+		if (Core.get().getCurrentSub() != null && Core.get().getCurrentSub().getKeyname().equalsIgnoreCase(sub.getKeyname()))
 			return;
 
 		binding.includePostList.postRefresher.setRefreshing(true);
-		core.setCurrentSub(new Sub(Core.SOURCE_VOAT, sub.getKeyname()));
+		Core.get().setCurrentSub(new Sub(Core.SOURCE_VOAT, sub.getKeyname()));
 		noMorePosts = false;
-		api.requestSubPosts(core.getCurrentSub(), core.getPosts());
+		api.requestSubPosts(Core.get().getCurrentSub(), Core.get().getPosts());
 	}
 
 
@@ -359,12 +350,12 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 			title.setTypeface(null, Typeface.NORMAL);
 
 		Post post = (Post) v.getTag();
-		core.setCurrentPost(post);
+		Core.get().setCurrentPost(post);
 
 		if (multiPanel() > 0)
 		{
 			Bundle arguments = new Bundle();
-			arguments.putSerializable("core", (Core) core.clone());
+			arguments.putSerializable("core", (Core) Core.get().clone());
 			FragmentPostDetail fragment = new FragmentPostDetail();
 			fragment.setArguments(arguments);
 
@@ -380,7 +371,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		{
 			Context context = getBaseContext();
 			Intent intent = new Intent(context, ActivityPostDetail.class);
-			intent.putExtra("core", (Core) core.clone());
+			intent.putExtra("core", (Core) Core.get().clone());
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
 		}
@@ -396,13 +387,13 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 			return;
 		}
 
-		core.setCurrentPost(post);
+		Core.get().setCurrentPost(post);
 		((RoundedImageView) v.findViewById(R.id.thumb)).setBorderColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark));
 
 		if (multiPanel() > 0)
 		{
 			Bundle arguments = new Bundle();
-			arguments.putSerializable("core", (Core) core.clone());
+			arguments.putSerializable("core", (Core) Core.get().clone());
 
 			FragmentOpenLink fragment = new FragmentOpenLink();
 			fragment.setArguments(arguments);
@@ -422,7 +413,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		{
 			Context context = getBaseContext();
 			Intent intent = new Intent(context, ActivityOpenLink.class);
-			intent.putExtra("core", (Core) core.clone());
+			intent.putExtra("core", (Core) Core.get().clone());
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
 		}

@@ -43,6 +43,8 @@ public class Core implements Serializable, Cloneable
 	public static final int SOURCE_VOAT   = 1;
 	public static final int SOURCE_REDDIT = 2;
 
+	private static Core instance;
+
 	private Subs     subs     = new Subs();
 	private Posts    posts    = new Posts();
 	private Accounts accounts = new Accounts();
@@ -56,11 +58,21 @@ public class Core implements Serializable, Cloneable
 	private boolean milked = true;
 
 
-	public Core()
+	private Core()
 	{
-		//		this.listener = listener;
-		//		this.api = api;
 	}
+
+
+	public static synchronized Core get()
+	{
+		if (instance == null)
+		{
+			instance = new Core();
+		}
+
+		return instance;
+	}
+
 
 	public Accounts getAccounts()
 	{
