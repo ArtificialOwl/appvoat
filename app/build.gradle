@@ -8,8 +8,8 @@ android {
         applicationId "net.pr0npaganda.appvoat"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 6
-        versionName "0.0.6"
+        versionCode 7
+        versionName "0.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -20,11 +20,11 @@ android {
         }
     }
 
-//    externalNativeBuild {
-//        ndkBuild {
-//            path 'src/main/jni/Android.mk'
-//        }
-//    }
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/jni/Android.mk'
+        }
+    }
 
     dataBinding {
         enabled = true
