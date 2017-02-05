@@ -84,7 +84,7 @@
                     android:id="@+id/image_upvote"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:alpha="0.8"
+                    android:alpha="0.3"
                     android:src="@mipmap/upvoat"/>
             </LinearLayout>
 
@@ -104,7 +104,7 @@
                     android:id="@+id/image_downvote"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:alpha="0.8"
+                    android:alpha="0.3"
                     android:src="@mipmap/downvoat"/>
             </LinearLayout>
         </RelativeLayout>
