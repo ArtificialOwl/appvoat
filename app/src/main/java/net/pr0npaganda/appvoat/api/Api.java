@@ -46,6 +46,10 @@ import net.pr0npaganda.appvoat.model.Singleton;
 import net.pr0npaganda.appvoat.model.Sub;
 import net.pr0npaganda.appvoat.utils.AppUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 
@@ -88,11 +92,13 @@ public class Api
 			voat().auth().requestToken(code);
 	}
 
+
 	public void refreshToken(Account account)
 	{
 		if (account.getSource() == Core.SOURCE_VOAT)
 			voat().auth().requestRefreshToken(account);
 	}
+
 
 	public void requestSubList(int source, Subs subs)
 	{
@@ -145,10 +151,17 @@ public class Api
 
 	}
 
+
+	public void postingComment(Comment comment)
+	{
+		if (comment.getPost().getSub().source() == Core.SOURCE_VOAT)
+			voat().comments().requestPosting(comment);
+	}
+
+
 	public void request(final ApiRequest request)
 	{
 		countRequest++;
-
 		StringRequest strRequest = new StringRequest(request.getMethod(), request.getUrl(), new Response.Listener<String>()
 		{
 			@Override
@@ -178,44 +191,37 @@ public class Api
 			@Override
 			protected Map<String, String> getParams()
 			{
-				//				Map<String, String> params = new HashMap<String, String>();
-				//				params.put("tag", "test");
 				return request.getParams();
 			}
+
+
+			@Override
+			public String getBodyContentType()
+			{
+				return "application/json";
+			}
+
+
+			@Override
+			public byte[] getBody() throws AuthFailureError
+			{
+				if (request.getBodyParams().size() == 0)
+					return super.getBody();
+
+				String body = new JSONObject(request.getBodyParams()).toString();
+				try
+				{
+					return body.getBytes("utf-8");
+				}
+				catch (UnsupportedEncodingException e)
+				{
+					e.printStackTrace();
+					return null;
+				}
+			}
+
 		};
 
-		//		queue.add(strRequest);
-		//		JsonObjectRequest jsObjRequest = new JsonObjectRequest(request.getMethod(), request
-		//				.getUrl(), new JSONObject(request.getParams()), new Response.Listener<JSONObject>()
-		//		{
-		//			@Override
-		//			public void onResponse(JSONObject response)
-		//			{
-		//				AppUtils.Log("Response: " + response.toString());
-		//				result(request, response);
-		//			}
-		//		}, new Response.ErrorListener()
-		//		{
-		//			@Override
-		//			public void onErrorResponse(VolleyError error)
-		//			{
-		//				AppUtils.Log("Error: " + error.toString() + " " + error.getMessage());
-		//				resultError(request, error);
-		//			}
-		//		})
-		//		{
-		//			@Override
-		//			public Map<String, String> getHeaders() throws AuthFailureError
-		//			{
-		//				if (request.getHeaders() != null)
-		//					return request.getHeaders();
-		//				else
-		//					return super.getHeaders();
-		//			}
-		//
-		//		};
-
-		// Access the RequestQueue through your singleton class.
 		Singleton.getInstance(context).addToRequestQueue(strRequest);
 	}
 
@@ -223,7 +229,6 @@ public class Api
 	public void resultError(ApiRequest request, VolleyError error)
 	{
 		countRequest--;
-		//if (countRequest == 0)
 		listener.onApiRequestError(new ApiError(request, error));
 	}
 
@@ -233,20 +238,24 @@ public class Api
 		listener.onApiRequestEmpty(request.getType());
 	}
 
-	//	private void result(ApiRequest request, JSONArray result)
-	//	{
-	//		switch (request.getSource())
-	//		{
-	//			case ApiRequest.SOURCE_VOAT:
-	//				voat().result(request, result);
-	//		}
-	//
-	//		countRequest--;
-	//		listener.onApiRequestCompleted((countRequest == 0));
-	//	}
-
 
 	private void result(ApiRequest request, String result)
+	{
+		JSONObject json;
+		try
+		{
+			json = new JSONObject(result);
+		}
+		catch (JSONException e)
+		{
+			return;
+		}
+
+		result(request, json);
+	}
+
+
+	private void result(ApiRequest request, JSONObject result)
 	{
 		AppUtils.Log("result: " + result);
 		switch (request.getSource())

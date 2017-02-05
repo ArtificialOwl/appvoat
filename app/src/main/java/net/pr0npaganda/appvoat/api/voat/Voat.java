@@ -38,7 +38,6 @@ import net.pr0npaganda.appvoat.api.voat.v1.Subverses;
 import net.pr0npaganda.appvoat.api.voat.v1.Votes;
 import net.pr0npaganda.appvoat.utils.AppUtils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -186,44 +185,38 @@ public class Voat
 	}
 
 
-	public void result(ApiRequest request, String result)
+	public void result(ApiRequest request, JSONObject result)
 	{
-		JSONObject json;
-		try
-		{
-			json = new JSONObject(result);
-		}
-		catch (JSONException e)
-		{
-			//e.printStackTrace();
-			return;
-		}
-
 		switch (request.getType())
 		{
 			case ApiRequest.REQUEST_TYPE_TOKEN:
-				auth().resultToken(request, json);
+				auth().resultToken(request, result);
 				break;
 
 			case ApiRequest.REQUEST_TYPE_REFRESH_TOKEN:
-				auth().resultRefreshToken(request, json);
+				auth().resultRefreshToken(request, result);
 				break;
 
 			case ApiRequest.REQUEST_TYPE_SUB_POSTS:
-				subverses().resultPosts(request, json);
+				subverses().resultPosts(request, result);
 				break;
 
 			case ApiRequest.REQUEST_TYPE_SUB_LIST:
-				subverses().resultList(request, json);
+				subverses().resultList(request, result);
 				break;
 
 			case ApiRequest.REQUEST_TYPE_COMMENTS:
-				comments().result(request, json);
+				comments().result(request, result);
 				break;
 
 			case ApiRequest.REQUEST_TYPE_VOTES:
-				votes().result(request, json);
+				votes().result(request, result);
 				break;
+
+			case ApiRequest.REQUEST_TYPE_POSTING:
+				comments().resultPosting(request, result);
+				break;
+
 
 			case ApiRequest.REQUEST_TYPE_TEST:
 				//	subverses().result(request, result);
@@ -264,9 +257,7 @@ public class Voat
 
 	public String getAuthorizeUrl()
 	{
-		return "https://api.voat" +
-				".co/oauth/authorize?response_type=code&scope=account&grand_type=authorization_code" +
-				"&client_id=" + getPublicApiKey();
+		return "https://api.voat.co/oauth/authorize?response_type=code&scope=account&grand_type=authorization_code&client_id=" + getPublicApiKey();
 	}
 
 

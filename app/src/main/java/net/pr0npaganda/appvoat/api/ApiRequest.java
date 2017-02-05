@@ -285,4 +285,18 @@ public class ApiRequest
 	{
 		return this.params;
 	}
+
+
+	public ApiRequest setBodyParams(String k, String v)
+	{
+		this.bodyparams.put(k, v);
+		return this;
+	}
+
+
+	public Map<String, String> getBodyParams()
+	{
+		return this.bodyparams;
+	}
+
 }
