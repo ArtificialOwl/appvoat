@@ -43,7 +43,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import net.pr0npaganda.appvoat.adapters.CommentBindingAdapter;
 import net.pr0npaganda.appvoat.api.Api;
@@ -217,9 +221,41 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 
 	public void clickCommentReply(View v)
 	{
-		AppUtils.Log(". clickCommentReply");
-		notAvailableRightNow();
+		if (this.postingPanel1 == null)
+			return;
+
+		AnimUtils.displayView(this.postingPanel1, true, 600);
+		//notAvailableRightNow();
+		EditText eText = (EditText) this.postingPanel1.findViewById(R.id.edittext);
+		eText.setText("");
+
+		if (eText.requestFocus())
+		{
+			getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(eText, InputMethodManager.SHOW_IMPLICIT);
+		}
+
+		eText.setTag(v.getTag());
 		clickOptionsNull((ViewGroup) v.getParent());
+	}
+
+
+	public void clickCommentReplied(View v)
+	{
+		EditText eText = (EditText) this.postingPanel1.findViewById(R.id.edittext);
+
+		Comment parent = (Comment) eText.getTag();
+		parent.getId();
+
+		Comment comment = new Comment(parent.getPost(), -1);
+		comment.setParentId(parent.getId());
+		comment.setContent(eText.getText().toString());
+		api.postingComment(comment);
+
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(eText.getWindowToken(), 0);
+		AnimUtils.displayView(this.postingPanel1, false, 600);
 	}
 
 
