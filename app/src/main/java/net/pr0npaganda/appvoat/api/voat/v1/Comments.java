@@ -37,7 +37,6 @@ import net.pr0npaganda.appvoat.api.voat.v1.model.RecursiveComments;
 import net.pr0npaganda.appvoat.model.Author;
 import net.pr0npaganda.appvoat.model.Comment;
 import net.pr0npaganda.appvoat.model.Post;
-import net.pr0npaganda.appvoat.utils.AppUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,12 +69,12 @@ public class Comments
 			if (co.id == parentId)
 				return co.children;
 
-			if (co.childCount > 0)
-			{
-				RecursiveChildren ch = cacheGetChildren(co.children, parentId);
-				if (ch != null)
-					return ch;
-			}
+			//			if (co.childCount > 0)
+			//			{
+			RecursiveChildren ch = cacheGetChildren(co.children, parentId);
+			if (ch != null)
+				return ch;
+			//			}
 		}
 
 		return null;
@@ -123,8 +122,8 @@ public class Comments
 			else
 				post.getBaseComments().add(comment);
 
-			if (co.childCount > 0)
-				parseCache(co.children, post, comment, old);
+			//	if (co.childCount > 0)
+			parseCache(co.children, post, comment, old);
 
 			if (comment.getChildRemaining() > 0)
 			{
@@ -210,56 +209,63 @@ public class Comments
 		for (int i = 0; i < comments.length(); i++)
 		{
 			JSONObject item = comments.getJSONObject(i);
-
-			RecursiveComments co = new RecursiveComments();
-			if (!item.isNull("childCount"))
-				co.childCount = item.getInt("childCount");
-			if (!item.isNull("content"))
-				co.content = item.getString("content");
-			if (!item.isNull("creationDate"))
-				co.creationDate = item.getString("creationDate");
-			if (!item.isNull("formattedContent"))
-				co.formattedContent = item.getString("formattedContent");
-			if (!item.isNull("id"))
-				co.id = item.getInt("id");
-			if (!item.isNull("isAnonymized"))
-				co.isAnonymized = item.getBoolean("isAnonymized");
-			if (!item.isNull("isCollapsed"))
-				co.isCollapsed = item.getBoolean("isCollapsed");
-			if (!item.isNull("isDeleted"))
-				co.isDeleted = item.getBoolean("isDeleted");
-			if (!item.isNull("isSaved"))
-				co.isSaved = item.getBoolean("isSaved");
-			if (!item.isNull("isDistinguished"))
-				co.isDistinguished = item.getBoolean("isDistinguished");
-			if (!item.isNull("isOwner"))
-				co.isOwner = item.getBoolean("isOwner");
-			if (!item.isNull("isSubmitter"))
-				co.isSubmitter = item.getBoolean("isSubmitter");
-			if (!item.isNull("lastEditDate"))
-				co.lastEditDate = item.getString("lastEditDate");
-			if (!item.isNull("parentID"))
-				co.parentID = item.getInt("parentID");
-			if (!item.isNull("submissionID"))
-				co.submissionID = item.getInt("submissionID");
-			if (!item.isNull("subverse"))
-				co.subverse = item.getString("subverse");
-			if (!item.isNull("userName"))
-				co.userName = item.getString("userName");
-			if (!item.isNull("vote"))
-				co.vote = item.getInt("vote");
-			if (!item.isNull("sum"))
-				co.sum = item.getInt("sum");
-			if (!item.isNull("upCount"))
-				co.upCount = item.getInt("upCount");
-			if (!item.isNull("downCount"))
-				co.downCount = item.getInt("downCount");
+			RecursiveComments co = cacheComment(item);
 
 			child.comments.add(i + data.getInt("startingIndex"), co);
 
 			if (item.getInt("childCount") > 0)
 				cacheData(item.getJSONObject("children"), co.children);
 		}
+	}
+
+
+	private static RecursiveComments cacheComment(JSONObject item) throws JSONException
+	{
+		RecursiveComments co = new RecursiveComments();
+		if (!item.isNull("childCount"))
+			co.childCount = item.getInt("childCount");
+		if (!item.isNull("content"))
+			co.content = item.getString("content");
+		if (!item.isNull("creationDate"))
+			co.creationDate = item.getString("creationDate");
+		if (!item.isNull("formattedContent"))
+			co.formattedContent = item.getString("formattedContent");
+		if (!item.isNull("id"))
+			co.id = item.getInt("id");
+		if (!item.isNull("isAnonymized"))
+			co.isAnonymized = item.getBoolean("isAnonymized");
+		if (!item.isNull("isCollapsed"))
+			co.isCollapsed = item.getBoolean("isCollapsed");
+		if (!item.isNull("isDeleted"))
+			co.isDeleted = item.getBoolean("isDeleted");
+		if (!item.isNull("isSaved"))
+			co.isSaved = item.getBoolean("isSaved");
+		if (!item.isNull("isDistinguished"))
+			co.isDistinguished = item.getBoolean("isDistinguished");
+		if (!item.isNull("isOwner"))
+			co.isOwner = item.getBoolean("isOwner");
+		if (!item.isNull("isSubmitter"))
+			co.isSubmitter = item.getBoolean("isSubmitter");
+		if (!item.isNull("lastEditDate"))
+			co.lastEditDate = item.getString("lastEditDate");
+		if (!item.isNull("parentID"))
+			co.parentID = item.getInt("parentID");
+		if (!item.isNull("submissionID"))
+			co.submissionID = item.getInt("submissionID");
+		if (!item.isNull("subverse"))
+			co.subverse = item.getString("subverse");
+		if (!item.isNull("userName"))
+			co.userName = item.getString("userName");
+		if (!item.isNull("vote"))
+			co.vote = item.getInt("vote");
+		if (!item.isNull("sum"))
+			co.sum = item.getInt("sum");
+		if (!item.isNull("upCount"))
+			co.upCount = item.getInt("upCount");
+		if (!item.isNull("downCount"))
+			co.downCount = item.getInt("downCount");
+
+		return co;
 	}
 
 
@@ -299,13 +305,13 @@ public class Comments
 		                           post.getId(),
 		                           comment.getParentId());
 
-//		url = String.format("https://api.voat.co/api/v1/comments/%d",
-//		                    comment.getParentId());
-
+		//		url = String.format("https://api.voat.co/api/v1/comments/%d",
+		//		                    comment.getParentId());
 
 		voat.request(new ApiRequest(ApiRequest.REQUEST_TYPE_POSTING, url).setMethod(Request.Method.POST).setBodyParams("value",
 		                                                                                                               comment.getContent())
-				             .setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT).setComment(comment));
+				             .setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT).setPost(post).setExtra("parentId", comment.getParentId())
+				             .setComment(comment));
 	}
 
 
@@ -343,8 +349,30 @@ public class Comments
 
 	public void resultPosting(ApiRequest request, JSONObject result)
 	{
+		Comment more = request.getComment();
 
-		AppUtils.Log("###########" + result);
+		try
+		{
+			RecursiveChildren child = this.cacheGetChildren(request.getPost().getCommentCache(), request.getExtraInt("parentId", 0));
+
+			JSONObject item = result.getJSONObject("data");
+			RecursiveComments co = cacheComment(item);
+
+			child.comments.add(0, co);
+
+			RecursiveChildren child2 = this.cacheGetChildren(request.getPost().getCommentCache(), request.getExtraInt("parentId", 0));
+
+			ArrayList<Comment> backup = (ArrayList) ((ArrayList<Comment>) request.getPost().getBaseComments()).clone();
+			request.getPost().getBaseComments().clear();
+			parseCache(request.getPost().getCommentCache(), request.getPost(), null, backup);
+
+			generateTemporaryComments(request.getPost());
+			request.getPost().applyTemporaryComments();
+		}
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 }
