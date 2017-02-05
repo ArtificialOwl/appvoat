@@ -369,7 +369,14 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	{
 	}
 
+@Override
+public void onApiMessage(ApiRequest request)
+{
+	if (drawer == null)
+		return;
 
+	Snackbar.make(drawer, request.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+}
 	@Override
 	public void onApiRequestError(ApiError error)
 	{
