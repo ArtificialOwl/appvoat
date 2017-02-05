@@ -46,7 +46,7 @@ import android.webkit.WebViewClient;
 import net.pr0npaganda.appvoat.api.Api;
 import net.pr0npaganda.appvoat.api.ApiError;
 import net.pr0npaganda.appvoat.api.ApiRequest;
-import net.pr0npaganda.appvoat.databinding.OauthBinding;
+import net.pr0npaganda.appvoat.databinding.FragmentOauthBinding;
 import net.pr0npaganda.appvoat.interfaces.ApiRequestListener;
 import net.pr0npaganda.appvoat.utils.AppUtils;
 
@@ -57,7 +57,7 @@ public class FragmentOAuth extends Fragment implements ApiRequestListener
 	private Api api;
 
 	private Core core = null;
-	private OauthBinding binding;
+	private FragmentOauthBinding binding;
 
 	//	private LinearLayoutManager layoutManager;
 	//	private boolean populatingComments = false;
@@ -103,7 +103,7 @@ public class FragmentOAuth extends Fragment implements ApiRequestListener
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		// binding
-		binding = DataBindingUtil.inflate(inflater, R.layout.oauth, container, false);
+		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_oauth, container, false);
 		View rootView = binding.getRoot();
 
 		binding.webviewOauth.setWebViewClient(new WebViewClient()
@@ -198,6 +198,12 @@ public class FragmentOAuth extends Fragment implements ApiRequestListener
 		Snackbar.make(getActivity().findViewById(R.id.drawer_layout), "Error while querying Voat server", Snackbar.LENGTH_LONG).setAction(
 				"Action",
 				null).show();
+	}
+
+
+	@Override
+	public void onApiMessage(ApiRequest request)
+	{
 	}
 
 }

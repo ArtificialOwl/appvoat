@@ -37,4 +37,6 @@ public interface ApiRequestListener
 	public void onApiRequestEmpty(int type);
 
 	public void onApiRequestError(ApiError apiError);
+
+	public void onApiMessage(ApiRequest request);
 }

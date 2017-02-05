@@ -181,6 +181,12 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 	}
 
 
+	@Override
+	public void onApiMessage(ApiRequest request)
+	{
+	}
+
+
 	public void clickThumb(View v)
 	{
 		if (((ActivityBase) getActivity()).multiPanel() > 0)

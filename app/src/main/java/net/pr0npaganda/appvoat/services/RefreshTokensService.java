@@ -102,14 +102,12 @@ public class RefreshTokensService extends Service implements ApiRequestListener
 	@Override
 	public void onApiRequestCompleted(ApiRequest request, boolean isOver)
 	{
-
 	}
 
 
 	@Override
 	public void onApiRequestEmpty(int type)
 	{
-
 	}
 
 
@@ -118,6 +116,12 @@ public class RefreshTokensService extends Service implements ApiRequestListener
 	{
 		if (apiError.getCode() == ApiError.ERROR_INVALID_TOKEN)
 			AccountsDatabase.resetToken(apiError.getRequest().getExtraInt("userid", 0));
+	}
+
+
+	@Override
+	public void onApiMessage(ApiRequest request)
+	{
 	}
 
 }
