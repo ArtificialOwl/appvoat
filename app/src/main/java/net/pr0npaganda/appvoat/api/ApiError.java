@@ -41,6 +41,7 @@ public class ApiError
 	public final static int ERROR_INVALID_API    = 19;
 
 	public final static int ERROR_INVALID_TOKEN = 21;
+	public final static int ERROR_NOT_LOGGED    = 29;
 
 	public final static int ERROR_NO_NETWORK         = 100;
 	public final static int ERROR_SUB_DOES_NOT_EXIST = 1001;
@@ -82,6 +83,11 @@ public class ApiError
 				case 403:
 					this.code = ERROR_INVALID_API;
 					this.message = "Invalid API";
+					break;
+
+				case 401:
+					this.code = ERROR_NOT_LOGGED;
+					this.message = "You need to be authentified to perform this action";
 					break;
 
 				case 400:
