@@ -241,6 +241,20 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	}
 
 
+	public void clickCommentReplyClose(View v)
+	{
+		if (this.postingPanel1 == null)
+			return;
+
+		EditText eText = (EditText) this.postingPanel1.findViewById(R.id.edittext);
+		eText.setText("");
+
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(eText.getWindowToken(), 0);
+		AnimUtils.displayView(this.postingPanel1, false, 600);
+	}
+
+
 	public void clickCommentReplied(View v)
 	{
 		EditText eText = (EditText) this.postingPanel1.findViewById(R.id.edittext);
@@ -369,14 +383,17 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	{
 	}
 
-@Override
-public void onApiMessage(ApiRequest request)
-{
-	if (drawer == null)
-		return;
 
-	Snackbar.make(drawer, request.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-}
+	@Override
+	public void onApiMessage(ApiRequest request)
+	{
+		if (drawer == null)
+			return;
+
+		Snackbar.make(drawer, request.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+	}
+
+
 	@Override
 	public void onApiRequestError(ApiError error)
 	{
