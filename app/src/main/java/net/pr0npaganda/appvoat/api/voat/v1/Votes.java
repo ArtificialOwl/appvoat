@@ -60,7 +60,10 @@ public class Votes
 	public void requestVotingComment(Comment comment, int vote)
 	{
 		String itemtype = "comment";
-		String url = String.format("https://api.voat.co/api/v1/vote/%s/%d/%d?revokeOnRevote=true", itemtype, comment.getId(), vote);
+		String url = String.format("https://api.voat.co/api/v1/vote/%s/%d/%d?revokeOnRevote=true",
+		                                           itemtype,
+		                                           comment.getId(),
+		                                           vote);
 
 		ApiRequest request = new ApiRequest(ApiRequest.REQUEST_TYPE_VOTES, url).setMethod(Request.Method.POST)
 				.setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT).setExtra("itemtype", itemtype).setComment(comment);
@@ -84,11 +87,17 @@ public class Votes
 				return;
 
 			JSONObject data = result.getJSONObject("data");
-			JSONObject points = data.getJSONObject("response");
+			if (!data.isNull("response"))
+			{
+				JSONObject points = data.getJSONObject("response");
 
-			Comment comment = request.getComment();
-			comment.setPoint(points.getInt("upCount"), points.getInt("downCount"));
-			comment.setVote(data.getInt("recordedValue"));
+				Comment comment = request.getComment();
+				comment.setPoint(points.getInt("upCount"), points.getInt("downCount"));
+				comment.setVote(data.getInt("recordedValue"));
+			}
+
+			if (!data.isNull("message"))
+				request.setMessage(data.getString("message"));
 		}
 		catch (JSONException e)
 		{
