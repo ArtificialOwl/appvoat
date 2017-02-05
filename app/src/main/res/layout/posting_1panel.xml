@@ -3,12 +3,36 @@
 
     <data></data>
 
-    <EditText
-        android:id="@+id/post1"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_gravity="bottom"
-        android:visibility="gone"
-        android:background="#f00"
-        android:padding="10dp"/>
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/post1"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="bottom"
+            android:background="#99222222"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#222222"
+                android:gravity="top"
+                android:padding="8dp"
+                android:textSize="14dp"/>
+
+            <Button
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_margin="3dp"
+                android:background="@drawable/button"
+                android:onClick="clickCommentReplied"
+                android:text="Post"/>
+        </LinearLayout>
+    </FrameLayout>
 </layout>

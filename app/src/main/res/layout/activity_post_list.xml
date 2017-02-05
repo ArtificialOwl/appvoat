@@ -8,7 +8,6 @@
         <variable
             name="subs"
             type="net.pr0npaganda.appvoat.list.Subs"/>
-
     </data>
 
     <android.support.v4.widget.DrawerLayout
@@ -54,6 +53,10 @@
                 <include
                     android:id="@+id/include_post_list"
                     layout="@layout/post_list"/>
+
+                <include
+                    android:id="@+id/include_post1panel"
+                    layout="@layout/posting_1panel"/>
             </FrameLayout>
 
             <android.support.design.widget.FloatingActionButton
@@ -68,6 +71,5 @@
         <include
             android:id="@+id/include_nav_view"
             layout="@layout/nav_view"/>
-
     </android.support.v4.widget.DrawerLayout>
 </layout>
