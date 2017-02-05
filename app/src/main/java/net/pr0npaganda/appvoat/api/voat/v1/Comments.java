@@ -37,6 +37,7 @@ import net.pr0npaganda.appvoat.api.voat.v1.model.RecursiveComments;
 import net.pr0npaganda.appvoat.model.Author;
 import net.pr0npaganda.appvoat.model.Comment;
 import net.pr0npaganda.appvoat.model.Post;
+import net.pr0npaganda.appvoat.utils.AppUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -278,12 +279,33 @@ public class Comments
 	public void requestMore(Comment comment)
 	{
 		Post post = comment.getPost();
-		String url = String.format("https://api.voat.co/api/v1/v/%s/%d/comments/%d/%d", "appvoat", post.getId(), comment
-				.getParentId(), comment.getNextIndex());
+		String url = String.format("https://api.voat.co/api/v1/v/%s/%d/comments/%d/%d",
+		                           post.getSub().getName(),
+		                           post.getId(),
+		                           comment.getParentId(),
+		                           comment.getNextIndex());
 
 		voat.request(new ApiRequest(ApiRequest.REQUEST_TYPE_COMMENTS, url).setMethod(Request.Method.GET)
 				             .setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT).setPost(post).setExtra("parentId", comment.getParentId())
 				             .setExtra("startIndex", comment.getNextIndex()));
+	}
+
+
+	public void requestPosting(Comment comment)
+	{
+		Post post = comment.getPost();
+		String url = String.format("https://api.voat.co/api/v1/v/%s/%d/comment/%d",
+		                           post.getSub().getName(),
+		                           post.getId(),
+		                           comment.getParentId());
+
+//		url = String.format("https://api.voat.co/api/v1/comments/%d",
+//		                    comment.getParentId());
+
+
+		voat.request(new ApiRequest(ApiRequest.REQUEST_TYPE_POSTING, url).setMethod(Request.Method.POST).setBodyParams("value",
+		                                                                                                               comment.getContent())
+				             .setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT).setComment(comment));
 	}
 
 
@@ -316,6 +338,13 @@ public class Comments
 		{
 			e.printStackTrace();
 		}
+	}
+
+
+	public void resultPosting(ApiRequest request, JSONObject result)
+	{
+
+		AppUtils.Log("###########" + result);
 	}
 
 }
