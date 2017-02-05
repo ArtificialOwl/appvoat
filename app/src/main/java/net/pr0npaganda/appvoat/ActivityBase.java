@@ -70,7 +70,7 @@ import net.pr0npaganda.appvoat.utils.AppUtils;
 
 public class ActivityBase extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ApiRequestListener
 {
-	protected Core core;
+//	protected Core core;
 	protected Api  api;
 
 	protected SharedPreferences pref;
@@ -104,10 +104,10 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 			recreate();
 
 		DatabaseManager.initializeInstance(AppvoatDatabase.getInstance(getApplicationContext()));
-		api = new Api(getBaseContext(), core, this);
+		api = new Api(getBaseContext(),  Core.get(), this);
 
-		if (core.getAccounts().getSize() == 0)
-			AccountsDatabase.getAccounts(core.getAccounts());
+		if ( Core.get().getAccounts().getSize() == 0)
+			AccountsDatabase.getAccounts( Core.get().getAccounts());
 
 		manageAccounts();
 	}
@@ -123,20 +123,20 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		for (int i = 1; i < 100; i++)
 			menu.removeItem(i);
 
-		core.setCurrentAccount(null);
-		for (Account account : core.getAccounts().getItems())
+		Core.get().setCurrentAccount(null);
+		for (Account account :  Core.get().getAccounts().getItems())
 		{
 			menu.add(R.id.group_accounts, account.getId(), 10, account.getUserName() + ((!account.isAuthed()) ? " (disconnected)" : ""))
 					.setIcon(R.mipmap.icon_voat).setCheckable(true);
 			if (account.isActive() && account.isAuthed())
 			{
-				core.setCurrentAccount(account);
+				Core.get().setCurrentAccount(account);
 				navView.setCheckedItem(account.getId());
 			}
 		}
 
-		if (core.getCurrentAccount() != null)
-			AppUtils.Log("token expires: " + core.getCurrentAccount().getExpires() + "   (current: " + (System
+		if ( Core.get().getCurrentAccount() != null)
+			AppUtils.Log("token expires: " +  Core.get().getCurrentAccount().getExpires() + "   (current: " + (System
 					.currentTimeMillis() / 1000L) + ")");
 
 		//	api.refreshToken(core.getCurrentAccount());
@@ -157,10 +157,10 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 			String link = ((InterceptClickTextView) v).getLinkTo();
 			((InterceptClickTextView) v).linkTo("");
 
-			core.getOpenLink().setUrl(link);
+			Core.get().getOpenLink().setUrl(link);
 			Context context = getBaseContext();
 			Intent intent = new Intent(context, ActivityOpenLink.class);
-			intent.putExtra("core", (Core) core.clone());
+			intent.putExtra("core", (Core)  Core.get().clone());
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
 		}
@@ -175,7 +175,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		if (multiPanel() > 0)
 		{
 			Bundle arguments = new Bundle();
-			arguments.putSerializable("core", (Core) core.clone());
+			arguments.putSerializable("core", (Core)  Core.get().clone());
 			arguments.putSerializable("link", openLink);
 			FragmentOpenLink fragment = new FragmentOpenLink();
 			fragment.setArguments(arguments);
@@ -190,7 +190,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		{
 			Context context = getBaseContext();
 			Intent intent = new Intent(context, ActivityOpenLink.class);
-			intent.putExtra("core", (Core) core.clone());
+			intent.putExtra("core", (Core)  Core.get().clone());
 			intent.putExtra("link", openLink);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
@@ -520,17 +520,17 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 				navView.setCheckedItem(item.getItemId());
 				AccountsDatabase.setAsActive(item.getItemId());
 
-				Account selAccount = core.getAccounts().getItem(id);
-				if (selAccount != null && !core.getAccounts().getItem(id).isAuthed())
+				Account selAccount =  Core.get().getAccounts().getItem(id);
+				if (selAccount != null && ! Core.get().getAccounts().getItem(id).isAuthed())
 				{
 					goToAccountCreation();
 					break;
 				}
 
-				core.getAccounts().reset();
+				Core.get().getAccounts().reset();
 
 				intent = new Intent(context, ActivityPostList.class);
-				intent.putExtra("core", (Core) core.clone());
+				intent.putExtra("core", (Core)  Core.get().clone());
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(intent);
 				break;
@@ -545,13 +545,13 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 
 	protected void goToSub(Sub sub)
 	{
-		if (this instanceof ActivityPostList && core.getCurrentSub().getKeyname().equalsIgnoreCase(sub.getKeyname()))
+		if (this instanceof ActivityPostList &&  Core.get().getCurrentSub().getKeyname().equalsIgnoreCase(sub.getKeyname()))
 			return;
 
 		Context context = getBaseContext();
 		Intent intent = new Intent(context, ActivityPostList.class);
-		core.setCurrentSub(new Sub(Core.SOURCE_VOAT, sub.getKeyname()));
-		intent.putExtra("core", (Core) core.clone());
+		Core.get().setCurrentSub(new Sub(Core.SOURCE_VOAT, sub.getKeyname()));
+		intent.putExtra("core", (Core)  Core.get().clone());
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}
@@ -598,7 +598,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		//		else
 		//		{
 		final Intent intent = new Intent(getBaseContext(), ActivityOAuth.class);
-		intent.putExtra("core", (Core) core.clone());
+		intent.putExtra("core", (Core)  Core.get().clone());
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		Handler handler = new Handler();
