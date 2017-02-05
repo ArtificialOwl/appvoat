@@ -300,10 +300,14 @@ public class Comments
 	public void requestPosting(Comment comment)
 	{
 		Post post = comment.getPost();
-		String url = String.format("https://api.voat.co/api/v1/v/%s/%d/comment/%d",
-		                           post.getSub().getName(),
-		                           post.getId(),
-		                           comment.getParentId());
+		String url;
+		if (comment.getParentId() > 0)
+			url = String.format("https://api.voat.co/api/v1/v/%s/%d/comment/%d",
+			                    post.getSub().getName(),
+			                    post.getId(),
+			                    comment.getParentId());
+		else
+			url = String.format("https://api.voat.co/api/v1/v/%s/%d/comment", post.getSub().getName(), post.getId());
 
 		//		url = String.format("https://api.voat.co/api/v1/comments/%d",
 		//		                    comment.getParentId());

@@ -16,6 +16,10 @@
             type="net.pr0npaganda.appvoat.list.Comments"/>
 
         <variable
+            name="core"
+            type="net.pr0npaganda.appvoat.Core"/>
+
+        <variable
             name="account"
             type="net.pr0npaganda.appvoat.model.Account"/>
 
@@ -214,9 +218,103 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/colorPrimary"
-                android:orientation="horizontal"></LinearLayout>
+                android:layout_height="50dp"
+                android:layout_gravity="right"
+                android:background="@drawable/post_options_background"
+                android:gravity="center"
+                app:displayPostOptions="@{post}"
+                app:displayPostOptionsCore="@{core}">
+
+                <LinearLayout
+                    android:id="@+id/post_upvoat"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:alpha="0.8"
+                    android:gravity="center"
+                    android:onClick="clickPostUpvoat"
+                    android:tag="@{post}">
+
+                    <ImageView
+                        android:id="@+id/post_upvoat_image"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:gravity="right|center_vertical"
+                        android:src="@mipmap/upvoat"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/post_downvoat"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:alpha="0.8"
+                    android:gravity="center"
+                    android:onClick="clickPostDownvoat"
+                    android:tag="@{post}">
+
+                    <ImageView
+                        android:id="@+id/post_downvoat_image"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:gravity="right|center_vertical"
+                        android:src="@mipmap/downvoat"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/post_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:alpha="0.8"
+                    android:gravity="center"
+                    android:onClick="clickPostComment"
+                    android:tag="@{post}">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:gravity="right|center_vertical"
+                        android:src="@drawable/icon_reply"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/comment_copy"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:alpha="0.8"
+                    android:gravity="center"
+                    android:onClick="clickPostCopy"
+                    android:tag="@{post}">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/icon_copy"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/comment_share"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:alpha="0.8"
+                    android:gravity="center"
+                    android:onClick="clickPostShare"
+                    android:tag="@{post}">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/icon_share"/>
+                </LinearLayout>
+            </LinearLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"

@@ -198,12 +198,50 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	}
 
 
+	//
+	// posting
+	//
+	public void clickReplyClose(View v)
+	{
+		if (this.postingPanel1 == null)
+			return;
+
+		EditText eText = (EditText) this.postingPanel1.findViewById(R.id.edittext);
+		eText.setText("");
+
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(eText.getWindowToken(), 0);
+		AnimUtils.displayView(this.postingPanel1, false, 600);
+	}
+
+
+	public void clickReplied(View v)
+	{
+		EditText eText = (EditText) this.postingPanel1.findViewById(R.id.edittext);
+		if (eText.getTag() instanceof Post)
+		{
+			clickPostReplied(v);
+		}
+
+		if (eText.getTag() instanceof Comment)
+		{
+			clickCommentReplied(v);
+		}
+
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(this.postingPanel1.findViewById(R.id.edittext).getWindowToken(), 0);
+		AnimUtils.displayView(this.postingPanel1, false, 600);
+	}
+
+
+	//
+	// Posts
+	//
 	public void clickPostUpvoat(View v)
 	{
 		Post post = (Post) v.getTag();
 		api.votingPost(post, 1);
 	}
-
 
 
 	public void clickPostDownvoat(View v)
@@ -213,6 +251,55 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	}
 
 
+	public void clickPostComment(View v)
+	{
+		if (this.postingPanel1 == null)
+			return;
+
+		AnimUtils.displayView(this.postingPanel1, true, 600);
+		EditText eText = (EditText) this.postingPanel1.findViewById(R.id.edittext);
+		eText.setText("");
+
+		if (eText.requestFocus())
+		{
+			getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(eText, InputMethodManager.SHOW_IMPLICIT);
+		}
+
+		eText.setTag(v.getTag());
+	}
+
+
+	private void clickPostReplied(View v)
+	{
+		EditText eText = (EditText) this.postingPanel1.findViewById(R.id.edittext);
+
+		Post post = (Post) eText.getTag();
+
+		Comment comment = new Comment(post, -1);
+		comment.setParentId(0);
+		comment.setContent(eText.getText().toString());
+		api.postingComment(comment);
+
+	}
+
+
+	public void clickPostCopy(View v)
+	{
+		notAvailableRightNow();
+	}
+
+
+	public void clickPostShare(View v)
+	{
+		notAvailableRightNow();
+	}
+
+
+	//
+	// Comments
+	//
 	public void clickOptionsNull(View v)
 	{
 		CommentBindingAdapter.resetAllCommentsOptions((FrameLayout) v.getParent());
@@ -257,35 +344,17 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	}
 
 
-	public void clickCommentReplyClose(View v)
-	{
-		if (this.postingPanel1 == null)
-			return;
-
-		EditText eText = (EditText) this.postingPanel1.findViewById(R.id.edittext);
-		eText.setText("");
-
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(eText.getWindowToken(), 0);
-		AnimUtils.displayView(this.postingPanel1, false, 600);
-	}
-
-
-	public void clickCommentReplied(View v)
+	private void clickCommentReplied(View v)
 	{
 		EditText eText = (EditText) this.postingPanel1.findViewById(R.id.edittext);
 
 		Comment parent = (Comment) eText.getTag();
-		parent.getId();
 
 		Comment comment = new Comment(parent.getPost(), -1);
 		comment.setParentId(parent.getId());
 		comment.setContent(eText.getText().toString());
 		api.postingComment(comment);
 
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(eText.getWindowToken(), 0);
-		AnimUtils.displayView(this.postingPanel1, false, 600);
 	}
 
 

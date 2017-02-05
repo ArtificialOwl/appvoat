@@ -102,6 +102,8 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 		binding.setPost(core.getCurrentPost());
 		binding.setComments(core.getCurrentPost().getComments());
 		binding.setAccount(core.getCurrentAccount());
+		binding.setCore(core);
+
 		binding.setFragment(this);
 
 		layoutManager = new LinearLayoutManager(inflater.getContext());

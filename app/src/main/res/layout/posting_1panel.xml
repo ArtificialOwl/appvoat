@@ -33,7 +33,7 @@
                 android:layout_marginLeft="3dp"
                 android:layout_marginBottom="3dp"
                 android:background="@drawable/button_2"
-                android:onClick="clickCommentReplyClose"
+                android:onClick="clickReplyClose"
                 android:text="Close"/>
 
             <Button
@@ -41,7 +41,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="3dp"
                 android:background="@drawable/button_1"
-                android:onClick="clickCommentReplied"
+                android:onClick="clickReplied"
                 android:text="Post"/>
         </LinearLayout>
     </FrameLayout>

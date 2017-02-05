@@ -49,6 +49,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import net.pr0npaganda.appvoat.Core;
 import net.pr0npaganda.appvoat.R;
 import net.pr0npaganda.appvoat.model.Post;
 import net.pr0npaganda.appvoat.utils.AnimUtils;
@@ -157,6 +158,33 @@ public class PostBindingAdapter
 	}
 
 
+	@BindingAdapter ({"bind:displayPostOptions", "bind:displayPostOptionsCore"})
+	public static void displayPostOptions(final LinearLayout view, Post post, Core core)
+	{
+		if (core.getCurrentAccount() != null)
+		{
+		}
+
+		ImageView image_upvoat = (ImageView) view.findViewById(R.id.post_upvoat_image);
+		ImageView image_downvoat = (ImageView) view.findViewById(R.id.post_downvoat_image);
+		if (post.getVote() == 1)
+		{
+			image_upvoat.setImageResource(R.mipmap.upvoat_sel);
+			image_downvoat.setImageResource(R.mipmap.downvoat);
+		}
+		else if (post.getVote() == -1)
+		{
+			image_upvoat.setImageResource(R.mipmap.upvoat);
+			image_downvoat.setImageResource(R.mipmap.downvoat_sel);
+		}
+		else
+		{
+			image_upvoat.setImageResource(R.mipmap.upvoat);
+			image_downvoat.setImageResource(R.mipmap.downvoat);
+		}
+	}
+
+
 	@BindingAdapter ({"bind:showPostThumb", "bind:showPostThumbColorNew", "bind:showPostThumbColorOpened"})
 	public static void showPostThumb(final RoundedImageView imageView, Post post, int colorNew, int colorOpened)
 	{
@@ -164,7 +192,7 @@ public class PostBindingAdapter
 		if (url == null)
 			return;
 
-//		((ViewGroup) imageView.getParent()).setAlpha(0f);
+		//		((ViewGroup) imageView.getParent()).setAlpha(0f);
 
 		if (!url.equals(""))
 		{
