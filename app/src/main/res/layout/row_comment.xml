@@ -5,10 +5,6 @@
     <data>
 
         <variable
-            name="core"
-            type="net.pr0npaganda.appvoat.Core"/>
-
-        <variable
             name="comment"
             type="net.pr0npaganda.appvoat.model.Comment"/>
     </data>
@@ -228,5 +224,12 @@
                     android:src="@drawable/icon_share"/>
             </LinearLayout>
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/comment_vote"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="top|right"
+            android:src="@mipmap/corner_upvoat"/>
     </FrameLayout>
 </layout>

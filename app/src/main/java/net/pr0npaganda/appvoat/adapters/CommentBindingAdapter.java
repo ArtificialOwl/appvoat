@@ -45,6 +45,7 @@ import android.widget.TextView;
 import net.pr0npaganda.appvoat.R;
 import net.pr0npaganda.appvoat.model.Account;
 import net.pr0npaganda.appvoat.model.Comment;
+import net.pr0npaganda.appvoat.utils.AnimUtils;
 import net.pr0npaganda.appvoat.utils.AppUtils;
 
 import static net.pr0npaganda.appvoat.utils.AnimUtils.displayView;
@@ -58,6 +59,9 @@ public class CommentBindingAdapter
 		LinearLayout layout_more = (LinearLayout) view.findViewById(R.id.comment_more);
 		final LinearLayout layout_comment = (LinearLayout) view.findViewById(R.id.layout_comment);
 		final LinearLayout comment_options = (LinearLayout) view.findViewById(R.id.comment_options);
+
+		ImageView corner_voat = (ImageView) view.findViewById(R.id.comment_vote);
+		corner_voat.setVisibility(View.GONE);
 
 		if (comment.getType() != Comment.COMMENT_LOAD_MORE_COMMENTS)
 		{
@@ -92,6 +96,17 @@ public class CommentBindingAdapter
 						return true;
 					}
 				};
+
+				if (comment.getVote() == 1)
+				{
+					corner_voat.setImageResource(R.mipmap.corner_upvoat);
+					AnimUtils.displayView(corner_voat, true, 400);
+				}
+				if (comment.getVote() == -1)
+				{
+					corner_voat.setImageResource(R.mipmap.corner_downvoat);
+					AnimUtils.displayView(corner_voat, true, 400);
+				}
 
 				view.findViewById(R.id.comment_content).setOnLongClickListener(longClick);
 				//view.findViewById(R.id.comment_options).setOnLongClickListener(longClick);
