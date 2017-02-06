@@ -92,13 +92,15 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		toggle = new ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
 		// init Core
-		//			Core core = (Core) getIntent().getSerializableExtra("core");
+		if (!Core.set((Core) getIntent().getSerializableExtra("core")))
+		{
+			Core.get().setCurrentSub(new Sub(Core.SOURCE_VOAT, "Frontpage").setKeyname("_front"));
+		}
 
 		drawer.setDrawerListener(toggle);
 		toggle.setDrawerIndicatorEnabled(true);
 		toggle.syncState();
 
-		Core.get().setCurrentSub(new Sub(Core.SOURCE_VOAT, "Frontpage").setKeyname("_front"));
 
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -228,9 +230,8 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		}
 		else
 		{
-			binding.includePostList.postRefresher.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
-			                                                                                TableRow.LayoutParams.MATCH_PARENT,
-			                                                                                1f));
+			binding.includePostList.postRefresher
+					.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1f));
 		}
 
 		RefreshTokensService.start(getBaseContext());
@@ -285,18 +286,18 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		}
 	}
 
-
-	@Override
-	protected void goToSub(Sub sub)
-	{
-		if (Core.get().getCurrentSub() != null && Core.get().getCurrentSub().getKeyname().equalsIgnoreCase(sub.getKeyname()))
-			return;
-
-		binding.includePostList.postRefresher.setRefreshing(true);
-		Core.get().setCurrentSub(new Sub(Core.SOURCE_VOAT, sub.getKeyname()));
-		noMorePosts = false;
-		api.requestSubPosts(Core.get().getCurrentSub(), Core.get().getPosts());
-	}
+//
+//	@Override
+//	protected void goToSub(Sub sub)
+//	{
+//		if (Core.get().getCurrentSub() != null && Core.get().getCurrentSub().getKeyname().equalsIgnoreCase(sub.getKeyname()))
+//			return;
+//
+//		binding.includePostList.postRefresher.setRefreshing(true);
+//		Core.get().setCurrentSub(new Sub(Core.SOURCE_VOAT, sub.getKeyname()));
+//		noMorePosts = false;
+//		api.requestSubPosts(Core.get().getCurrentSub(), Core.get().getPosts());
+//	}
 
 
 	public void clickMorePost(final View v)

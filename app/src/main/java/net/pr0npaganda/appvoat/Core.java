@@ -74,21 +74,48 @@ public class Core implements Serializable, Cloneable
 	}
 
 
+	public static boolean set(Core core)
+	{
+		if (core == null)
+			return false;
+	
+		Core.get().setSubs(core.getSubs()).setPosts(core.getPosts()).setAccounts(core.getAccounts()).setCurrentSub(core.getCurrentSub())
+				.setCurrentPost(core.getCurrentPost()).setCurrentAccount(core.getCurrentAccount());
+
+		return true;
+	}
+
 	public Accounts getAccounts()
 	{
 		return this.accounts;
 	}
 
+	public Core setAccounts(Accounts accounts)
+	{
+		this.accounts = accounts;
+		return this;
+	}
 
 	public Subs getSubs()
 	{
 		return this.subs;
 	}
 
+	public Core setSubs(Subs subs)
+	{
+		this.subs = subs;
+		return this;
+	}
 
 	public Posts getPosts()
 	{
 		return this.posts;
+	}
+
+	public Core setPosts(Posts posts)
+	{
+		this.posts = posts;
+		return this;
 	}
 
 
@@ -98,12 +125,13 @@ public class Core implements Serializable, Cloneable
 	}
 
 
-	public void setCurrentSub(Sub sub)
+	public Core setCurrentSub(Sub sub)
 	{
 		if (sub != null && getSubs().getItem(sub) == null)
 			this.getSubs().add(sub);
 
 		this.currentSub = sub;
+		return this;
 	}
 
 
@@ -129,9 +157,10 @@ public class Core implements Serializable, Cloneable
 	}
 
 
-	public void setCurrentAccount(final Account account)
+	public Core setCurrentAccount(final Account account)
 	{
 		this.currentAccount = account;
+		return this;
 	}
 
 
@@ -141,9 +170,10 @@ public class Core implements Serializable, Cloneable
 	}
 
 
-	public void setCurrentPost(final Post post)
+	public Core setCurrentPost(final Post post)
 	{
 		this.currentPost = post;
+		return this;
 	}
 
 
