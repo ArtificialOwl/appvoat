@@ -16,14 +16,6 @@
             type="net.pr0npaganda.appvoat.list.Comments"/>
 
         <variable
-            name="core"
-            type="net.pr0npaganda.appvoat.Core"/>
-
-        <variable
-            name="account"
-            type="net.pr0npaganda.appvoat.model.Account"/>
-
-        <variable
             name="fragment"
             type="net.pr0npaganda.appvoat.FragmentPostDetail"/>
     </data>
@@ -222,8 +214,7 @@
                 android:layout_gravity="right"
                 android:background="@drawable/post_options_background"
                 android:gravity="center"
-                app:displayPostOptions="@{post}"
-                app:displayPostOptionsCore="@{core}">
+                app:displayPostOptions="@{post}">
 
                 <LinearLayout
                     android:id="@+id/post_upvoat"
@@ -238,8 +229,8 @@
 
                     <ImageView
                         android:id="@+id/post_upvoat_image"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:gravity="right|center_vertical"
                         android:src="@mipmap/upvoat"/>
                 </LinearLayout>
@@ -257,8 +248,8 @@
 
                     <ImageView
                         android:id="@+id/post_downvoat_image"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:gravity="right|center_vertical"
                         android:src="@mipmap/downvoat"/>
                 </LinearLayout>
@@ -275,8 +266,8 @@
                     android:tag="@{post}">
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:gravity="right|center_vertical"
                         android:src="@drawable/icon_reply"/>
                 </LinearLayout>
@@ -293,8 +284,8 @@
                     android:tag="@{post}">
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:src="@drawable/icon_copy"/>
                 </LinearLayout>
 
@@ -310,8 +301,8 @@
                     android:tag="@{post}">
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:src="@drawable/icon_share"/>
                 </LinearLayout>
             </LinearLayout>
@@ -334,7 +325,6 @@
                     android:id="@+id/detail_comments"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:tag="@{account}"
                     app:itemView="@{comments.getView()}"
                     app:items="@{comments.getItems()}"
                     tools:context="net.pr0npaganda.appvoat.FragmentPostDetail"/>

@@ -13,7 +13,8 @@
         android:id="@+id/comment_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:displayCommentMore="@{comment}">
+        app:displayCommentMore="@{comment}"
+        app:displayCommentVote="@{comment}">
 
         <LinearLayout
             android:id="@+id/comment_more"
@@ -150,8 +151,8 @@
 
                 <ImageView
                     android:id="@+id/image_upvoat"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     app:srcCompat="@mipmap/upvoat"/>
             </LinearLayout>
 
@@ -168,8 +169,8 @@
 
                 <ImageView
                     android:id="@+id/image_downvoat"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     app:srcCompat="@mipmap/downvoat"/>
             </LinearLayout>
 
@@ -185,8 +186,8 @@
                 android:tag="@{comment}">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:src="@drawable/icon_reply"/>
             </LinearLayout>
 
@@ -202,8 +203,8 @@
                 android:tag="@{comment}">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:src="@drawable/icon_copy"/>
             </LinearLayout>
 
@@ -219,17 +220,28 @@
                 android:tag="@{comment}">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:src="@drawable/icon_share"/>
             </LinearLayout>
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/comment_vote"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:id="@+id/corner_upvoat"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="top|right"
-            android:src="@mipmap/corner_upvoat"/>
+            android:layout_margin="10dp"
+            android:alpha="0"
+            android:src="@mipmap/upvoat_sel"/>
+
+        <ImageView
+            android:id="@+id/corner_downvoat"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="top|right"
+            android:layout_margin="10dp"
+            android:alpha="0"
+            android:src="@mipmap/downvoat_sel"/>
     </FrameLayout>
 </layout>
