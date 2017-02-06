@@ -43,6 +43,8 @@ public class ApiError
 	public final static int ERROR_INVALID_TOKEN = 21;
 	public final static int ERROR_NOT_LOGGED    = 29;
 
+	public final static int ERROR_TOOMANY_REQUESTS = 34;
+
 	public final static int ERROR_NO_NETWORK         = 100;
 	public final static int ERROR_SUB_DOES_NOT_EXIST = 1001;
 
@@ -72,6 +74,11 @@ public class ApiError
 		{
 			switch (volleyError.networkResponse.statusCode)
 			{
+				case 429:
+					this.code = ERROR_TOOMANY_REQUESTS;
+					this.message = "Too many requests";
+					break;
+
 				case 404:
 					if (request.getType() == ApiRequest.REQUEST_TYPE_SUB_POSTS)
 					{
