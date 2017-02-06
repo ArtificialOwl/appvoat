@@ -42,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import net.pr0npaganda.appvoat.Core;
 import net.pr0npaganda.appvoat.R;
 import net.pr0npaganda.appvoat.model.Account;
 import net.pr0npaganda.appvoat.model.Comment;
@@ -59,9 +60,6 @@ public class CommentBindingAdapter
 		LinearLayout layout_more = (LinearLayout) view.findViewById(R.id.comment_more);
 		final LinearLayout layout_comment = (LinearLayout) view.findViewById(R.id.layout_comment);
 		final LinearLayout comment_options = (LinearLayout) view.findViewById(R.id.comment_options);
-
-		ImageView corner_voat = (ImageView) view.findViewById(R.id.comment_vote);
-		corner_voat.setVisibility(View.GONE);
 
 		if (comment.getType() != Comment.COMMENT_LOAD_MORE_COMMENTS)
 		{
@@ -97,17 +95,6 @@ public class CommentBindingAdapter
 					}
 				};
 
-				if (comment.getVote() == 1)
-				{
-					corner_voat.setImageResource(R.mipmap.corner_upvoat);
-					AnimUtils.displayView(corner_voat, true, 400);
-				}
-				if (comment.getVote() == -1)
-				{
-					corner_voat.setImageResource(R.mipmap.corner_downvoat);
-					AnimUtils.displayView(corner_voat, true, 400);
-				}
-
 				view.findViewById(R.id.comment_content).setOnLongClickListener(longClick);
 				//view.findViewById(R.id.comment_options).setOnLongClickListener(longClick);
 				layout_comment.setOnLongClickListener(longClick);
@@ -127,6 +114,38 @@ public class CommentBindingAdapter
 		layout_more.setVisibility(View.VISIBLE);
 		layout_comment.setVisibility(View.GONE);
 		view.findViewById(R.id.comment_infos).setVisibility(View.GONE);
+	}
+
+
+	@BindingAdapter ({"bind:displayCommentVote"})
+	public static void displayCommentVote(final FrameLayout view, final Comment comment)
+	{
+		ImageView corner_upvoat = (ImageView) view.findViewById(R.id.corner_upvoat);
+		ImageView corner_downvoat = (ImageView) view.findViewById(R.id.corner_downvoat);
+
+		if (comment.getType() != Comment.COMMENT_LOAD_MORE_COMMENTS && comment.getType() != Comment.COMMENT_LOAD_MORE_SUBCOMMENTS)
+		{
+			if (comment.getVote() == 1)
+			{
+				AnimUtils.alphaView(corner_upvoat, 0.6f, 400);
+				AnimUtils.alphaView(corner_downvoat, 0f, 400);
+			}
+			else if (comment.getVote() == -1)
+			{
+				AnimUtils.alphaView(corner_upvoat, 0f, 400);
+				AnimUtils.alphaView(corner_downvoat, 0.6f, 400);
+			}
+			else
+			{
+				AnimUtils.alphaView(corner_upvoat, 0f, 400);
+				AnimUtils.alphaView(corner_downvoat, 0f, 400);
+			}
+		}
+		else
+		{
+			AnimUtils.alphaView(corner_upvoat, 0f, 400);
+			AnimUtils.alphaView(corner_downvoat, 0f, 400);
+		}
 	}
 
 
@@ -219,7 +238,7 @@ public class CommentBindingAdapter
 	{
 		RecyclerView listing = (RecyclerView) parent.getParent();
 
-		Account currAccount = (Account) listing.getTag();
+		Account currAccount = Core.get().getCurrentAccount();
 		if (currAccount != null && currAccount.isAuthed())
 		{
 			parent.findViewById(R.id.comment_upvoat).setVisibility(View.VISIBLE);
