@@ -56,7 +56,7 @@ public class FragmentOAuth extends Fragment implements ApiRequestListener
 	//	private boolean mTwoPane;
 	private Api api;
 
-	private Core core = null;
+	//private Core core = null;
 	private FragmentOauthBinding binding;
 
 	//	private LinearLayoutManager layoutManager;
@@ -83,8 +83,8 @@ public class FragmentOAuth extends Fragment implements ApiRequestListener
 			return;
 		}
 
-		core = (Core) getArguments().getSerializable("core");
-		api = new Api(getContext(), core, this);
+		//core = (Core) getArguments().getSerializable("core");
+		api = new Api(getContext(), Core.get(), this);
 
 		Activity activity = this.getActivity();
 		Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);

@@ -54,7 +54,7 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 {
 	private Api api;
 
-	private Core core = null;
+//	private Core core = null;
 	private PostDetailBinding binding;
 
 	private LinearLayoutManager layoutManager;
@@ -80,8 +80,8 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 			return;
 		}
 
-		core = (Core) getArguments().getSerializable("core");
-		api = new Api(getContext(), core, this);
+		//core = (Core) getArguments().getSerializable("core");
+		api = new Api(getContext(), Core.get(), this);
 
 		Activity activity = this.getActivity();
 		Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
@@ -99,10 +99,8 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 		binding = DataBindingUtil.inflate(inflater, R.layout.post_detail, container, false);
 		View rootView = binding.getRoot();
 
-		binding.setPost(core.getCurrentPost());
-		binding.setComments(core.getCurrentPost().getComments());
-		binding.setAccount(core.getCurrentAccount());
-		binding.setCore(core);
+		binding.setPost(Core.get().getCurrentPost());
+		binding.setComments(Core.get().getCurrentPost().getComments());
 
 		binding.setFragment(this);
 
@@ -120,10 +118,10 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 
 				View view = v.getChildAt(v.getChildCount() - 1);
 				int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
-				if (core.getCurrentPost().getMoreComment() != null && diff < 1000)
+				if (Core.get().getCurrentPost().getMoreComment() != null && diff < 1000)
 				{
 					populatingComments = true;
-					api.requestMoreComment(core.getCurrentPost().getMoreComment());
+					api.requestMoreComment(Core.get().getCurrentPost().getMoreComment());
 				}
 			}
 		});
@@ -154,8 +152,8 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 	{
 		super.onActivityCreated(savedInstanceState);
 
-		api.requestComments(core.getCurrentPost());
-		PostsDatabase.setPostAsRead(core.getCurrentPost(), core.getCurrentAccount(), Post.TYPE_TEXT);
+		api.requestComments(Core.get().getCurrentPost());
+		PostsDatabase.setPostAsRead(Core.get().getCurrentPost(), Core.get().getCurrentAccount(), Post.TYPE_TEXT);
 	}
 
 
@@ -194,7 +192,7 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 		if (((ActivityBase) getActivity()).multiPanel() > 0)
 		{
 			Bundle arguments = new Bundle();
-			arguments.putSerializable("core", (Core) core.clone());
+			arguments.putSerializable("core", (Core) Core.get().clone());
 
 			FragmentOpenLink fragment = new FragmentOpenLink();
 			fragment.setArguments(arguments);
@@ -210,7 +208,7 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 		{
 			Context context = getContext();
 			Intent intent = new Intent(context, ActivityOpenLink.class);
-			intent.putExtra("core", (Core) core.clone());
+			intent.putExtra("core", (Core) Core.get().clone());
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
 		}
