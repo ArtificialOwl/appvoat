@@ -219,10 +219,12 @@ public class PostBindingAdapter
 		if (url == null)
 			return;
 
-		//		((ViewGroup) imageView.getParent()).setAlpha(0f);
-
 		if (!url.equals(""))
 		{
+			if (!url.equals(imageView.getTag()))
+				((ViewGroup) imageView.getParent()).setAlpha(0f);
+			imageView.setTag(url);
+
 			if (!post.isLinkOpened())
 				imageView.setBorderColor(colorNew);
 			else
