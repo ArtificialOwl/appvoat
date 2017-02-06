@@ -102,23 +102,23 @@ public class PostBindingAdapter
 		if (post.getVote() == 1)
 		{
 			image_upvote.setImageResource(R.mipmap.upvoat_sel);
-			image_upvote.setAlpha(0.8f);
+			AnimUtils.alphaView(image_upvote, 0.8f, 400);
 			image_downvote.setImageResource(R.mipmap.downvoat);
-			image_downvote.setAlpha(0.3f);
+			AnimUtils.alphaView(image_downvote, 0.2f, 400);
 		}
 		else if (post.getVote() == -1)
 		{
 			image_upvote.setImageResource(R.mipmap.upvoat);
-			image_upvote.setAlpha(0.3f);
+			AnimUtils.alphaView(image_upvote, 0.2f, 400);
 			image_downvote.setImageResource(R.mipmap.downvoat_sel);
-			image_downvote.setAlpha(0.8f);
+			AnimUtils.alphaView(image_downvote, 0.8f, 400);
 		}
 		else
 		{
 			image_upvote.setImageResource(R.mipmap.upvoat);
-			image_upvote.setAlpha(0.3f);
+			AnimUtils.alphaView(image_upvote, 0.2f, 400);
 			image_downvote.setImageResource(R.mipmap.downvoat);
-			image_downvote.setAlpha(0.3f);
+			AnimUtils.alphaView(image_downvote, 0.2f, 400);
 		}
 	}
 
@@ -176,10 +176,10 @@ public class PostBindingAdapter
 	}
 
 
-	@BindingAdapter ({"bind:displayPostOptions", "bind:displayPostOptionsCore"})
-	public static void displayPostOptions(final LinearLayout view, Post post, Core core)
+	@BindingAdapter ({"bind:displayPostOptions"})
+	public static void displayPostOptions(final LinearLayout view, Post post)
 	{
-		if (core.getCurrentAccount() == null)
+		if (Core.get().getCurrentAccount() == null)
 		{
 			view.findViewById(R.id.post_upvoat).setVisibility(View.GONE);
 			view.findViewById(R.id.post_downvoat).setVisibility(View.GONE);

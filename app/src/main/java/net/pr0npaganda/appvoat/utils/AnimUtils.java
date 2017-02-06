@@ -108,6 +108,32 @@ public class AnimUtils
 	}
 
 
+
+
+	public static void alphaView(final View view, float alphaEnd, int duration)
+	{
+		if (view == null)
+			return;
+
+		if (view.getAlpha() == alphaEnd)
+			return;
+
+		ValueAnimator animator = ValueAnimator.ofFloat(view.getAlpha(), alphaEnd);
+		animator.setDuration(duration);
+		animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
+		{
+			@Override
+			public void onAnimationUpdate(ValueAnimator animation)
+			{
+				float alpha = (float) animation.getAnimatedValue();
+				view.setAlpha(alpha);
+			}
+		});
+
+		animator.start();
+	}
+
+
 	private static void displayViewGroup(final ViewGroup view)
 	{
 		float alphaEnd = 1f;
