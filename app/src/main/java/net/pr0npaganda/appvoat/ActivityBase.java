@@ -70,8 +70,8 @@ import net.pr0npaganda.appvoat.utils.AppUtils;
 
 public class ActivityBase extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ApiRequestListener
 {
-//	protected Core core;
-	protected Api  api;
+	//	protected Core core;
+	protected Api api;
 
 	protected SharedPreferences pref;
 	protected DrawerLayout          drawer = null;
@@ -104,10 +104,10 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 			recreate();
 
 		DatabaseManager.initializeInstance(AppvoatDatabase.getInstance(getApplicationContext()));
-		api = new Api(getBaseContext(),  Core.get(), this);
+		api = new Api(getBaseContext(), Core.get(), this);
 
-		if ( Core.get().getAccounts().getSize() == 0)
-			AccountsDatabase.getAccounts( Core.get().getAccounts());
+		if (Core.get().getAccounts().getSize() == 0)
+			AccountsDatabase.getAccounts(Core.get().getAccounts());
 
 		manageAccounts();
 	}
@@ -124,7 +124,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 			menu.removeItem(i);
 
 		Core.get().setCurrentAccount(null);
-		for (Account account :  Core.get().getAccounts().getItems())
+		for (Account account : Core.get().getAccounts().getItems())
 		{
 			menu.add(R.id.group_accounts, account.getId(), 10, account.getUserName() + ((!account.isAuthed()) ? " (disconnected)" : ""))
 					.setIcon(R.mipmap.icon_voat).setCheckable(true);
@@ -135,8 +135,8 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 			}
 		}
 
-		if ( Core.get().getCurrentAccount() != null)
-			AppUtils.Log("token expires: " +  Core.get().getCurrentAccount().getExpires() + "   (current: " + (System
+		if (Core.get().getCurrentAccount() != null)
+			AppUtils.Log("token expires: " + Core.get().getCurrentAccount().getExpires() + "   (current: " + (System
 					.currentTimeMillis() / 1000L) + ")");
 
 		//	api.refreshToken(core.getCurrentAccount());
@@ -160,7 +160,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 			Core.get().getOpenLink().setUrl(link);
 			Context context = getBaseContext();
 			Intent intent = new Intent(context, ActivityOpenLink.class);
-			intent.putExtra("core", (Core)  Core.get().clone());
+			intent.putExtra("core", (Core) Core.get().clone());
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
 		}
@@ -175,7 +175,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		if (multiPanel() > 0)
 		{
 			Bundle arguments = new Bundle();
-			arguments.putSerializable("core", (Core)  Core.get().clone());
+			arguments.putSerializable("core", (Core) Core.get().clone());
 			arguments.putSerializable("link", openLink);
 			FragmentOpenLink fragment = new FragmentOpenLink();
 			fragment.setArguments(arguments);
@@ -190,7 +190,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		{
 			Context context = getBaseContext();
 			Intent intent = new Intent(context, ActivityOpenLink.class);
-			intent.putExtra("core", (Core)  Core.get().clone());
+			intent.putExtra("core", (Core) Core.get().clone());
 			intent.putExtra("link", openLink);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
@@ -438,9 +438,8 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 				goToSub(new Sub(Core.SOURCE_VOAT, "appvoat"));
 				DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 				drawer.closeDrawer(GravityCompat.START);
-				Snackbar.make(view,
-				              "Welcome on v/appvoat. The place to report bugs, request features and share experience",
-				              Snackbar.LENGTH_LONG).setAction("Action", null).show();
+				Snackbar.make(view, "Welcome on v/appvoat. The place to report bugs, request features and share experience", Snackbar.LENGTH_LONG)
+						.setAction("Action", null).show();
 			}
 		});
 
@@ -520,8 +519,8 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 				navView.setCheckedItem(item.getItemId());
 				AccountsDatabase.setAsActive(item.getItemId());
 
-				Account selAccount =  Core.get().getAccounts().getItem(id);
-				if (selAccount != null && ! Core.get().getAccounts().getItem(id).isAuthed())
+				Account selAccount = Core.get().getAccounts().getItem(id);
+				if (selAccount != null && !Core.get().getAccounts().getItem(id).isAuthed())
 				{
 					goToAccountCreation();
 					break;
@@ -530,8 +529,8 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 				Core.get().getAccounts().reset();
 
 				intent = new Intent(context, ActivityPostList.class);
-				intent.putExtra("core", (Core)  Core.get().clone());
-				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.putExtra("core", (Core) Core.get().clone());
+				intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 				context.startActivity(intent);
 				break;
 		}
@@ -545,13 +544,13 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 
 	protected void goToSub(Sub sub)
 	{
-		if (this instanceof ActivityPostList &&  Core.get().getCurrentSub().getKeyname().equalsIgnoreCase(sub.getKeyname()))
+		if (this instanceof ActivityPostList && Core.get().getCurrentSub().getKeyname().equalsIgnoreCase(sub.getKeyname()))
 			return;
 
 		Context context = getBaseContext();
 		Intent intent = new Intent(context, ActivityPostList.class);
 		Core.get().setCurrentSub(new Sub(Core.SOURCE_VOAT, sub.getKeyname()));
-		intent.putExtra("core", (Core)  Core.get().clone());
+		intent.putExtra("core", (Core) Core.get().clone());
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}
@@ -560,8 +559,8 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	protected void showGoToSubDialogFragment()
 	{
 		FragmentManager fm = getSupportFragmentManager();
-		SimpleEntryDialogFragment goToSubDialogFragmentDialogFragment = SimpleEntryDialogFragment.newInstance("GoToSubDialogFragment",
-		                                                                                                      "Go to a subverse");
+		SimpleEntryDialogFragment goToSubDialogFragmentDialogFragment = SimpleEntryDialogFragment
+				.newInstance("GoToSubDialogFragment", "Go to a subverse");
 		goToSubDialogFragmentDialogFragment.show(fm, "GoToSubDialogFragment");
 	}
 
@@ -598,7 +597,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		//		else
 		//		{
 		final Intent intent = new Intent(getBaseContext(), ActivityOAuth.class);
-		intent.putExtra("core", (Core)  Core.get().clone());
+		//	intent.putExtra("core", (Core)  Core.get().clone());
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		Handler handler = new Handler();
