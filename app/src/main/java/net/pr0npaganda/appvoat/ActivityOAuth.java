@@ -26,8 +26,6 @@
 
 package net.pr0npaganda.appvoat;
 
-import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -52,13 +50,13 @@ public class ActivityOAuth extends ActivityBase implements NavigationView.OnNavi
 		super.onCreate(savedInstanceState);
 		PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
 
-		if (getIntent().getSerializableExtra("core") == null)
-		{
-			Context context = getBaseContext();
-			Intent intent = new Intent(context, ActivityPostList.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(intent);
-		}
+//		if (getIntent().getSerializableExtra("core") == null)
+//		{
+//			Context context = getBaseContext();
+//			Intent intent = new Intent(context, ActivityPostList.class);
+//			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//			context.startActivity(intent);
+//		}
 
 		binding = DataBindingUtil.setContentView(this, R.layout.activity_oauth);
 
