@@ -40,6 +40,7 @@
         <activity
             android:name=".ActivityOAuth"
             android:label="@string/title_post_detail"
+            android:noHistory="true"
             android:parentActivityName=".ActivityPostList">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
