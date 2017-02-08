@@ -30,7 +30,10 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.text.Html;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 
 import net.pr0npaganda.appvoat.BR;
@@ -180,6 +183,35 @@ public class Conversation extends BaseObservable implements Serializable
 	public String getPointFormat(String format)
 	{
 		return String.format(format, getPoint());
+	}
+
+
+	public String getVotesFormat()
+	{
+		return String.format("(+%d | -%d)", this.getUpCount(), this.getDownCount());
+	}
+
+
+	public Spannable getVotesFormat(int color1, int color2)
+	{
+		String down = "-" + this.getDownCount();
+		String up = "+" + this.getUpCount();
+
+		String line = String.format("%s | %s", up, down);
+
+		int pos1a = 0;
+		int pos1b = pos1a + up.length();
+		int pos2a = pos1b + 3;
+		int pos2b = pos2a + down.length();
+
+		Spannable span = new SpannableString(line);
+		span.setSpan(new ForegroundColorSpan(color1), pos1a, pos1b, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		span.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), pos1a, pos1b, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+		span.setSpan(new ForegroundColorSpan(color2), pos2a, pos2b, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		span.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), pos2a, pos2b, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+		return span;
 	}
 
 

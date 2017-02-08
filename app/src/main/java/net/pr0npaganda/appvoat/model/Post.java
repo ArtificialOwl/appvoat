@@ -252,8 +252,12 @@ public class Post extends Conversation implements Serializable
 		}
 
 		String domain = AppUtils.getHostFromUrl(this.getOpenLink().getUrl()).toLowerCase();
-		if (domain.startsWith("www."))
-			domain = domain.substring(4);
+		//		if (domain.startsWith("www."))
+		//			domain = domain.substring(4);
+
+		String[] block = domain.split("\\.");
+		if (block.length > 2)
+			domain = String.format("%s.%s", block[block.length - 2], block[block.length - 1]);
 
 		return domain;
 	}
@@ -369,28 +373,6 @@ public class Post extends Conversation implements Serializable
 		return span;
 	}
 
-
-	public Spannable getVotesFormat(int color1, int color2)
-	{
-		String down = "-" + this.getDownCount();
-		String up = "+" + this.getUpCount();
-
-		String line = String.format("%s | %s", up, down);
-
-		int pos1a = 0;
-		int pos1b = pos1a + up.length();
-		int pos2a = pos1b + 3;
-		int pos2b = pos2a + down.length();
-
-		Spannable span = new SpannableString(line);
-		span.setSpan(new ForegroundColorSpan(color1), pos1a, pos1b, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		span.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), pos1a, pos1b, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-		span.setSpan(new ForegroundColorSpan(color2), pos2a, pos2b, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		span.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), pos2a, pos2b, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-		return span;
-	}
 
 
 	@Override
