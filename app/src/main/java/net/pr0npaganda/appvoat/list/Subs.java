@@ -61,7 +61,8 @@ public class Subs extends BaseObservable implements Serializable
 
 	public void add(Sub sub)
 	{
-		this.getItems().add(sub);
+		if (this.getItem(sub) == null)
+			this.getItems().add(sub);
 	}
 
 
