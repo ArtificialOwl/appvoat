@@ -40,6 +40,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import net.pr0npaganda.appvoat.adapters.PostBindingAdapter;
 import net.pr0npaganda.appvoat.api.Api;
 import net.pr0npaganda.appvoat.api.ApiError;
 import net.pr0npaganda.appvoat.api.ApiRequest;
@@ -54,7 +55,7 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 {
 	private Api api;
 
-//	private Core core = null;
+	//	private Core core = null;
 	private PostDetailBinding binding;
 
 	private LinearLayoutManager layoutManager;
@@ -148,6 +149,18 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 
 
 	@Override
+	public void onResume()
+	{
+		super.onResume();
+
+		if (binding.detailComments.getAdapter() != null)
+			binding.detailComments.getAdapter().notifyDataSetChanged();
+
+		PostBindingAdapter.displayPostOptions(binding.postOptions, Core.get().getCurrentPost());
+	}
+
+
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
 		super.onActivityCreated(savedInstanceState);
@@ -175,9 +188,8 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 	public void onApiRequestError(ApiError error)
 	{
 		AnimUtils.displayView(binding.progressBar, false, 500);
-		Snackbar.make(getActivity().findViewById(R.id.drawer_layout), "Error while querying Voat server", Snackbar.LENGTH_LONG).setAction(
-				"Action",
-				null).show();
+		Snackbar.make(getActivity().findViewById(R.id.drawer_layout), "Error while querying Voat server", Snackbar.LENGTH_LONG)
+				.setAction("Action", null).show();
 	}
 
 
