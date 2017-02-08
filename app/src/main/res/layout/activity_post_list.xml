@@ -37,7 +37,7 @@
 
                     <Spinner
                         android:id="@+id/top_spinner"
-                        android:layout_width="wrap_content"
+                        android:layout_width="220dp"
                         android:layout_height="wrap_content"
                         app:itemView="@{subs.getView()}"
                         app:items="@{subs.getItems()}"/>
