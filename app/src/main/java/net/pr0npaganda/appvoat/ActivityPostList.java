@@ -146,6 +146,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 			@Override
 			public void onRefresh()
 			{
+				binding.includePostList.fatalError.setVisibility(View.GONE);
 				api.requestSubPosts(Core.get().getCurrentSub(), Core.get().getPosts());
 			}
 		});
@@ -275,7 +276,8 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		super.onApiRequestError(error);
 
 		binding.includePostList.postRefresher.setRefreshing(false);
-		if (error.getCode() == ApiError.ERROR_NO_PUBLIC_API || error.getCode() == ApiError.ERROR_INVALID_API)
+		if (error.getCode() == ApiError.ERROR_NO_PUBLIC_API || error.getCode() == ApiError.ERROR_INVALID_API || error
+				.getCode() == ApiError.ERROR_NO_NETWORK)
 		{
 			binding.includePostList.fatalError.setVisibility(View.VISIBLE);
 			binding.includePostList.fatalError.setText(error.getMessage());
