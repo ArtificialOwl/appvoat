@@ -528,7 +528,13 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 
 				Core.get().getAccounts().reset();
 
-				intent = new Intent(context, ActivityPostList.class);
+				if (this instanceof ActivityPostDetail)
+					intent = new Intent(context, ActivityPostDetail.class);
+				else if (this instanceof ActivityOpenLink)
+					intent = new Intent(context, ActivityOpenLink.class);
+				else
+					intent = new Intent(context, ActivityPostList.class);
+
 				intent.putExtra("core", (Core) Core.get().clone());
 				intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 				context.startActivity(intent);
