@@ -196,7 +196,7 @@ public class Sub implements Serializable
 	@Override
 	public boolean equals(Object object)
 	{
-		if (object == null || !(object instanceof Post))
+		if (object == null || !(object instanceof Sub))
 			return false;
 
 		if (getName().equalsIgnoreCase(((Sub) object).getName()) && source() == ((Sub) object).source())
