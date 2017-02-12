@@ -36,6 +36,8 @@ import net.pr0npaganda.appvoat.model.Post;
 import net.pr0npaganda.appvoat.model.Sub;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Core implements Serializable, Cloneable
@@ -49,11 +51,12 @@ public class Core implements Serializable, Cloneable
 	private Posts    posts    = new Posts();
 	private Accounts accounts = new Accounts();
 
-	private Sub      currentSub        = null;
-	private Post     currentPost       = null;
-	private Account  currentAccount    = null;
-	private long     lastAccountUpdate = 0;
-	private OpenLink openLink          = new OpenLink();
+	private List<Sub> stackSubs         = new ArrayList<>();
+	private Sub       currentSub        = null;
+	private Post      currentPost       = null;
+	private Account   currentAccount    = null;
+	private long      lastAccountUpdate = 0;
+	private OpenLink  openLink          = new OpenLink();
 
 	private boolean milked = true;
 
@@ -78,7 +81,7 @@ public class Core implements Serializable, Cloneable
 	{
 		if (core == null)
 			return false;
-	
+
 		Core.get().setSubs(core.getSubs()).setPosts(core.getPosts()).setAccounts(core.getAccounts()).setCurrentSub(core.getCurrentSub())
 				.setCurrentPost(core.getCurrentPost()).setCurrentAccount(core.getCurrentAccount());
 
@@ -118,6 +121,11 @@ public class Core implements Serializable, Cloneable
 		return this;
 	}
 
+
+	public List<Sub> getStackSubs()
+	{
+		return this.stackSubs;
+	}
 
 	public Sub getCurrentSub()
 	{

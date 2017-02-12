@@ -92,6 +92,8 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		currentTheme = pref.getString("theme", "AppVoatLight");
 
 		super.setTheme(AppUtils.getTheme(currentTheme));
+
+		api = new Api(getBaseContext(), Core.get(), this);
 	}
 
 
@@ -104,7 +106,6 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 			recreate();
 
 		DatabaseManager.initializeInstance(AppvoatDatabase.getInstance(getApplicationContext()));
-		api = new Api(getBaseContext(), Core.get(), this);
 
 		if (Core.get().getAccounts().getSize() == 0)
 			AccountsDatabase.getAccounts(Core.get().getAccounts());
@@ -550,17 +551,41 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 
 	protected void goToSub(Sub sub)
 	{
-		if (this instanceof ActivityPostList && Core.get().getCurrentSub().getKeyname().equalsIgnoreCase(sub.getKeyname()))
-			return;
+		this.nextSub(sub);
 
 		Context context = getBaseContext();
 		Intent intent = new Intent(context, ActivityPostList.class);
-		Core.get().setCurrentSub(new Sub(Core.SOURCE_VOAT, sub.getKeyname()));
 		intent.putExtra("core", (Core) Core.get().clone());
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}
 
+
+	protected void nextSub(Sub sub)
+	{
+		if (Core.get().getStackSubs().contains(sub))
+			Core.get().getStackSubs().remove(sub);
+
+		AppUtils.Log(" NEXTSUB: " + Core.get().getCurrentSub());
+		if (Core.get().getCurrentSub() != null)
+			Core.get().getStackSubs().add(Core.get().getCurrentSub());
+
+		Core.get().setCurrentSub(sub);
+	}
+
+	protected boolean prevSub()
+	{
+		if (Core.get().getStackSubs().size() <= 0)
+			return false;
+
+		Core.get().getStackSubs().remove(Core.get().getCurrentSub());
+
+		if (Core.get().getStackSubs().size() == 0)
+			return false;
+
+		Core.get().setCurrentSub(Core.get().getStackSubs().get(Core.get().getStackSubs().size() - 1));
+		return true;
+	}
 
 	protected void showGoToSubDialogFragment()
 	{
