@@ -70,6 +70,16 @@ public class Subverses
 
 	public void resultList(ApiRequest request, JSONObject result)
 	{
+		request.getSubs().add(new Sub(Core.SOURCE_VOAT, "Frontpage").setKeyname("_front"));
+		request.getSubs().add(new Sub(Core.SOURCE_VOAT, "All").setKeyname("_all"));
+		request.getSubs().add(new Sub(Core.SOURCE_VOAT, "Any").setKeyname("_any"));
+		//		core.getSubs().add(new Sub(Core.SOURCE_VOAT, "Random"));
+		//		core.getSubs().add(new Sub(Core.SOURCE_VOAT, "New").setKeyname("_new"));
+		//		core.getSubs().add(new Sub(Core.SOURCE_VOAT, "Top").setKeyname("_top"));
+		request.getSubs().addDivider();
+
+
+
 		try
 		{
 			JSONArray data = result.getJSONArray("data");
