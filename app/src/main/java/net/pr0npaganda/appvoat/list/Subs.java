@@ -110,6 +110,28 @@ public class Subs extends BaseObservable implements Serializable
 		return null;
 	}
 
+	public int getIndex(Sub search)
+	{
+		int i = 0;
+		for (Sub sub : this.getItems())
+		{
+			if (sub.equals(search))
+				return i;
+
+			i++;
+		}
+
+		return -1;
+	}
+
+	public Sub getDefault()
+	{
+		if (this.getItems().size() == 0)
+			return null;
+
+		return this.getItems().get(0);
+	}
+
 
 	public Sub getLastItem()
 	{
