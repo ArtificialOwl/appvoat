@@ -63,6 +63,9 @@ import net.pr0npaganda.appvoat.services.RefreshTokensService;
 import net.pr0npaganda.appvoat.utils.AnimUtils;
 import net.pr0npaganda.appvoat.utils.AppUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class ActivityPostList extends ActivityBase implements NavigationView.OnNavigationItemSelectedListener, ApiRequestListener
 {
@@ -73,6 +76,8 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 	private boolean noMorePosts        = false;
 	private boolean populatingPosts    = true;
 
+	private List<Sub> stackSubs    = new ArrayList<>();
+	private Sub       displayedSub = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -85,6 +90,12 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 
 
 		// init Core/default CurrentSub
+
+
+		//		if (Core.set((Core) getIntent().getSerializableExtra("open")))
+		//		{
+		//			//	AppUtils.Log("_____ Core ? " + Core.get().getCurrentSub());
+		//		}
 		//		if (!Core.set((Core) getIntent().getSerializableExtra("core")))
 		//			Core.get().setCurrentSub(new Sub(Core.SOURCE_VOAT, "Frontpage").setKeyname("_front"));
 
@@ -151,7 +162,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 			public void onRefresh()
 			{
 				binding.includePostList.fatalError.setVisibility(View.GONE);
-				api.requestSubPosts(Core.get().getCurrentSub(), Core.get().getPosts());
+				api.requestSubPosts(currentSub(), Core.get().getPosts());
 			}
 		});
 		binding.includePostList.postRefresher.setColorSchemeResources(R.color.colorPrimary, R.color.colorPrimaryDark);
@@ -178,7 +189,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 						if ((visibleItemCount + pastVisiblesItems) >= (totalItemCount - 3))
 						{
 							populatingPosts = true;
-							api.requestMoreSubPosts(Core.get().getCurrentSub(), Core.get().getPosts());
+							api.requestMoreSubPosts(currentSub(), Core.get().getPosts());
 						}
 					}
 				}
@@ -238,6 +249,13 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 			api.requestSubList(Core.SOURCE_VOAT, Core.get().getSubs());
 		}
 
+
+		//if (!currentSub())
+		//		{
+		//			Core.get().getPosts().reset();
+		//			api.requestSubPosts(Core.get().getCurrentSub(), Core.get().getPosts());
+		//		}
+
 	}
 
 
@@ -246,11 +264,23 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 	{
 		super.onResume();
 
+		AppUtils.Log("_____ ONRESUME !!");
+		if (this.currentSub() == null)
+		{
+			AppUtils.Log("_____ NO CURRENTSUB !");
+			Sub go = (Sub) getIntent().getSerializableExtra("goToSub");
+			if (go != null)
+				goToSub(go);
+			else
+				goToSub(Core.get().getSubs().getDefault());
+		}
+
+
 		if (binding.includePostList.postRecycler.getAdapter() != null)
 			binding.includePostList.postRecycler.getAdapter().notifyDataSetChanged();
 
 		// set current sub in dropdown list
-		final int index = Core.get().getSubs().getIndex(Core.get().getCurrentSub());
+		final int index = Core.get().getSubs().getIndex(currentSub());
 		if (index > -1)
 		{
 			AnimUtils.displayView(binding.topSpinner, true, 400);
@@ -258,6 +288,9 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 			{
 				public void run()
 				{
+					int index2 = Core.get().getSubs().getIndex(currentSub());
+
+					AppUtils.Log("INDEx 2 : " + index + "         " + index2 + " " + index);
 					binding.topSpinner.setSelection(index);
 				}
 			});
@@ -270,7 +303,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 	{
 		if (request.getType() == ApiRequest.REQUEST_TYPE_SUB_LIST)
 		{
-			if (Core.get().getCurrentSub() == null)
+			if (this.currentSub() == null)
 				goToSub(Core.get().getSubs().getDefault());
 
 			this.refreshSpinner();
@@ -314,15 +347,16 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		if (sub == null)
 			return;
 
-		if (Core.get().getCurrentSub() != null && Core.get().getCurrentSub().getKeyname().equalsIgnoreCase(sub.getKeyname()))
+		if (sub.equals(displayedSub))
 			return;
 
 		this.nextSub(sub);
-
 		refreshSpinner();
+
+		displayedSub = sub;
 		binding.includePostList.postRefresher.setRefreshing(true);
 		Core.get().getPosts().reset();
-		api.requestSubPosts(Core.get().getCurrentSub(), Core.get().getPosts());
+		api.requestSubPosts(currentSub(), Core.get().getPosts());
 	}
 
 	public void clickMorePost(final View v)
@@ -378,6 +412,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		Post post = (Post) v.getTag();
 		Core.get().setCurrentPost(post);
 
+		//lastSub = Core.get().getCurrentSub();
 		if (multiPanel() > 0)
 		{
 			Bundle arguments = new Bundle();
@@ -395,6 +430,8 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		}
 		else
 		{
+			//	nextSub(null);
+
 			Context context = getBaseContext();
 			Intent intent = new Intent(context, ActivityPostDetail.class);
 			intent.putExtra("core", (Core) Core.get().clone());
@@ -446,6 +483,32 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 	}
 
 
+	protected void nextSub(Sub sub)
+	{
+		if (this.stackSubs.contains(sub))
+			this.stackSubs.remove(sub);
+
+		this.stackSubs.add(sub);
+		Core.get().setCurrentSub(sub);
+	}
+
+	protected boolean prevSub()
+	{
+		if (this.stackSubs.size() <= 1)
+			return false;
+
+		this.stackSubs.remove(this.stackSubs.size() - 1);
+		return true;
+	}
+
+	protected Sub currentSub()
+	{
+		if (this.stackSubs.size() == 0)
+			return null;
+
+		return this.stackSubs.get(this.stackSubs.size() - 1);
+	}
+
 	@Override
 	public void onBackPressed()
 	{
@@ -456,11 +519,11 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		}
 		else if (this.prevSub())
 		{
-			this.refreshSpinner();
-
-			binding.includePostList.postRefresher.setRefreshing(true);
-			Core.get().getPosts().reset();
-			api.requestSubPosts(Core.get().getCurrentSub(), Core.get().getPosts());
+			//			this.refreshSpinner();
+			goToSub(this.currentSub());
+			//			binding.includePostList.postRefresher.setRefreshing(true);
+			//			Core.get().getPosts().reset();
+			//			api.requestSubPosts(currentSub(), Core.get().getPosts());
 		}
 		else
 		{
@@ -471,7 +534,9 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 
 	private void refreshSpinner()
 	{
-		int index = Core.get().getSubs().getIndex(Core.get().getCurrentSub());
+		AppUtils.Log("REFRESHSPINNER !");
+		int index = Core.get().getSubs().getIndex(currentSub());
+		AppUtils.Log("____INDEX: " + index);
 		if (index > -1)
 			binding.topSpinner.setSelection(index);
 	}
@@ -486,5 +551,24 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		return super.onOptionsItemSelected(item);
 	}
 
-}
 
+	//	@Override
+	//	public boolean onNavigationItemSelected(MenuItem item)
+	//	{
+	//		super.onNavigationItemSelected(item);
+	//		int id = item.getItemId();
+	//
+	//		switch (id)
+	//		{
+	//
+	//			case R.id.nav_gotosubverse:
+	//				AppUtils.Log("NAV_POST_LIST");
+	//				showGoToSubDialogFragment();
+	//				return true;
+	//
+	//
+	//		}
+	//
+	//		return false;
+	//	}
+}
