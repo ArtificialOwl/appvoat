@@ -36,8 +36,6 @@ import net.pr0npaganda.appvoat.model.Post;
 import net.pr0npaganda.appvoat.model.Sub;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class Core implements Serializable, Cloneable
@@ -51,7 +49,6 @@ public class Core implements Serializable, Cloneable
 	private Posts    posts    = new Posts();
 	private Accounts accounts = new Accounts();
 
-	private List<Sub> stackSubs         = new ArrayList<>();
 	private Sub       currentSub        = null;
 	private Post      currentPost       = null;
 	private Account   currentAccount    = null;
@@ -121,11 +118,6 @@ public class Core implements Serializable, Cloneable
 		return this;
 	}
 
-
-	public List<Sub> getStackSubs()
-	{
-		return this.stackSubs;
-	}
 
 	public Sub getCurrentSub()
 	{
