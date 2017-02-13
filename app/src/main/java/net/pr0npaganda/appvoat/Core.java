@@ -29,11 +29,9 @@ package net.pr0npaganda.appvoat;
 import net.pr0npaganda.appvoat.db.AccountsDatabase;
 import net.pr0npaganda.appvoat.list.Accounts;
 import net.pr0npaganda.appvoat.list.Posts;
-import net.pr0npaganda.appvoat.list.Subs;
 import net.pr0npaganda.appvoat.model.Account;
 import net.pr0npaganda.appvoat.model.OpenLink;
 import net.pr0npaganda.appvoat.model.Post;
-import net.pr0npaganda.appvoat.model.Sub;
 
 import java.io.Serializable;
 
@@ -45,15 +43,15 @@ public class Core implements Serializable, Cloneable
 
 	private static Core instance;
 
-	private Subs     subs     = new Subs();
+	//	private Subs     subs     = new Subs();
 	private Posts    posts    = new Posts();
 	private Accounts accounts = new Accounts();
 
-	private Sub       currentSub        = null;
-	private Post      currentPost       = null;
-	private Account   currentAccount    = null;
-	private long      lastAccountUpdate = 0;
-	private OpenLink  openLink          = new OpenLink();
+	//	private Sub       currentSub        = null;
+	private Post     currentPost       = null;
+	private Account  currentAccount    = null;
+	private long     lastAccountUpdate = 0;
+	private OpenLink openLink          = new OpenLink();
 
 	private boolean milked = true;
 
@@ -74,17 +72,6 @@ public class Core implements Serializable, Cloneable
 	}
 
 
-	public static boolean set(Core core)
-	{
-		if (core == null)
-			return false;
-
-		Core.get().setSubs(core.getSubs()).setPosts(core.getPosts()).setAccounts(core.getAccounts()).setCurrentSub(core.getCurrentSub())
-				.setCurrentPost(core.getCurrentPost()).setCurrentAccount(core.getCurrentAccount());
-
-		return true;
-	}
-
 	public Accounts getAccounts()
 	{
 		return this.accounts;
@@ -93,44 +80,6 @@ public class Core implements Serializable, Cloneable
 	public Core setAccounts(Accounts accounts)
 	{
 		this.accounts = accounts;
-		return this;
-	}
-
-	public Subs getSubs()
-	{
-		return this.subs;
-	}
-
-	public Core setSubs(Subs subs)
-	{
-		this.subs = subs;
-		return this;
-	}
-
-	public Posts getPosts()
-	{
-		return this.posts;
-	}
-
-	public Core setPosts(Posts posts)
-	{
-		this.posts = posts;
-		return this;
-	}
-
-
-	public Sub getCurrentSub()
-	{
-		return this.currentSub;
-	}
-
-
-	public Core setCurrentSub(Sub sub)
-	{
-		if (sub != null && getSubs().getItem(sub) == null)
-			this.getSubs().add(sub);
-
-		this.currentSub = sub;
 		return this;
 	}
 
