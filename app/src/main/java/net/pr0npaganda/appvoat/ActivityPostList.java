@@ -31,7 +31,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -57,6 +56,8 @@ import net.pr0npaganda.appvoat.api.ApiError;
 import net.pr0npaganda.appvoat.api.ApiRequest;
 import net.pr0npaganda.appvoat.databinding.ActivityPostListBinding;
 import net.pr0npaganda.appvoat.interfaces.ApiRequestListener;
+import net.pr0npaganda.appvoat.list.Posts;
+import net.pr0npaganda.appvoat.list.Subs;
 import net.pr0npaganda.appvoat.model.Post;
 import net.pr0npaganda.appvoat.model.Sub;
 import net.pr0npaganda.appvoat.services.RefreshTokensService;
@@ -76,8 +77,11 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 	private boolean noMorePosts        = false;
 	private boolean populatingPosts    = true;
 
+	private Subs      subs         = new Subs();
 	private List<Sub> stackSubs    = new ArrayList<>();
 	private Sub       displayedSub = null;
+	private Posts     posts        = new Posts();
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -85,21 +89,10 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		super.onCreate(savedInstanceState);
 		PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
 
+
 		// binding
 		binding = DataBindingUtil.setContentView(this, R.layout.activity_post_list);
 
-
-		// init Core/default CurrentSub
-
-
-		//		if (Core.set((Core) getIntent().getSerializableExtra("open")))
-		//		{
-		//			//	AppUtils.Log("_____ Core ? " + Core.get().getCurrentSub());
-		//		}
-		//		if (!Core.set((Core) getIntent().getSerializableExtra("core")))
-		//			Core.get().setCurrentSub(new Sub(Core.SOURCE_VOAT, "Frontpage").setKeyname("_front"));
-
-		//this.currentSub = Core.get().getCurrentSub();
 
 		// toolbar
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -107,6 +100,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
+		// navigation panel
 		drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 		toggle = new ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
@@ -124,11 +118,11 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 
 
 		// binding list posts
-		binding.includePostList.setPosts(Core.get().getPosts());
+		binding.includePostList.setPosts(getPosts());
 		binding.includePostList.postRecycler.setLayoutManager(new LinearLayoutManager(this));
 
 		// binding spinner subs
-		binding.setSubs(Core.get().getSubs());
+		binding.setSubs(getSubs());
 		binding.topSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
 		{
 			protected Adapter init = null;
@@ -155,14 +149,14 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		//	binding.includePostList.postRecycler.addItemDecoration(new DecorationSimpleDivider(getBaseContext()));
 
 
-		//swipeRefresher
+		// swipeRefresher
 		binding.includePostList.postRefresher.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
 		{
 			@Override
 			public void onRefresh()
 			{
 				binding.includePostList.fatalError.setVisibility(View.GONE);
-				api.requestSubPosts(currentSub(), Core.get().getPosts());
+				api.requestSubPosts(currentSub(), getPosts());
 			}
 		});
 		binding.includePostList.postRefresher.setColorSchemeResources(R.color.colorPrimary, R.color.colorPrimaryDark);
@@ -189,7 +183,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 						if ((visibleItemCount + pastVisiblesItems) >= (totalItemCount - 3))
 						{
 							populatingPosts = true;
-							api.requestMoreSubPosts(currentSub(), Core.get().getPosts());
+							api.requestMoreSubPosts(currentSub(), getPosts());
 						}
 					}
 				}
@@ -213,10 +207,6 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		AppUtils.Log("- device is in landscape mode: " + AppUtils.isLandscape(getBaseContext()));
 
 
-		//
-		//		Core.get().getPosts().reset();
-		//		Core.get().getSubs().reset();
-
 		if (multiPanel() > 0)
 		{
 			binding.includePostList.centerPanelContainer.setVisibility(View.VISIBLE);
@@ -239,21 +229,22 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 
 		RefreshTokensService.start(getBaseContext());
 
-		//	Core.get().getSubs().reset();
-		//	Core.get().getPosts().reset();
-		if (Core.get().getSubs().getSize() == 0)
+
+		//	getSubs().reset();
+		//	getPosts().reset();
+		if (getSubs().getSize() == 0)
 		{
 			binding.topSpinner.setAlpha(0f);
 			binding.topSpinner.setVisibility(View.GONE);
 			binding.includePostList.postRefresher.setRefreshing(true);
-			api.requestSubList(Core.SOURCE_VOAT, Core.get().getSubs());
+			api.requestSubList(Core.SOURCE_VOAT, getSubs());
 		}
 
 
 		//if (!currentSub())
 		//		{
-		//			Core.get().getPosts().reset();
-		//			api.requestSubPosts(Core.get().getCurrentSub(), Core.get().getPosts());
+		//			getPosts().reset();
+		//			api.requestSubPosts(Core.get().getCurrentSub(), getPosts());
 		//		}
 
 	}
@@ -264,23 +255,13 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 	{
 		super.onResume();
 
-		AppUtils.Log("_____ ONRESUME !!");
-		if (this.currentSub() == null)
-		{
-			AppUtils.Log("_____ NO CURRENTSUB !");
-			Sub go = (Sub) getIntent().getSerializableExtra("goToSub");
-			if (go != null)
-				goToSub(go);
-			else
-				goToSub(Core.get().getSubs().getDefault());
-		}
-
 
 		if (binding.includePostList.postRecycler.getAdapter() != null)
 			binding.includePostList.postRecycler.getAdapter().notifyDataSetChanged();
 
+
 		// set current sub in dropdown list
-		final int index = Core.get().getSubs().getIndex(currentSub());
+		final int index = getSubs().getIndex(currentSub());
 		if (index > -1)
 		{
 			AnimUtils.displayView(binding.topSpinner, true, 400);
@@ -288,9 +269,6 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 			{
 				public void run()
 				{
-					int index2 = Core.get().getSubs().getIndex(currentSub());
-
-					AppUtils.Log("INDEx 2 : " + index + "         " + index2 + " " + index);
 					binding.topSpinner.setSelection(index);
 				}
 			});
@@ -304,7 +282,13 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		if (request.getType() == ApiRequest.REQUEST_TYPE_SUB_LIST)
 		{
 			if (this.currentSub() == null)
-				goToSub(Core.get().getSubs().getDefault());
+			{
+				Sub go = (Sub) getIntent().getSerializableExtra("goToSub");
+				if (go != null)
+					goToSub(go);
+				else
+					goToSub(getSubs().getDefault());
+			}
 
 			this.refreshSpinner();
 			AnimUtils.displayView(binding.topSpinner, true, 400);
@@ -355,35 +339,13 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 
 		displayedSub = sub;
 		binding.includePostList.postRefresher.setRefreshing(true);
-		Core.get().getPosts().reset();
-		api.requestSubPosts(currentSub(), Core.get().getPosts());
+		getPosts().reset();
+		api.requestSubPosts(currentSub(), getPosts());
 	}
 
 	public void clickMorePost(final View v)
 	{
 		AppUtils.Log(". clickMorePost");
-	}
-
-
-	public void clickPoint(final View v)
-	{
-		if (v.getAlpha() < 1f)
-			return;
-
-		final View v2 = ((ViewGroup) v.getParent()).findViewById(R.id.votes);
-
-		AnimUtils.displayView(v, false, 400);
-		AnimUtils.displayView(v2, true, 400);
-
-		new Handler().postDelayed(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				AnimUtils.displayView(v2, false, 400);
-				AnimUtils.displayView(v, true, 400);
-			}
-		}, 2400);
 	}
 
 
@@ -412,11 +374,11 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		Post post = (Post) v.getTag();
 		Core.get().setCurrentPost(post);
 
-		//lastSub = Core.get().getCurrentSub();
+
 		if (multiPanel() > 0)
 		{
 			Bundle arguments = new Bundle();
-			arguments.putSerializable("core", (Core) Core.get().clone());
+			//arguments.putSerializable("core", (Core) Core.get().clone());
 			FragmentPostDetail fragment = new FragmentPostDetail();
 			fragment.setArguments(arguments);
 
@@ -434,7 +396,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 
 			Context context = getBaseContext();
 			Intent intent = new Intent(context, ActivityPostDetail.class);
-			intent.putExtra("core", (Core) Core.get().clone());
+			//intent.putExtra("core", (Core) Core.get().clone());
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
 		}
@@ -456,7 +418,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		if (multiPanel() > 0)
 		{
 			Bundle arguments = new Bundle();
-			arguments.putSerializable("core", (Core) Core.get().clone());
+			//	arguments.putSerializable("core", (Core) Core.get().clone());
 
 			FragmentOpenLink fragment = new FragmentOpenLink();
 			fragment.setArguments(arguments);
@@ -476,7 +438,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		{
 			Context context = getBaseContext();
 			Intent intent = new Intent(context, ActivityOpenLink.class);
-			intent.putExtra("core", (Core) Core.get().clone());
+			//	intent.putExtra("core", (Core) Core.get().clone());
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
 		}
@@ -488,8 +450,13 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		if (this.stackSubs.contains(sub))
 			this.stackSubs.remove(sub);
 
+		if (sub != null && getSubs().getItem(sub) == null)
+		{
+			AppUtils.Log("_________________NEXTSUB ADD SUB");
+			getSubs().add(sub);
+		}
+
 		this.stackSubs.add(sub);
-		Core.get().setCurrentSub(sub);
 	}
 
 	protected boolean prevSub()
@@ -509,6 +476,17 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		return this.stackSubs.get(this.stackSubs.size() - 1);
 	}
 
+	private Subs getSubs()
+	{
+		return this.subs;
+	}
+
+
+	public Posts getPosts()
+	{
+		return this.posts;
+	}
+
 	@Override
 	public void onBackPressed()
 	{
@@ -522,8 +500,8 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 			//			this.refreshSpinner();
 			goToSub(this.currentSub());
 			//			binding.includePostList.postRefresher.setRefreshing(true);
-			//			Core.get().getPosts().reset();
-			//			api.requestSubPosts(currentSub(), Core.get().getPosts());
+			//			getPosts().reset();
+			//			api.requestSubPosts(currentSub(), getPosts());
 		}
 		else
 		{
@@ -534,12 +512,11 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 
 	private void refreshSpinner()
 	{
-		AppUtils.Log("REFRESHSPINNER !");
-		int index = Core.get().getSubs().getIndex(currentSub());
-		AppUtils.Log("____INDEX: " + index);
+		int index = getSubs().getIndex(currentSub());
 		if (index > -1)
 			binding.topSpinner.setSelection(index);
 	}
+
 
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -551,24 +528,4 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		return super.onOptionsItemSelected(item);
 	}
 
-
-	//	@Override
-	//	public boolean onNavigationItemSelected(MenuItem item)
-	//	{
-	//		super.onNavigationItemSelected(item);
-	//		int id = item.getItemId();
-	//
-	//		switch (id)
-	//		{
-	//
-	//			case R.id.nav_gotosubverse:
-	//				AppUtils.Log("NAV_POST_LIST");
-	//				showGoToSubDialogFragment();
-	//				return true;
-	//
-	//
-	//		}
-	//
-	//		return false;
-	//	}
 }
