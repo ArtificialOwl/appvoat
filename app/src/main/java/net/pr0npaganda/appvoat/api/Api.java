@@ -109,6 +109,9 @@ public class Api
 
 	public void requestSubPosts(Sub sub, Posts posts)
 	{
+		if (sub == null)
+			return;
+
 		sub.firstPage();
 		if (sub.source() == Core.SOURCE_VOAT)
 			voat().subverses().requestPosts(sub, posts);
