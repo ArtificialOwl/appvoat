@@ -40,39 +40,42 @@
             android:layout_height="match_parent"
             android:layout_centerVertical="true">
 
-            <TextView
-                android:id="@+id/point"
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:id="@+id/post_votes"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:alpha="1"
-                android:gravity="center"
-                android:maxLines="1"
-                android:onClick="clickPoint"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
-                android:tag="@{post}"
-                android:text="@{post.getPointFormat()}"
-                android:textSize="13sp"
-                android:textStyle="bold"/>
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/votes"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:alpha="0"
-                android:gravity="center"
-                android:maxLines="1"
-                android:text="@{post.getVotesFormat(@color/colorPrimary, @color/colorPrimaryDark)}"
-                android:textSize="11sp"
-                android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/point"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="-2dp"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="@{post.getPointFormat()}"
+                    android:textSize="13sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/votes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingTop="0dp"
+                    android:text="@{post.getVotesFormat(@color/colorPrimary, @color/colorPrimaryDark)}"
+                    android:textSize="11sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/post_upvote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/point"
+                android:layout_above="@+id/post_votes"
                 android:layout_alignWithParentIfMissing="true"
                 android:gravity="center"
                 android:onClick="clickPostUpvoat"
@@ -93,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignWithParentIfMissing="true"
-                android:layout_below="@+id/point"
+                android:layout_below="@+id/post_votes"
                 android:gravity="center"
                 android:onClick="clickPostDownvoat"
                 android:paddingBottom="4dp"
