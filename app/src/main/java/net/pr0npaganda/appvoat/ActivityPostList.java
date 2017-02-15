@@ -317,8 +317,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		super.onApiRequestError(error);
 
 		binding.includePostList.postRefresher.setRefreshing(false);
-		if (error.getCode() == ApiError.ERROR_NO_PUBLIC_API || error.getCode() == ApiError.ERROR_INVALID_API || error
-				.getCode() == ApiError.ERROR_NO_NETWORK)
+		if (error.getCode() == ApiError.ERROR_NO_PUBLIC_API || error.getCode() == ApiError.ERROR_INVALID_API)
 		{
 			binding.includePostList.fatalError.setVisibility(View.VISIBLE);
 			binding.includePostList.fatalError.setText(error.getMessage());
