@@ -72,7 +72,7 @@ public class FragmentOpenLink extends Fragment
 	private final static int CONFIG_DISPLAYVIEW_ANIM_DURATION        = 300;
 	private final static int CONFIG_DISPLAYPROGRESSBAR_ANIM_DURATION = 800;
 
-	private Core     core = null;
+	//	private Core     core = null;
 	private OpenLink link = null;
 
 	private Toolbar        toolbar      = null;
@@ -108,7 +108,7 @@ public class FragmentOpenLink extends Fragment
 			return;
 		}
 
-		core = (Core) getArguments().getSerializable("core");
+		//	core = (Core) getArguments().getSerializable("core");
 		link = (OpenLink) getArguments().getSerializable("link");
 
 		Activity activity = this.getActivity();
@@ -166,7 +166,7 @@ public class FragmentOpenLink extends Fragment
 		if (link != null)
 			openLink = link;
 		else
-			openLink = core.getCurrentPost().getOpenLink();
+			openLink = Core.get().getCurrentPost().getOpenLink();
 
 		AppUtils.Log("Link : " + openLink.getUrl());
 
@@ -189,7 +189,8 @@ public class FragmentOpenLink extends Fragment
 			displayUnknown(openLink);
 
 		//openLink.resetUrl();
-		PostsDatabase.setPostAsRead(core.getCurrentPost(), core.getCurrentAccount(), Post.TYPE_LINK);
+		PostsDatabase.setPostAsRead(Core.get().getCurrentPost(), Core.get().getCurrentAccount(), Post.TYPE_LINK);
+		Core.get().getCurrentPost().linkOpened(true);
 	}
 
 

@@ -60,7 +60,7 @@ public class Voat
 		}
 	}
 
-	private Core      core;
+//	private Core      core;
 	private Context   context;
 	private Api       api;
 	private Auth      auth;
@@ -75,7 +75,7 @@ public class Voat
 	public Voat(Api api, Core core, Context context)
 	{
 		this.api = api;
-		this.core = core;
+	//	this.core = core;
 		this.context = context;
 
 		auth = new Auth(this, context);
@@ -174,10 +174,10 @@ public class Voat
 		request.addHeader("Voat-ApiKey", getPublicApiKey());
 		request.addHeader("User-Agent", "Appvoat");
 
-		if (core.getCurrentAccount() != null)
+		if (Core.get().getCurrentAccount() != null)
 		{
-			request.addHeader("Authorization", "Bearer " + core.getCurrentAccount().getToken());
-			AppUtils.Log("_current token: " + core.getCurrentAccount().getToken());
+			request.addHeader("Authorization", "Bearer " + Core.get().getCurrentAccount().getToken());
+			AppUtils.Log("_current token: " + Core.get().getCurrentAccount().getToken());
 		}
 		this.api.request(request);
 
