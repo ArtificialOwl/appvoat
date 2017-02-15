@@ -49,3 +49,7 @@ app/src/main/res/values/api\.xml
 app/src/main/jni
 
 \.idea/markdown-navigator/
+
+\.idea/modules\.xml
+
+\.idea/\.name
