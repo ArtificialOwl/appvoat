@@ -53,3 +53,5 @@ app/src/main/jni
 \.idea/modules\.xml
 
 \.idea/\.name
+
+\.idea/misc\.xml
