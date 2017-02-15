@@ -153,7 +153,7 @@ public class OpenLink implements Serializable
 
 		AppUtils.Log("parseUrl " + domain + " " + extension + " " + mimetype);
 
-		if ("i.imgur.com" .equalsIgnoreCase(domain) && "gifv" .equalsIgnoreCase(extension))
+		if ("i.imgur.com".equalsIgnoreCase(domain) && "gifv".equalsIgnoreCase(extension))
 		{
 			this.setUrlContentType(OpenLink.DISPLAY_AS_VIDEO);
 			this.addModifiedUrl(this.getUrl().replace("gifv", "mp4"));
@@ -161,7 +161,7 @@ public class OpenLink implements Serializable
 			return true;
 		}
 
-		if ("gfycat.com" .equalsIgnoreCase(domain))
+		if ("gfycat.com".equalsIgnoreCase(domain))
 		{
 			this.setUrlContentType(OpenLink.DISPLAY_AS_VIDEO);
 			//	post.setChangedUrl(post.getUrl().replace("gfycat.com", "giant.gfycat.com") + ".webm"); // high quality - freeze on some mobile.
