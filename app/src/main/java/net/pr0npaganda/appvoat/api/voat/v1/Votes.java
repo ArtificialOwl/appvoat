@@ -30,7 +30,6 @@ import android.content.Context;
 
 import com.android.volley.Request;
 
-import net.pr0npaganda.appvoat.Core;
 import net.pr0npaganda.appvoat.api.ApiRequest;
 import net.pr0npaganda.appvoat.api.voat.Voat;
 import net.pr0npaganda.appvoat.model.Comment;
@@ -46,14 +45,12 @@ public class Votes
 	public static final int VOTE_TYPE_COMMENT    = 2;
 
 	private Voat    voat;
-	private Core    core;
 	private Context context;
 
 
-	public Votes(Voat voat, Core core, Context context)
+	public Votes(Voat voat, Context context)
 	{
 		this.voat = voat;
-		this.core = core;
 		this.context = context;
 	}
 

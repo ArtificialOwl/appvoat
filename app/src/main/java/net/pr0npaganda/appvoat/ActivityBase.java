@@ -70,7 +70,6 @@ import net.pr0npaganda.appvoat.utils.AppUtils;
 
 public class ActivityBase extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ApiRequestListener
 {
-	//	protected Core core;
 	protected Api api;
 
 	protected SharedPreferences pref;
@@ -100,7 +99,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	{
 		super.onResume();
 
-		api = new Api(getBaseContext(), Core.get(), this);
+		api = new Api(getBaseContext(), this);
 
 		if (!currentTheme.equalsIgnoreCase(pref.getString("theme", "AppVoatLight")))
 			recreate();

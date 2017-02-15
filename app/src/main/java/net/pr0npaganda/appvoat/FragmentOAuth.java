@@ -53,14 +53,9 @@ import net.pr0npaganda.appvoat.utils.AppUtils;
 
 public class FragmentOAuth extends Fragment implements ApiRequestListener
 {
-	//	private boolean mTwoPane;
 	private Api api;
 
-	//private Core core = null;
 	private FragmentOauthBinding binding;
-
-	//	private LinearLayoutManager layoutManager;
-	//	private boolean populatingComments = false;
 
 
 	public FragmentOAuth()
@@ -74,27 +69,13 @@ public class FragmentOAuth extends Fragment implements ApiRequestListener
 	{
 		super.onCreate(savedInstanceState);
 
-//		if (!getArguments().containsKey("core"))
-//		{
-//			Context context = getContext();
-//			Intent intent = new Intent(context, ActivityPostList.class);
-//			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//			context.startActivity(intent);
-//			return;
-//		}
-
-		//core = (Core) getArguments().getSerializable("core");
-		api = new Api(getContext(), Core.get(), this);
+		api = new Api(getContext(), this);
 
 		Activity activity = this.getActivity();
 		Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
 		if (toolbar != null)
 		{
-			//			toolbar.setTitle(core.getCurrentPost().getSub().getName());
 		}
-
-		//		if (getActivity().findViewById(R.id.center_panel_container) != null)
-		//			mTwoPane = true;
 
 	}
 

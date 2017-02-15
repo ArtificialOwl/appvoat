@@ -53,7 +53,6 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 {
 	private Api api;
 
-	//	private Core core = null;
 	private PostDetailBinding binding;
 
 	private LinearLayoutManager layoutManager;
@@ -65,32 +64,12 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 	}
 
 
-		@Override
-		public void onCreate(Bundle savedInstanceState)
-		{
-			super.onCreate(savedInstanceState);
-
-//			if (!getArguments().containsKey("core"))
-//			{
-//				Context context = getContext();
-//				Intent intent = new Intent(context, ActivityPostList.class);
-//				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//				context.startActivity(intent);
-//				return;
-//			}
-
-			//core = (Core) getArguments().getSerializable("core");
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
 		//	api = new Api(getContext(), Core.get(), this);
-
-//			AppUtils.Log("--11---" + api);
-
-			//			Activity activity = this.getActivity();
-			//			Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
-			//			if (toolbar != null)
-			//			{
-			//			}
-
-		}
+	}
 
 
 	@Override
@@ -144,7 +123,7 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 		//			}
 		//		});
 
-		api = new Api(getContext(), Core.get(), this);
+		api = new Api(getContext(), this);
 
 
 		return rootView;
@@ -208,7 +187,7 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 		if (((ActivityBase) getActivity()).multiPanel() > 0)
 		{
 			Bundle arguments = new Bundle();
-		//	arguments.putSerializable("core", (Core) Core.get().clone());
+			//	arguments.putSerializable("core", (Core) Core.get().clone());
 
 			FragmentOpenLink fragment = new FragmentOpenLink();
 			fragment.setArguments(arguments);
@@ -224,7 +203,7 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 		{
 			Context context = getContext();
 			Intent intent = new Intent(context, ActivityOpenLink.class);
-	//		intent.putExtra("core", (Core) Core.get().clone());
+			//		intent.putExtra("core", (Core) Core.get().clone());
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
 		}

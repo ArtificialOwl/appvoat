@@ -48,14 +48,12 @@ import org.json.JSONObject;
 public class Subverses
 {
 	private Voat    voat;
-//	private Core    core;
 	private Context context;
 
 
-	public Subverses(Voat voat, Core core, Context context)
+	public Subverses(Voat voat, Context context)
 	{
 		this.voat = voat;
-	//	this.core = core;
 		this.context = context;
 	}
 
@@ -77,7 +75,6 @@ public class Subverses
 		//		core.getSubs().add(new Sub(Core.SOURCE_VOAT, "New").setKeyname("_new"));
 		//		core.getSubs().add(new Sub(Core.SOURCE_VOAT, "Top").setKeyname("_top"));
 		request.getSubs().addDivider();
-
 
 
 		try

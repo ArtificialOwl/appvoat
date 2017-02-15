@@ -60,7 +60,6 @@ public class Voat
 		}
 	}
 
-//	private Core      core;
 	private Context   context;
 	private Api       api;
 	private Auth      auth;
@@ -72,16 +71,15 @@ public class Voat
 	private String apiPrivateKey = "";
 
 
-	public Voat(Api api, Core core, Context context)
+	public Voat(Api api, Context context)
 	{
 		this.api = api;
-	//	this.core = core;
 		this.context = context;
 
 		auth = new Auth(this, context);
 		comments = new Comments(this, context);
-		subverses = new Subverses(this, core, context);
-		votes = new Votes(this, core, context);
+		subverses = new Subverses(this, context);
+		votes = new Votes(this, context);
 	}
 
 
