@@ -69,12 +69,10 @@ public class Comments
 			if (co.id == parentId)
 				return co.children;
 
-			//			if (co.childCount > 0)
-			//			{
 			RecursiveChildren ch = cacheGetChildren(co.children, parentId);
 			if (ch != null)
 				return ch;
-			//			}
+
 		}
 
 		return null;
@@ -122,7 +120,6 @@ public class Comments
 			else
 				post.getBaseComments().add(comment);
 
-			//	if (co.childCount > 0)
 			parseCache(co.children, post, comment, old);
 
 			if (comment.getChildRemaining() > 0)
@@ -285,11 +282,8 @@ public class Comments
 	public void requestMore(Comment comment)
 	{
 		Post post = comment.getPost();
-		String url = String.format("https://api.voat.co/api/v1/v/%s/%d/comments/%d/%d",
-		                           post.getSub().getName(),
-		                           post.getId(),
-		                           comment.getParentId(),
-		                           comment.getNextIndex());
+		String url = String.format("https://api.voat.co/api/v1/v/%s/%d/comments/%d/%d", post.getSub().getName(), post.getId(), comment
+				.getParentId(), comment.getNextIndex());
 
 		voat.request(new ApiRequest(ApiRequest.REQUEST_TYPE_COMMENTS, url).setMethod(Request.Method.GET)
 				             .setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT).setPost(post).setExtra("parentId", comment.getParentId())
@@ -302,19 +296,13 @@ public class Comments
 		Post post = comment.getPost();
 		String url;
 		if (comment.getParentId() > 0)
-			url = String.format("https://api.voat.co/api/v1/v/%s/%d/comment/%d",
-			                    post.getSub().getName(),
-			                    post.getId(),
-			                    comment.getParentId());
+			url = String.format("https://api.voat.co/api/v1/v/%s/%d/comment/%d", post.getSub().getName(), post.getId(), comment
+					.getParentId());
 		else
 			url = String.format("https://api.voat.co/api/v1/v/%s/%d/comment", post.getSub().getName(), post.getId());
 
-		//		url = String.format("https://api.voat.co/api/v1/comments/%d",
-		//		                    comment.getParentId());
-
-		voat.request(new ApiRequest(ApiRequest.REQUEST_TYPE_POSTING, url).setMethod(Request.Method.POST).setBodyParams("value",
-		                                                                                                               comment.getContent())
-				             .setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT).setPost(post).setExtra("parentId", comment.getParentId())
+		voat.request(new ApiRequest(ApiRequest.REQUEST_TYPE_POSTING, url).setMethod(Request.Method.POST).setBodyParams("value", comment
+				.getContent()).setJsonType(ApiRequest.REQUEST_JSONTYPE_OBJECT).setPost(post).setExtra("parentId", comment.getParentId())
 				             .setComment(comment));
 	}
 
@@ -353,8 +341,6 @@ public class Comments
 
 	public void resultPosting(ApiRequest request, JSONObject result)
 	{
-		Comment more = request.getComment();
-
 		try
 		{
 			RecursiveChildren child = this.cacheGetChildren(request.getPost().getCommentCache(), request.getExtraInt("parentId", 0));
@@ -363,8 +349,6 @@ public class Comments
 			RecursiveComments co = cacheComment(item);
 
 			child.comments.add(0, co);
-
-			RecursiveChildren child2 = this.cacheGetChildren(request.getPost().getCommentCache(), request.getExtraInt("parentId", 0));
 
 			ArrayList<Comment> backup = (ArrayList) ((ArrayList<Comment>) request.getPost().getBaseComments()).clone();
 			request.getPost().getBaseComments().clear();

@@ -68,7 +68,6 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		//	api = new Api(getContext(), Core.get(), this);
 	}
 
 
@@ -187,8 +186,6 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 		if (((ActivityBase) getActivity()).multiPanel() > 0)
 		{
 			Bundle arguments = new Bundle();
-			//	arguments.putSerializable("core", (Core) Core.get().clone());
-
 			FragmentOpenLink fragment = new FragmentOpenLink();
 			fragment.setArguments(arguments);
 
@@ -203,7 +200,6 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 		{
 			Context context = getContext();
 			Intent intent = new Intent(context, ActivityOpenLink.class);
-			//		intent.putExtra("core", (Core) Core.get().clone());
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
 		}

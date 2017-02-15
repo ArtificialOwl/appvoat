@@ -78,8 +78,6 @@ public class ApiRequest
 	private Map<String, Integer> extraInt    = new HashMap<>();
 	private Map<String, String>  extraString = new HashMap<>();
 
-	//	private JSONObject params;
-
 
 	public ApiRequest(int type, String url)
 	{

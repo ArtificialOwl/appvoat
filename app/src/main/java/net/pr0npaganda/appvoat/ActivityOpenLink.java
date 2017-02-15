@@ -53,14 +53,6 @@ public class ActivityOpenLink extends ActivityBase implements NavigationView.OnN
 		PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
 
 		openLink = (OpenLink) getIntent().getSerializableExtra("link");
-//		if (getIntent().getSerializableExtra("core") == null)
-//		{
-//			Context context = getBaseContext();
-//			Intent intent = new Intent(context, ActivityPostList.class);
-//			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//			context.startActivity(intent);
-//			return;
-//		}
 
 		// binding
 		binding = DataBindingUtil.setContentView(this, R.layout.activity_open_link);
@@ -91,8 +83,7 @@ public class ActivityOpenLink extends ActivityBase implements NavigationView.OnN
 		if (((ViewGroup) findViewById(R.id.open_link_container)).getChildCount() == 0)
 		{
 			Bundle arguments = new Bundle();
-		//	arguments.putSerializable("core", (Core) Core.get().clone());
-			arguments.putSerializable("link", (OpenLink) openLink);
+			arguments.putSerializable("link", openLink);
 			FragmentOpenLink fragment = new FragmentOpenLink();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction().add(R.id.open_link_container, fragment).commit();

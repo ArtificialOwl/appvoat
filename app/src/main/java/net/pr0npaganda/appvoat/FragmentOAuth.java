@@ -140,9 +140,6 @@ public class FragmentOAuth extends Fragment implements ApiRequestListener
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
 		super.onActivityCreated(savedInstanceState);
-
-		//		api.requestComments(core.getCurrentPost());
-		//		PostsDatabase.setPostAsRead(core.getCurrentPost(), Post.TYPE_TEXT);
 	}
 
 
@@ -159,8 +156,6 @@ public class FragmentOAuth extends Fragment implements ApiRequestListener
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
 		}
-		//		AnimUtils.displayView(binding.progressBar, false, 500);
-		//		populatingComments = false;
 	}
 
 

@@ -88,7 +88,7 @@ public class RefreshTokensService extends Service implements ApiRequestListener
 		DatabaseManager.initializeInstance(AppvoatDatabase.getInstance(getApplicationContext()));
 
 		Api api = new Api(getBaseContext(), this);
-		AccountsDatabase.getAccounts(Core.get().getAccounts());
+		AccountsDatabase.refreshAccounts();
 		for (Account account : Core.get().getAccounts().getItems())
 		{
 			if (account.needRefresh())

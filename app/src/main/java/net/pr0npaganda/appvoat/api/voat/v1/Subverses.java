@@ -98,11 +98,6 @@ public class Subverses
 					request.getSubs().replace(sub);
 				}
 
-				//		"createdBy":null,"creationDate":"2014-06-23T03:43:00","description":"A showcase for new subverses!","getName":"newsubverses","sidebar":"This subverse is for advertising new subverses. " +
-				//			" I invite subverse owners to post a link to their subverse, along with a comment in their post describing what their subverse is for.\r\n\r\n#Rules\r\n1. Don't forget " +
-				//			"to include a link to your subverse.  Either submit a link, or submit a message, with a link to your subverse within your message.\r\n\r\n2. Don't repost, as this should " +
-				//			"be for *new* or *newly managed* subverses only.  Only post here if you have not posted your subverse here before.\r\n\r\n3. If the posted subverse is NSFW, label it as such " +
-				//			"","formattedSidebar":null,"subscriberCount":19592,"title":"\/v\/newsubverses","type":"link","isAnonymized":null,"isAdult":false,"moderators":null}
 			}
 		}
 		catch (JSONException e)

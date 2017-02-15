@@ -98,23 +98,12 @@ public class FragmentOpenLink extends Fragment
 	{
 		super.onCreate(savedInstanceState);
 
-//		if (!getArguments().containsKey("core"))
-//		{
-//			Context context = getContext();
-//			Intent intent = new Intent(context, ActivityPostList.class);
-//			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//			context.startActivity(intent);
-//			return;
-//		}
-
-		//	core = (Core) getArguments().getSerializable("core");
 		link = (OpenLink) getArguments().getSerializable("link");
 
 		Activity activity = this.getActivity();
 		Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
 		if (toolbar != null)
 		{
-			//			toolbar.setTitle(core.getCurrentPost().getDomain());
 		}
 
 	}

@@ -50,14 +50,6 @@ public class ActivityPostDetail extends ActivityBase implements NavigationView.O
 		super.onCreate(savedInstanceState);
 		PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
 
-//		if (getIntent().getSerializableExtra("core") == null)
-//		{
-//			Context context = getBaseContext();
-//			Intent intent = new Intent(context, ActivityPostList.class);
-//			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//			context.startActivity(intent);
-//		}
-
 		binding = DataBindingUtil.setContentView(this, R.layout.activity_post_detail);
 
 		// tools
@@ -87,7 +79,6 @@ public class ActivityPostDetail extends ActivityBase implements NavigationView.O
 		if (((ViewGroup) findViewById(R.id.post_detail_container)).getChildCount() == 0)
 		{
 			Bundle arguments = new Bundle();
-	//		arguments.putSerializable("core", (Core) Core.get().clone());
 			FragmentPostDetail fragment = new FragmentPostDetail();
 			fragment.setArguments(arguments);
 

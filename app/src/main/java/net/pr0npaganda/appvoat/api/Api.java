@@ -55,7 +55,6 @@ import java.util.Map;
 
 public class Api
 {
-	//	private Core               core;
 	private Context            context;
 	private ApiRequestListener listener;
 	private Voat               voat;
@@ -291,15 +290,4 @@ public class Api
 		return "";
 	}
 
-	//	private void result(ApiRequest request, JSONObject result)
-	//	{
-	//		switch (request.getSource())
-	//		{
-	//			case ApiRequest.SOURCE_VOAT:
-	//				voat().result(request, result);
-	//		}
-	//
-	//		countRequest--;
-	//		listener.onApiRequestCompleted((countRequest == 0));
-	//	}
 }

@@ -142,12 +142,6 @@ public class Voat
 		return this.apiPrivateKey;
 	}
 
-	//	public void result(ApiRequest request, JSONArray result)
-	//	{
-	//		switch (request.getType())
-	//		{
-	//		}
-	//	}
 
 
 	public boolean request(ApiRequest request)

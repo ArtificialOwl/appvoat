@@ -208,7 +208,6 @@ public class AnimUtils
 
 		});
 
-		//anim.setInterpolator(new DecelerateInterpolator());
 		anim.setDuration(500);
 		anim.start();
 

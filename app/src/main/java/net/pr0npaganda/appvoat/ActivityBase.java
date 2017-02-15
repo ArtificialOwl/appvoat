@@ -105,9 +105,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 			recreate();
 
 		DatabaseManager.initializeInstance(AppvoatDatabase.getInstance(getApplicationContext()));
-
-		//if (Core.get().getAccounts().getSize() == 0)
-		AccountsDatabase.getAccounts(Core.get().getAccounts());
+		AccountsDatabase.refreshAccounts();
 
 		manageAccounts();
 	}

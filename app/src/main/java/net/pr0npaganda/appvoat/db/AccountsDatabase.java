@@ -30,7 +30,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
-import net.pr0npaganda.appvoat.list.Accounts;
+import net.pr0npaganda.appvoat.Core;
 import net.pr0npaganda.appvoat.model.Account;
 
 
@@ -43,9 +43,9 @@ public class AccountsDatabase
 	}
 
 
-	public static Accounts getAccounts(Accounts accounts)
+	public static void refreshAccounts()
 	{
-		accounts.reset();
+		Core.get().getAccounts().reset();
 
 		SQLiteDatabase database = DatabaseManager.getInstance().openDatabase();
 		String select = String.format(
@@ -78,11 +78,10 @@ public class AccountsDatabase
 			account.setExpires(cursor.getLong(cursor.getColumnIndex(AppvoatDatabase.ACC_TOKENS_COLUMN_EXPIRES)));
 			account.setRefreshTime(cursor.getLong(cursor.getColumnIndex(AppvoatDatabase.ACC_TOKENS_COLUMN_REFRESHTIME)));
 
-			accounts.add(account);
+			Core.get().getAccounts().add(account);
 		}
 
 		cursor.close();
-		return accounts;
 	}
 
 

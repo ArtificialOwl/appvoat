@@ -31,9 +31,6 @@ import com.android.volley.VolleyError;
 import net.pr0npaganda.appvoat.utils.AppUtils;
 
 
-/**
- * Created by Maxence on 17/01/2017.
- */
 public class ApiError
 {
 	public final static int ERROR_NO_PUBLIC_API  = 10;

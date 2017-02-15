@@ -226,19 +226,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 					.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1f));
 		}
 
-
 		RefreshTokensService.start(getBaseContext());
-
-
-		//	getSubs().reset();
-		//	getPosts().reset();
-
-		//if (!currentSub())
-		//		{
-		//			getPosts().reset();
-		//			api.requestSubPosts(Core.get().getCurrentSub(), getPosts());
-		//		}
-
 	}
 
 
@@ -378,7 +366,6 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		if (multiPanel() > 0)
 		{
 			Bundle arguments = new Bundle();
-			//arguments.putSerializable("core", (Core) Core.get().clone());
 			FragmentPostDetail fragment = new FragmentPostDetail();
 			fragment.setArguments(arguments);
 
@@ -392,11 +379,8 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		}
 		else
 		{
-			//	nextSub(null);
-
 			Context context = getBaseContext();
 			Intent intent = new Intent(context, ActivityPostDetail.class);
-			//intent.putExtra("core", (Core) Core.get().clone());
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
 		}
@@ -419,7 +403,6 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		if (multiPanel() > 0)
 		{
 			Bundle arguments = new Bundle();
-			//	arguments.putSerializable("core", (Core) Core.get().clone());
 
 			FragmentOpenLink fragment = new FragmentOpenLink();
 			fragment.setArguments(arguments);
@@ -439,7 +422,6 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		{
 			Context context = getBaseContext();
 			Intent intent = new Intent(context, ActivityOpenLink.class);
-			//	intent.putExtra("core", (Core) Core.get().clone());
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
 		}
@@ -492,18 +474,13 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 	@Override
 	public void onBackPressed()
 	{
-		//		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 		if (drawer != null && drawer.isDrawerOpen(GravityCompat.START))
 		{
 			drawer.closeDrawer(GravityCompat.START);
 		}
 		else if (this.prevSub())
 		{
-			//			this.refreshSpinner();
 			goToSub(this.currentSub());
-			//			binding.includePostList.postRefresher.setRefreshing(true);
-			//			getPosts().reset();
-			//			api.requestSubPosts(currentSub(), getPosts());
 		}
 		else
 		{

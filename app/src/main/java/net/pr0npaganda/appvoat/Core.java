@@ -28,7 +28,6 @@ package net.pr0npaganda.appvoat;
 
 import net.pr0npaganda.appvoat.db.AccountsDatabase;
 import net.pr0npaganda.appvoat.list.Accounts;
-import net.pr0npaganda.appvoat.list.Posts;
 import net.pr0npaganda.appvoat.model.Account;
 import net.pr0npaganda.appvoat.model.OpenLink;
 import net.pr0npaganda.appvoat.model.Post;
@@ -43,11 +42,7 @@ public class Core implements Serializable, Cloneable
 
 	private static Core instance;
 
-	//	private Subs     subs     = new Subs();
-	private Posts    posts    = new Posts();
-	private Accounts accounts = new Accounts();
-
-	//	private Sub       currentSub        = null;
+	private Accounts accounts          = new Accounts();
 	private Post     currentPost       = null;
 	private Account  currentAccount    = null;
 	private long     lastAccountUpdate = 0;
@@ -75,12 +70,6 @@ public class Core implements Serializable, Cloneable
 	public Accounts getAccounts()
 	{
 		return this.accounts;
-	}
-
-	public Core setAccounts(Accounts accounts)
-	{
-		this.accounts = accounts;
-		return this;
 	}
 
 
