@@ -30,7 +30,6 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -99,14 +98,14 @@ public class FragmentOpenLink extends Fragment
 	{
 		super.onCreate(savedInstanceState);
 
-		if (!getArguments().containsKey("core"))
-		{
-			Context context = getContext();
-			Intent intent = new Intent(context, ActivityPostList.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(intent);
-			return;
-		}
+//		if (!getArguments().containsKey("core"))
+//		{
+//			Context context = getContext();
+//			Intent intent = new Intent(context, ActivityPostList.class);
+//			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//			context.startActivity(intent);
+//			return;
+//		}
 
 		//	core = (Core) getArguments().getSerializable("core");
 		link = (OpenLink) getArguments().getSerializable("link");

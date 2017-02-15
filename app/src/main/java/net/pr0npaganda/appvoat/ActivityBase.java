@@ -92,8 +92,6 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		currentTheme = pref.getString("theme", "AppVoatLight");
 
 		super.setTheme(AppUtils.getTheme(currentTheme));
-
-		api = new Api(getBaseContext(), Core.get(), this);
 	}
 
 
@@ -102,13 +100,15 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 	{
 		super.onResume();
 
+		api = new Api(getBaseContext(), Core.get(), this);
+
 		if (!currentTheme.equalsIgnoreCase(pref.getString("theme", "AppVoatLight")))
 			recreate();
 
 		DatabaseManager.initializeInstance(AppvoatDatabase.getInstance(getApplicationContext()));
 
-		if (Core.get().getAccounts().getSize() == 0)
-			AccountsDatabase.getAccounts(Core.get().getAccounts());
+		//if (Core.get().getAccounts().getSize() == 0)
+		AccountsDatabase.getAccounts(Core.get().getAccounts());
 
 		manageAccounts();
 	}
@@ -161,7 +161,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 			Core.get().getOpenLink().setUrl(link);
 			Context context = getBaseContext();
 			Intent intent = new Intent(context, ActivityOpenLink.class);
-			intent.putExtra("core", (Core) Core.get().clone());
+			//	intent.putExtra("core", (Core) Core.get().clone());
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
 		}
@@ -176,7 +176,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		if (multiPanel() > 0)
 		{
 			Bundle arguments = new Bundle();
-			arguments.putSerializable("core", (Core) Core.get().clone());
+			//	arguments.putSerializable("core", (Core) Core.get().clone());
 			arguments.putSerializable("link", openLink);
 			FragmentOpenLink fragment = new FragmentOpenLink();
 			fragment.setArguments(arguments);
@@ -191,7 +191,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		{
 			Context context = getBaseContext();
 			Intent intent = new Intent(context, ActivityOpenLink.class);
-			intent.putExtra("core", (Core) Core.get().clone());
+			//	intent.putExtra("core", (Core) Core.get().clone());
 			intent.putExtra("link", openLink);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
@@ -536,7 +536,7 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 				else
 					intent = new Intent(context, ActivityPostList.class);
 
-				intent.putExtra("core", (Core) Core.get().clone());
+				//	intent.putExtra("core", (Core) Core.get().clone());
 				intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 				context.startActivity(intent);
 				break;
@@ -557,7 +557,6 @@ public class ActivityBase extends AppCompatActivity implements NavigationView.On
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}
-
 
 
 	protected void showGoToSubDialogFragment()

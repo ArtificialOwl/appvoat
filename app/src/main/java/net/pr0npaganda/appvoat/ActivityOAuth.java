@@ -85,7 +85,7 @@ public class ActivityOAuth extends ActivityBase implements NavigationView.OnNavi
 		if (((ViewGroup) findViewById(R.id.oauth_container)).getChildCount() == 0)
 		{
 			Bundle arguments = new Bundle();
-			arguments.putSerializable("core", (Core) Core.get().clone());
+		//	arguments.putSerializable("core", (Core) Core.get().clone());
 			FragmentOAuth fragment = new FragmentOAuth();
 			fragment.setArguments(arguments);
 

@@ -74,14 +74,14 @@ public class FragmentOAuth extends Fragment implements ApiRequestListener
 	{
 		super.onCreate(savedInstanceState);
 
-		if (!getArguments().containsKey("core"))
-		{
-			Context context = getContext();
-			Intent intent = new Intent(context, ActivityPostList.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(intent);
-			return;
-		}
+//		if (!getArguments().containsKey("core"))
+//		{
+//			Context context = getContext();
+//			Intent intent = new Intent(context, ActivityPostList.class);
+//			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//			context.startActivity(intent);
+//			return;
+//		}
 
 		//core = (Core) getArguments().getSerializable("core");
 		api = new Api(getContext(), Core.get(), this);

@@ -232,14 +232,6 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 
 		//	getSubs().reset();
 		//	getPosts().reset();
-		if (getSubs().getSize() == 0)
-		{
-			binding.topSpinner.setAlpha(0f);
-			binding.topSpinner.setVisibility(View.GONE);
-			binding.includePostList.postRefresher.setRefreshing(true);
-			api.requestSubList(Core.SOURCE_VOAT, getSubs());
-		}
-
 
 		//if (!currentSub())
 		//		{
@@ -254,6 +246,15 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 	protected void onResume()
 	{
 		super.onResume();
+
+
+		if (getSubs().getSize() == 0)
+		{
+			binding.topSpinner.setAlpha(0f);
+			binding.topSpinner.setVisibility(View.GONE);
+			binding.includePostList.postRefresher.setRefreshing(true);
+			api.requestSubList(Core.SOURCE_VOAT, getSubs());
+		}
 
 
 		if (binding.includePostList.postRecycler.getAdapter() != null)
@@ -343,6 +344,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		api.requestSubPosts(currentSub(), getPosts());
 	}
 
+
 	public void clickMorePost(final View v)
 	{
 		AppUtils.Log(". clickMorePost");
@@ -374,7 +376,6 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		Post post = (Post) v.getTag();
 		Core.get().setCurrentPost(post);
 
-
 		if (multiPanel() > 0)
 		{
 			Bundle arguments = new Bundle();
@@ -405,6 +406,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 
 	public void clickThumb(View v)
 	{
+
 		Post post = (Post) v.getTag();
 		if (post.getType() != Post.TYPE_LINK)
 		{
@@ -451,13 +453,11 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 			this.stackSubs.remove(sub);
 
 		if (sub != null && getSubs().getItem(sub) == null)
-		{
-			AppUtils.Log("_________________NEXTSUB ADD SUB");
 			getSubs().add(sub);
-		}
 
 		this.stackSubs.add(sub);
 	}
+
 
 	protected boolean prevSub()
 	{
@@ -468,6 +468,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 		return true;
 	}
 
+
 	protected Sub currentSub()
 	{
 		if (this.stackSubs.size() == 0)
@@ -475,6 +476,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 
 		return this.stackSubs.get(this.stackSubs.size() - 1);
 	}
+
 
 	private Subs getSubs()
 	{
@@ -486,6 +488,7 @@ public class ActivityPostList extends ActivityBase implements NavigationView.OnN
 	{
 		return this.posts;
 	}
+
 
 	@Override
 	public void onBackPressed()

@@ -26,8 +26,6 @@
 
 package net.pr0npaganda.appvoat;
 
-import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -55,14 +53,14 @@ public class ActivityOpenLink extends ActivityBase implements NavigationView.OnN
 		PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
 
 		openLink = (OpenLink) getIntent().getSerializableExtra("link");
-		if (getIntent().getSerializableExtra("core") == null)
-		{
-			Context context = getBaseContext();
-			Intent intent = new Intent(context, ActivityPostList.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(intent);
-			return;
-		}
+//		if (getIntent().getSerializableExtra("core") == null)
+//		{
+//			Context context = getBaseContext();
+//			Intent intent = new Intent(context, ActivityPostList.class);
+//			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//			context.startActivity(intent);
+//			return;
+//		}
 
 		// binding
 		binding = DataBindingUtil.setContentView(this, R.layout.activity_open_link);
@@ -75,6 +73,7 @@ public class ActivityOpenLink extends ActivityBase implements NavigationView.OnN
 		drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 		this.setNavView(binding.includeNavView.navView);
+		this.setPostingPanel(binding.includePost1panel.post1);
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		fab.setVisibility(View.GONE);
@@ -92,7 +91,7 @@ public class ActivityOpenLink extends ActivityBase implements NavigationView.OnN
 		if (((ViewGroup) findViewById(R.id.open_link_container)).getChildCount() == 0)
 		{
 			Bundle arguments = new Bundle();
-			arguments.putSerializable("core", (Core) Core.get().clone());
+		//	arguments.putSerializable("core", (Core) Core.get().clone());
 			arguments.putSerializable("link", (OpenLink) openLink);
 			FragmentOpenLink fragment = new FragmentOpenLink();
 			fragment.setArguments(arguments);

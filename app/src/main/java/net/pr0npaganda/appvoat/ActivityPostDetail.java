@@ -87,7 +87,7 @@ public class ActivityPostDetail extends ActivityBase implements NavigationView.O
 		if (((ViewGroup) findViewById(R.id.post_detail_container)).getChildCount() == 0)
 		{
 			Bundle arguments = new Bundle();
-			arguments.putSerializable("core", (Core) Core.get().clone());
+	//		arguments.putSerializable("core", (Core) Core.get().clone());
 			FragmentPostDetail fragment = new FragmentPostDetail();
 			fragment.setArguments(arguments);
 

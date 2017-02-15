@@ -26,7 +26,6 @@
 
 package net.pr0npaganda.appvoat;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -35,7 +34,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,30 +65,32 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 	}
 
 
-	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-
-		if (!getArguments().containsKey("core"))
+		@Override
+		public void onCreate(Bundle savedInstanceState)
 		{
-			Context context = getContext();
-			Intent intent = new Intent(context, ActivityPostList.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(intent);
-			return;
+			super.onCreate(savedInstanceState);
+
+//			if (!getArguments().containsKey("core"))
+//			{
+//				Context context = getContext();
+//				Intent intent = new Intent(context, ActivityPostList.class);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//				context.startActivity(intent);
+//				return;
+//			}
+
+			//core = (Core) getArguments().getSerializable("core");
+		//	api = new Api(getContext(), Core.get(), this);
+
+//			AppUtils.Log("--11---" + api);
+
+			//			Activity activity = this.getActivity();
+			//			Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
+			//			if (toolbar != null)
+			//			{
+			//			}
+
 		}
-
-		//core = (Core) getArguments().getSerializable("core");
-		api = new Api(getContext(), Core.get(), this);
-
-		Activity activity = this.getActivity();
-		Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
-		if (toolbar != null)
-		{
-		}
-
-	}
 
 
 	@Override
@@ -144,6 +144,9 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 		//			}
 		//		});
 
+		api = new Api(getContext(), Core.get(), this);
+
+
 		return rootView;
 	}
 
@@ -164,9 +167,9 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
 		super.onActivityCreated(savedInstanceState);
-
 		api.requestComments(Core.get().getCurrentPost());
 		PostsDatabase.setPostAsRead(Core.get().getCurrentPost(), Core.get().getCurrentAccount(), Post.TYPE_TEXT);
+		Core.get().getCurrentPost().read(true);
 	}
 
 
@@ -201,10 +204,11 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 
 	public void clickThumb(View v)
 	{
+
 		if (((ActivityBase) getActivity()).multiPanel() > 0)
 		{
 			Bundle arguments = new Bundle();
-			arguments.putSerializable("core", (Core) Core.get().clone());
+		//	arguments.putSerializable("core", (Core) Core.get().clone());
 
 			FragmentOpenLink fragment = new FragmentOpenLink();
 			fragment.setArguments(arguments);
@@ -220,7 +224,7 @@ public class FragmentPostDetail extends Fragment implements ApiRequestListener
 		{
 			Context context = getContext();
 			Intent intent = new Intent(context, ActivityOpenLink.class);
-			intent.putExtra("core", (Core) Core.get().clone());
+	//		intent.putExtra("core", (Core) Core.get().clone());
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent);
 		}
